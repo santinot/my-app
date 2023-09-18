@@ -1,17 +1,15 @@
-// Endpoint for the API es. http://localhost:3000/api
-const express = require('express');
-var router = express.Router();
+// Endpoint for the API http://localhost:3000/api/...
+const api = require('express').Router();
 
-const mailRouter = require('./mail')
 
-router.get('/', (req, res) => {
+api.get('/', (req, res) => {
   res.json({ message: 'Hello from server!' });
 });
 
-router.get('/test', (req, res) => {
+api.get('/test', (req, res) => {
   res.json({ message: 'Hello from test!' });
 });
 // Routes
-router.use('/mail', mailRouter)
+api.use('/mail', require('./mail'))
 
-module.exports = router;
+module.exports = api;
