@@ -4,10 +4,9 @@ const path = require("path");
 const process = require("process");
 const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
-const { get } = require("http");
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"];
+const SCOPES = ["https://mail.google.com/"];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -103,15 +102,15 @@ async function getProfile(param_userId) {
   return response.data;
 }
 
-async function sendMessage(
-  param_userId,
-  param_to,
-  param_subject,
-  param_message
-) {
+async function sendMessage(param_userId, param_to, param_subject, param_message) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-  const raw = (param_userId, param_to, param_subject, param_message); // Mettere consenso per inviare mail
+  const raw = Buffer.from( 
+    `From: "me" <${param_userId}>\n` +
+    `To: ${param_to}\n` +
+    `Subject: ${param_subject}\n\n` +
+    `${param_message}`
+  ).toString("base64");
   const response = await gmail.users.messages.send({
     userId: param_userId,
     resource: {

@@ -23,8 +23,9 @@ mail.get("/:userId/messages", async (req, res) => {
 
 mail.post("/:userId/send", async (req, res) => {
   try {
-    console.log(req.body)
-    const { to, subject, message } = req.body;
+    const to = req.body["To"]
+    const subject = req.body["Subject"]
+    const message = req.body["Message"]
     const messagesData = await sendMessage(req.params.userId, to, subject, message);
     res.json(messagesData);
   } catch (error) {
@@ -34,3 +35,4 @@ mail.post("/:userId/send", async (req, res) => {
 });
 
 module.exports = mail;
+
