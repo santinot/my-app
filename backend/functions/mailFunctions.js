@@ -1,4 +1,3 @@
-const nodemailer = require("nodemailer");
 const fs = require("fs").promises;
 const path = require("path");
 const process = require("process");
