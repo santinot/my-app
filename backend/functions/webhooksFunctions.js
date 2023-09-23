@@ -1,8 +1,7 @@
-const webhook = require("express").Router();
 require("dotenv").config();
 const axios = require("axios");
 
-webhook.get("/", (req, res) => {
+function verifyEndpoint(req, res) {
   const verify_token = process.env.VERIFY_TOKEN;
 
   const mode = req.query["hub.mode"];
@@ -17,9 +16,9 @@ webhook.get("/", (req, res) => {
       res.sendStatus(403);
     }
   }
-});
+}
 
-webhook.post("/", (req, res) => {
+function getMessage(req, res, isPost) {
   if (req.body.object) {
     if (
       req.body.entry &&
@@ -31,22 +30,31 @@ webhook.post("/", (req, res) => {
         req.body.entry[0].changes[0].value.metadata.phone_number_id;
       const from = req.body.entry[0].changes[0].value.messages[0].from;
       const msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
-      axios({
-        method: "POST",
-        url: `https://graph.facebook.com/${process.env.VERSION}/${phone_number}/messages?access_token=${process.env.ACCESS_TOKEN}`,
-        data: {
-          messaging_product: "whatsapp",
-          recipient_type: "individual",
-          to: from,
-          type: "text",
-          text: { body: `You said: ${msg_body}` },
-        },
-      });
+      // For sending a message back
+      if (isPost === "yes") {
+        axios({
+          method: "POST",
+          url: `https://graph.facebook.com/${process.env.VERSION}/${phone_number}/messages?access_token=${process.env.ACCESS_TOKEN}`,
+          data: {
+            messaging_product: "whatsapp",
+            recipient_type: "individual",
+            to: from,
+            type: "text",
+            text: {
+              body: `È stato ricevuto il seguente messaggio: ${msg_body}`,
+            },
+          },
+        });
+      }
     }
     res.sendStatus(200);
+    return (req.body.entry[0].changes[0]);
   } else {
     res.sendStatus(404);
   }
-});
+}
 
-module.exports = webhook;
+module.exports = {
+  verifyEndpoint,
+  getMessage,
+};

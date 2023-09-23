@@ -14,7 +14,7 @@ message.get("/", (req, res) => {
 message.post("/send", (req, res) => {
   const data = getTextMessageInput(
     process.env.RECIPIENT_WAID,
-    "Welcome to the Movie Ticket Demo App for Node.js!"
+    "Messaggio inviato tramite API POST da http://localhost:3001/api/message/send"
   );
   sendMessage(data)
     .then((response) => {
