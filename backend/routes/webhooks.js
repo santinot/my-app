@@ -1,3 +1,4 @@
+// Endpoint for the API http://localhost:3000/webhooks/...
 const webhooks = require('express').Router();
 const { verifyEndpoint, getMessage} = require('../functions/webhooksFunctions');
 
@@ -8,7 +9,7 @@ webhooks.get('/', (req, res) => {
 
 // Handle webhook endpoint
 webhooks.post('/', (req, res) => {
-  const response = getMessage(req, res, "yes");
+  const response = getMessage(req, res, 1);
   console.log(response);
 });
 

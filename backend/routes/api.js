@@ -6,11 +6,9 @@ api.get('/', (req, res) => {
   res.json({ message: 'Hello from server!' });
 });
 
-api.get('/test', (req, res) => {
-  res.json({ message: 'Hello from test!' });
-});
 // Routes
 api.use('/mail', require('./mail'));
 api.use('/message', require('./message'));
+api.use('/whatsapp', require('./whatsapp'));
 
 module.exports = api;

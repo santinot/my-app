@@ -1,5 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
+const fs = require("fs");
 
 function verifyEndpoint(req, res) {
   const verify_token = process.env.VERIFY_TOKEN;
@@ -31,7 +32,7 @@ function getMessage(req, res, isPost) {
       const from = req.body.entry[0].changes[0].value.messages[0].from;
       const msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
       // For sending a message back
-      if (isPost === "yes") {
+      if (isPost) {
         axios({
           method: "POST",
           url: `https://graph.facebook.com/${process.env.VERSION}/${phone_number}/messages?access_token=${process.env.ACCESS_TOKEN}`,
@@ -48,13 +49,47 @@ function getMessage(req, res, isPost) {
       }
     }
     res.sendStatus(200);
-    return (req.body.entry[0].changes[0]);
+    return req.body.entry[0].changes[0];
   } else {
     res.sendStatus(404);
   }
 }
 
+
+function getImage(req, res) {
+  if (req.body.object) {
+    if (
+      req.body.entry &&
+      req.body.entry[0].changes[0] &&
+      req.body.entry[0].changes[0].value.messages &&
+      req.body.entry[0].changes[0].value.messages[0]
+    ) {
+      const img_id = req.body.entry[0].changes[0].value.messages[0].image.id;
+      axios({
+        method: "GET",
+        url: `https://graph.facebook.com/${process.env.VERSION}/${img_id}?access_token=${process.env.ACCESS_TOKEN}`,
+      }).then((response) => {
+        const url = response.data["url"];
+        downloadImage(url);
+      });
+      res.sendStatus(200);
+      //return img_id;
+    }
+  } else {
+    res.sendStatus(404);
+  }
+}
+
+function downloadImage(url) {
+  axios({
+    method: "GET",
+    url: `${url}?access_token=${process.env.ACCESS_TOKEN}`,
+  }).then((response) => {
+    //console.log(response);
+  });
+}
+
 module.exports = {
   verifyEndpoint,
-  getMessage,
+  getMessage
 };
