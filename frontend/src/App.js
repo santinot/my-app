@@ -1,37 +1,45 @@
-import logo from './logo.svg';
-import React, {useState, useEffect} from 'react';
-import './App.css';
+import logo from "./logo.svg";
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import withRoot from "./pages/modules/withRoot";
+import AppAppBar from "./pages/modules/views/AppAppBar";
 
 function App() {
   // Hooks
-  const [x, setMessage] = useState('')
+  const [x, setMessage] = useState("");
   useEffect(() => {
-    fetch('http://localhost:3001/api')
-    .then(response => response.json())
-    .then(data => setMessage(data.message))
-  }, [])
+    fetch("http://localhost:3001/api")
+      .then((response) => response.json())
+      .then((data) => setMessage(data.message));
+  }, []);
 
+  const [count, setCount] = useState(0);
 
+  function click() {
+    setCount(count + 1);
+    setMessage("Hai cliccato " + (count+1) + " volte");
+  }
 
   return (
     <div className="App">
+      <AppAppBar />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Index dell'applicazione web
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
         <div>{x}</div>
+        <div>
+          <Button count={count} onClick={click} />
+          <Button count={count} onClick={click} />
+        </div>
       </header>
     </div>
   );
 }
 
-export default App;
+function Button({count, onClick}) {
+  return <button onClick={onClick}>{count}</button>;
+}
+
+export default withRoot(App);
