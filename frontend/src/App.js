@@ -3,14 +3,26 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import withRoot from "./pages/modules/withRoot";
 import AppAppBar from "./pages/modules/views/AppAppBar";
+import Message from "./pages/modules/components/Message";
 
 function App() {
   // Hooks
   const [x, setMessage] = useState("");
   useEffect(() => {
-    fetch("http://localhost:3001/api")
-      .then((response) => response.json())
-      .then((data) => setMessage(data.message));
+    fetch("http://localhost:3001/api/test", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((response) => {
+      response.json().then((data) => {
+        setMessage(data.message); 
+        console.log(data) // Printed twice for the strict mode
+      })
+    })
+      // .then((response) => response.json())
+      // .then((data) => setMessage(data.message));
   }, []);
 
   const [count, setCount] = useState(0);
@@ -26,6 +38,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
+      <Message />
           Index dell'applicazione web
         </p>
         <div>{x}</div>

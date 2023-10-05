@@ -1,7 +1,7 @@
 const mail = require("express").Router();
-const { getProfile, getMessages, sendMessage } = require("../functions/mailFunctions");
+const { getProfile, getEmails, sendEmails } = require("../functions/mailFunctions");
 
-mail.get("/:userId", async (req, res) => {
+mail.get("/:userId/getProfile", async (req, res) => {
   try {
     const profileData = await getProfile(req.params.userId);
     res.json(profileData);
@@ -11,9 +11,9 @@ mail.get("/:userId", async (req, res) => {
   }
 });
 
-mail.get("/:userId/messages", async (req, res) => {
+mail.get("/:userId/getEmails", async (req, res) => {
   try {
-    const messagesData = await getMessages(req.params.userId);
+    const messagesData = await getEmails(req.params.userId);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);
@@ -21,12 +21,12 @@ mail.get("/:userId/messages", async (req, res) => {
   }
 });
 
-mail.post("/:userId/send", async (req, res) => {
+mail.post("/:userId/sendEmails", async (req, res) => {
   try {
     const to = req.body["To"]
     const subject = req.body["Subject"]
     const message = req.body["Message"]
-    const messagesData = await sendMessage(req.params.userId, to, subject, message);
+    const messagesData = await sendEmails(req.params.userId, to, subject, message);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);

@@ -27,21 +27,12 @@ function AppAppBar() {
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
             <Link
-              color="inherit"
               variant="h6"
               underline="none"
               href="/sign-in/"
-              sx={rightLink}
-            >
-              {'Accedi'}
-            </Link>
-            <Link
-              variant="h6"
-              underline="none"
-              href="/sign-up/"
               sx={{ ...rightLink, color: 'secondary.main' }}
             >
-              {'Registrati'}
+              {'Accedi'}
             </Link>
           </Box>
         </Toolbar>

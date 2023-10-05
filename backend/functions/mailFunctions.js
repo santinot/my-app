@@ -67,7 +67,7 @@ async function authorize() {
 
 //@param {google.auth.OAuth2} auth An authorized OAuth2 client.
 
-async function getMessages(param_userId) {
+async function getEmails(param_userId) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.list({
@@ -80,11 +80,12 @@ async function getMessages(param_userId) {
       id: message.id,
     });
     return [
+      res.data.id,
       res.data.payload.headers.filter((header) => header.name === "From")[0]
         .value,
       res.data.payload.headers.filter((header) => header.name === "Subject")[0]
         .value,
-      res.data.snippet,
+      res.data.snippet
     ];
   });
   // Wait for all the promises to resolve
@@ -101,7 +102,7 @@ async function getProfile(param_userId) {
   return response.data;
 }
 
-async function sendMessage(param_userId, param_to, param_subject, param_message) {
+async function sendEmails(param_userId, param_to, param_subject, param_message) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const raw = Buffer.from( 
@@ -121,6 +122,6 @@ async function sendMessage(param_userId, param_to, param_subject, param_message)
 
 module.exports = {
   getProfile,
-  getMessages,
-  sendMessage
+  getEmails,
+  sendEmails
 };
