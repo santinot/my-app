@@ -19,7 +19,8 @@ function createSession(client, store, res) {
     client.getChats().then((chat) => { // Return an array of Chat objects
       const chats = [];
       for (let i = 0; i < chat.length; i++) {
-        chats.push(chat[i].name);
+        const dateFormat = new Date(chat[i].timestamp * 1000);
+        chats.push([chat[i].id.user, chat[i].name, dateFormat.toLocaleString('it-IT'), chat[i].lastMessage.body]);
       }
       res.send(chats);
     });

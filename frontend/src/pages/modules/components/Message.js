@@ -13,9 +13,9 @@ import Typography from "./Typography";
 
 
 function Message(props) {
-    const { title, subheader, body, key } = props;
+    const { title, subheader, body, id} = props;
   return (
-    <Card sx={{ textAlign: "left" }} key={key}>
+    <Card sx={{ textAlign: "left" }} id= {id}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="user">

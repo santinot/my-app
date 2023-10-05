@@ -85,7 +85,8 @@ async function getEmails(param_userId) {
         .value,
       res.data.payload.headers.filter((header) => header.name === "Subject")[0]
         .value,
-      res.data.snippet
+      res.data.snippet,
+      res.data.payload.headers.filter((header) => header.name === "Date")[0].value
     ];
   });
   // Wait for all the promises to resolve

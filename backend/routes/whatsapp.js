@@ -14,6 +14,7 @@ mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
 whatsapp.get("/", (req, res) => {
   try {
     createSession(client, store, res);
+    //res.send("Connection...");
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");
