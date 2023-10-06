@@ -1,4 +1,3 @@
-const { redis } = require("googleapis/build/src/apis/redis");
 const qrcode = require("qrcode-terminal");
 const { Client, RemoteAuth } = require("whatsapp-web.js");
 
@@ -6,7 +5,7 @@ function createSession(client, store, res) {
   client = new Client({
     authStrategy: new RemoteAuth({
       store: store,
-      backupSyncIntervalMs: 500000,
+      backupSyncIntervalMs: 60000,
       clientId: "User",
     }),
   });
@@ -19,8 +18,8 @@ function createSession(client, store, res) {
     client.getChats().then((chat) => { // Return an array of Chat objects
       const chats = [];
       for (let i = 0; i < chat.length; i++) {
-        const dateFormat = new Date(chat[i].timestamp * 1000);
-        chats.push([chat[i].id.user, chat[i].name, dateFormat.toLocaleString('it-IT'), chat[i].lastMessage.body]);
+          const dateFormat = new Date(chat[i].timestamp * 1000);
+          chats.push([chat[i].id.user, chat[i].name, dateFormat.toLocaleString('it-IT'), ]); //chat[i].lastMessage.body
       }
       res.send(chats);
     });

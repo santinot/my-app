@@ -15,7 +15,7 @@ import Message from "./Message";
 export default function Content() {
   const [emails, setEmails] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/api/mail/me/getEmails", {
+    fetch("http://localhost:3001/api/email/me/getEmails", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

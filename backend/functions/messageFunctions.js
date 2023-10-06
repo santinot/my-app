@@ -1,33 +1,45 @@
-var axios = require('axios');
-
-function sendMessage(data) {
-    var config = {
-      method: 'post',
-      url: `https://graph.facebook.com/${process.env.VERSION}/${process.env.PHONE_NUMBER_ID}/messages`,
-      headers: {
-        'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      data: data
-    };
-    console.log(config)
-    return axios(config)
+const moment = require("moment");
+async function getMessages(){
+  try{
+  const emailMessages = await fetch("http://localhost:3001/api/email/me/getEmails", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const emailMessagesJson = await emailMessages.json();
+  //console.log(emailMessagesJson);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).json({ error: "Internal gmail server error" });
   }
+  try{
+  const whatsappMessages = await fetch("http://localhost:3001/api/whatsapp/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+} catch (error) {
+  console.error("An error occurred:", error);
+  res.status(500).json({ error: "Internal whatsapp server error" });
+}
+  const whatsappMessagesJson = await whatsappMessages.json();
+  //console.log(whatsappMessagesJson);
+  return orderByDate(emailMessagesJson.concat(whatsappMessagesJson));
+}
 
-  function getTextMessageInput(recipient, text) {
-    return JSON.stringify({
-      "messaging_product": "whatsapp",
-      "preview_url": false,
-      "recipient_type": "individual",
-      "to": recipient,
-      "type": "text",
-      "text": {
-          "body": text
-      }
+function orderByDate(list){
+    // Utilizza moment.js per analizzare le date nell'ultimo elemento di ciascun oggetto
+    list.sort((a, b) => {
+      const dataA = moment(a[a.length - 1], "DD/M/YYYY, HH:mm:ss");
+      const dataB = moment(b[b.length - 1], "DD/M/YYYY, HH:mm:ss");
+      return dataB - dataA; // Ordine decrescente (dal più recente al meno recente)
     });
-  }
   
-  module.exports = {
-    sendMessage,
-    getTextMessageInput
-  };
+    return list;
+}
+
+module.exports = {
+  getMessages
+};

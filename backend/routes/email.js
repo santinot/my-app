@@ -1,5 +1,5 @@
 const mail = require("express").Router();
-const { getProfile, getEmails, sendEmails } = require("../functions/mailFunctions");
+const { getProfile, getEmails, sendEmails } = require("../functions/emailFunctions");
 
 mail.get("/:userId/getProfile", async (req, res) => {
   try {

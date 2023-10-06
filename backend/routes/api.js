@@ -7,7 +7,7 @@ api.get('/', (req, res) => {
 });
 
 // Routes
-api.use('/mail', require('./mail'));
+api.use('/email', require('./email'));
 api.use('/message', require('./message'));
 api.use('/whatsapp', require('./whatsapp'));
 

@@ -3,6 +3,7 @@ const path = require("path");
 const process = require("process");
 const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
+const moment = require("moment");
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://mail.google.com/"];
@@ -86,7 +87,7 @@ async function getEmails(param_userId) {
       res.data.payload.headers.filter((header) => header.name === "Subject")[0]
         .value,
       res.data.snippet,
-      res.data.payload.headers.filter((header) => header.name === "Date")[0].value
+      moment(res.data.payload.headers.filter((header) => header.name === "Date")[0].value, "ddd, DD MMM YYYY HH:mm:ss Z").format("DD/M/YYYY, HH:mm:ss")
     ];
   });
   // Wait for all the promises to resolve
