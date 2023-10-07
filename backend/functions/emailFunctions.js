@@ -82,6 +82,7 @@ async function getEmails(param_userId) {
     });
     return [
       res.data.id,
+      "gmail",
       res.data.payload.headers.filter((header) => header.name === "From")[0]
         .value,
       res.data.payload.headers.filter((header) => header.name === "Subject")[0]

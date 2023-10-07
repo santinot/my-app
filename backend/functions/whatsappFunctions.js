@@ -19,7 +19,7 @@ function createSession(client, store, res) {
       const chats = [];
       for (let i = 0; i < chat.length; i++) {
           const dateFormat = new Date(chat[i].timestamp * 1000);
-          chats.push([chat[i].id.user, chat[i].name, dateFormat.toLocaleString('it-IT'), ]); //chat[i].lastMessage.body
+          chats.push([chat[i].id.user, "whatsapp", chat[i].name,"ultimo messaggio" ,dateFormat.toLocaleString('it-IT'), ]); //chat[i].lastMessage.body
       }
       res.send(chats);
     });
@@ -38,14 +38,13 @@ function createSession(client, store, res) {
   });
 
   client.initialize();
+
 }
 
-function deleteSession(client, mongoose){
-  client.logout();
+function deleteSession(mongoose){
   const db = mongoose.connection.db;
   db.collection("whatsapp-RemoteAuth-User.chunks").drop();
   db.collection("whatsapp-RemoteAuth-User.files").drop();
-  mongoose.connection.close();
 }
 
 module.exports = {

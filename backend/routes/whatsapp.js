@@ -23,7 +23,7 @@ whatsapp.get("/", (req, res) => {
 
 whatsapp.get("/logout", (req, res) => {
   try {
-    deleteSession(client, mongoose);
+    deleteSession(mongoose);
     res.send("Client logged out!");
   } catch (err) {
     console.log(err);
