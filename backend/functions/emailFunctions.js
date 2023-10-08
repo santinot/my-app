@@ -1,9 +1,12 @@
 const fs = require("fs").promises;
+const fs2 = require("fs");
 const path = require("path");
 const process = require("process");
 const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
 const moment = require("moment");
+const os = require("os");
+const downloadPath = path.join(os.homedir(), "Downloads");
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://mail.google.com/"];
@@ -68,25 +71,33 @@ async function authorize() {
 
 //@param {google.auth.OAuth2} auth An authorized OAuth2 client.
 
-async function getEmails(param_userId) {
+async function getEmails(param_userId, param_labelIds) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-  const response = await gmail.users.messages.list({
+  const response = await gmail.users.messages.list({ // Get the list of messages
     userId: param_userId,
+    labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
+    maxResults: 2,
+    pageToken: "", // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
   });
   // Use map to create an array of promises for the get operations
   const getPromises = response.data.messages.map(async (message) => {
-    const res = await gmail.users.messages.get({
+    const res = await gmail.users.messages.get({  // Get the entire actual message using the message id
       userId: param_userId,
-      id: message.id,
+      id: message.id
     });
+    for (const part of res.data.payload.parts) {
+      if (part.body.attachmentId) {
+        var attachment = [res.data.id ,part.body.attachmentId];
+      };
+    };
     return [
       res.data.id,
-      "gmail",
+      (attachment ? ["gmail", attachment] : "gmail"),
       res.data.payload.headers.filter((header) => header.name === "From")[0]
-        .value,
+      .value,
       res.data.payload.headers.filter((header) => header.name === "Subject")[0]
-        .value,
+      .value,
       res.data.snippet,
       moment(res.data.payload.headers.filter((header) => header.name === "Date")[0].value, "ddd, DD MMM YYYY HH:mm:ss Z").format("DD/M/YYYY, HH:mm:ss")
     ];
@@ -123,8 +134,46 @@ async function sendEmails(param_userId, param_to, param_subject, param_message) 
   return response.data;
 }
 
+async function trashEmails(param_userId, param_messageId) {
+  const auth = await authorize();
+  const gmail = google.gmail({ version: "v1", auth });
+  const response = await gmail.users.messages.trash({
+    userId: param_userId,
+    id: param_messageId,
+  });
+  return response.data;
+}
+
+async function untrashEmails(param_userId, param_messageId) {
+  const auth = await authorize();
+  const gmail = google.gmail({ version: "v1", auth });
+  const response = await gmail.users.messages.untrash({
+    userId: param_userId,
+    id: param_messageId,
+  });
+  return response.data;
+}
+
+async function getAttachments(param_userId, param_messageId, param_attachmentId, param_filename) {
+  const auth = await authorize();
+  const gmail = google.gmail({ version: "v1", auth });
+  const response = await gmail.users.messages.attachments.get({
+    userId: param_userId,
+    messageId: param_messageId,
+    id: param_attachmentId,
+  });
+  // Save the attachment to a file
+  const filename = param_filename || 'untitled-attachment';
+  fs2.writeFileSync(`${downloadPath}/${filename}`, Buffer.from(response.data.data, 'base64'));
+  console.log(`Downloaded ${filename}`);
+  return response.data;
+}
+
 module.exports = {
   getProfile,
   getEmails,
-  sendEmails
+  sendEmails,
+  trashEmails,
+  untrashEmails,
+  getAttachments,
 };
