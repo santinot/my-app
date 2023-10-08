@@ -1,30 +1,30 @@
 const whatsapp = require("express").Router();
-const { MongoStore } = require("wwebjs-mongo");
-const mongoose = require("mongoose");
-let store, client;
-const {
-  createSession,
-  deleteSession,
-} = require("../functions/whatsappFunctions");
+const {createSession, getChats, logoutSession} = require("../functions/whatsappFunctions");
 
-mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
-  store = new MongoStore({ mongoose: mongoose });
-});
-
-whatsapp.get("/", (req, res) => {
+whatsapp.get("/login", async (req, res) => {
   try {
-    createSession(client, store, res);
-    //res.send("Connection...");
+    const response = await createSession();
+    res.send(response);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");
   }
 });
 
-whatsapp.get("/logout", (req, res) => {
+whatsapp.get("/chats", async (req, res) => {
   try {
-    deleteSession(mongoose);
-    res.send("Client logged out!");
+    const response = await getChats();
+    res.send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong!");
+  }
+});
+
+whatsapp.get("/logout", async (req, res) => {
+  try {
+    const response = await logoutSession();
+    res.send(response);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");

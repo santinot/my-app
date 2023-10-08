@@ -1,7 +1,14 @@
-const qrcode = require("qrcode-terminal");
-const { Client, RemoteAuth } = require("whatsapp-web.js");
+let qrcode = require("qrcode-terminal");
+let { Client, RemoteAuth } = require("whatsapp-web.js");
+let { MongoStore } = require("wwebjs-mongo");
+let mongoose = require("mongoose");
+let client, store;
 
-function createSession(client, store, res) {
+mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
+  store = new MongoStore({ mongoose: mongoose });
+});
+
+async function createSession() {
   client = new Client({
     authStrategy: new RemoteAuth({
       store: store,
@@ -9,20 +16,13 @@ function createSession(client, store, res) {
       clientId: "User",
     }),
   });
+
   client.on("qr", (qr) => {
     qrcode.generate(qr, { small: true });
   });
 
   client.on("ready", () => {
     console.log("Client is ready!");
-    client.getChats().then((chat) => { // Return an array of Chat objects
-      const chats = [];
-      for (let i = 0; i < chat.length; i++) {
-          const dateFormat = new Date(chat[i].timestamp * 1000);
-          chats.push([chat[i].id.user, "whatsapp", chat[i].name,"ultimo messaggio" ,dateFormat.toLocaleString('it-IT'), ]); //chat[i].lastMessage.body
-      }
-      res.send(chats);
-    });
   });
 
   client.on("auth_failure", (session) => {
@@ -39,15 +39,34 @@ function createSession(client, store, res) {
 
   client.initialize();
 
+  return "Connection...";
 }
 
-function deleteSession(mongoose){
-  const db = mongoose.connection.db;
-  db.collection("whatsapp-RemoteAuth-User.chunks").drop();
-  db.collection("whatsapp-RemoteAuth-User.files").drop();
+async function getChats(){
+  if(!client) return ("Client not created!");
+  const response = client.getChats().then((chat) => { // Return an array of Chat objects
+      const chats = [];
+      for (let i = 0; i < chat.length; i++) {
+          const dateFormat = new Date(chat[i].timestamp * 1000);
+          chats.push([chat[i].id.user, "whatsapp", chat[i].name,chat[i].lastMessage.body ,dateFormat.toLocaleString('it-IT'), ]); //chat[i].lastMessage.body
+      }
+      return chats;
+    });
+  return response;
+}
+
+function logoutSession(){
+  // const db = mongoose.connection.db;
+  // db.collection("whatsapp-RemoteAuth-User.chunks").drop();
+  // db.collection("whatsapp-RemoteAuth-User.files").drop();
+  const response = client.logout().then(() => {
+    return("Client logged out!");
+  });
+  return response;
 }
 
 module.exports = {
   createSession,
-  deleteSession
+  getChats,
+  logoutSession,
 };

@@ -2,7 +2,7 @@ const moment = require("moment");
 async function getMessages() {
   try {
     const emailMessages = await fetch(
-      "http://localhost:3001/api/email/me/getEmails",
+      "http://localhost:3001/api/email/me/getEmails/inbox",
       {
         method: "GET",
         headers: {
@@ -10,10 +10,10 @@ async function getMessages() {
         },
       }
     );
-
     var emailMessagesJson = await emailMessages.json();
+
     const whatsappMessages = await fetch(
-      "http://localhost:3001/api/whatsapp/",
+      "http://localhost:3001/api/whatsapp/chats",
       {
         method: "GET",
         headers: {
