@@ -3,7 +3,7 @@ const {createSession, getChats, logoutSession} = require("../functions/whatsappF
 
 whatsapp.get("/login", async (req, res) => {
   try {
-    const response = await createSession();
+    const response = await createSession(req.io);
     res.send(response);
   } catch (err) {
     console.log(err);

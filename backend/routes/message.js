@@ -1,4 +1,4 @@
-const message = require("express").Router();
+  const message = require("express").Router();
 const { getMessages } = require("../functions/messageFunctions");
 
 message.get("/getMessages", async (req, res) => {

@@ -4,6 +4,16 @@ import "./App.css";
 import withRoot from "./pages/modules/withRoot";
 import AppAppBar from "./pages/modules/views/AppAppBar";
 import Message from "./pages/modules/components/Message";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:3001");
+
+socket.on("connect", () => {
+  console.log("sono connesso");
+});
+socket.on("test", (data) => {
+  console.log(data);
+});
 
 function App() {
   // Hooks

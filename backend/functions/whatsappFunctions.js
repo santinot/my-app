@@ -8,7 +8,7 @@ mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
   store = new MongoStore({ mongoose: mongoose });
 });
 
-async function createSession() {
+async function createSession(socket) {
   client = new Client({
     authStrategy: new RemoteAuth({
       store: store,
@@ -23,6 +23,7 @@ async function createSession() {
 
   client.on("ready", () => {
     console.log("Client is ready!");
+    socket.emit("test", "socket.io");
   });
 
   client.on("auth_failure", (session) => {
@@ -55,11 +56,12 @@ async function getChats(){
   return response;
 }
 
-function logoutSession(){
+
+async function logoutSession(){
+  const response = client.logout().then(() => {
   // const db = mongoose.connection.db;
   // db.collection("whatsapp-RemoteAuth-User.chunks").drop();
   // db.collection("whatsapp-RemoteAuth-User.files").drop();
-  const response = client.logout().then(() => {
     return("Client logged out!");
   });
   return response;

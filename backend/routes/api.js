@@ -2,6 +2,7 @@
 const api = require('express').Router();
 require('dotenv').config()
 
+
 api.get('/', (req, res) => {
   res.json({ message: 'Hello from server!' });
 });
@@ -12,3 +13,4 @@ api.use('/message', require('./message'));
 api.use('/whatsapp', require('./whatsapp'));
 
 module.exports = api;
+
