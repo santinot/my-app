@@ -116,7 +116,7 @@ async function getProfile(param_userId) {
   return response.data;
 }
 
-async function sendEmails(param_userId, param_to, param_subject, param_message) {
+async function sendEmail(param_userId, param_to, param_subject, param_message) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const raw = Buffer.from( 
@@ -134,7 +134,7 @@ async function sendEmails(param_userId, param_to, param_subject, param_message) 
   return response.data;
 }
 
-async function trashEmails(param_userId, param_messageId) {
+async function trashEmail(param_userId, param_messageId) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.trash({
@@ -144,7 +144,7 @@ async function trashEmails(param_userId, param_messageId) {
   return response.data;
 }
 
-async function untrashEmails(param_userId, param_messageId) {
+async function untrashEmail(param_userId, param_messageId) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.untrash({
@@ -154,7 +154,7 @@ async function untrashEmails(param_userId, param_messageId) {
   return response.data;
 }
 
-async function getAttachments(param_userId, param_messageId, param_attachmentId, param_filename) {
+async function getAttachment(param_userId, param_messageId, param_attachmentId, param_filename) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.attachments.get({
@@ -172,8 +172,8 @@ async function getAttachments(param_userId, param_messageId, param_attachmentId,
 module.exports = {
   getProfile,
   getEmails,
-  sendEmails,
-  trashEmails,
-  untrashEmails,
-  getAttachments,
+  sendEmail,
+  trashEmail,
+  untrashEmail,
+  getAttachment,
 };

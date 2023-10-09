@@ -1,5 +1,5 @@
 const whatsapp = require("express").Router();
-const {createSession, getChats, logoutSession} = require("../functions/whatsappFunctions");
+const {createSession, getChats, logoutSession, getAttachment} = require("../functions/whatsappFunctions");
 
 whatsapp.get("/login", async (req, res) => {
   try {
@@ -24,6 +24,16 @@ whatsapp.get("/chats", async (req, res) => {
 whatsapp.get("/logout", async (req, res) => {
   try {
     const response = await logoutSession();
+    res.send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong!");
+  }
+});
+
+whatsapp.post("/download", async (req, res) => {
+  try {
+    const response = await getAttachment(req.body.message);
     res.send(response);
   } catch (err) {
     console.log(err);

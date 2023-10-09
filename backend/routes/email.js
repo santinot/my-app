@@ -1,5 +1,5 @@
 const mail = require("express").Router();
-const { getProfile, getEmails, sendEmails, trashEmails, untrashEmails, getAttachments } = require("../functions/emailFunctions");
+const { getProfile, getEmails, sendEmail, trashEmail, untrashEmail, getAttachment } = require("../functions/emailFunctions");
 
 mail.get("/:userId/getProfile", async (req, res) => {
   try {
@@ -21,12 +21,12 @@ mail.get("/:userId/getEmails/:labelIds/", async (req, res) => {
   }
 });
 
-mail.post("/:userId/sendEmails", async (req, res) => {
+mail.post("/:userId/sendEmail", async (req, res) => {
   try {
     const to = req.body["To"]
     const subject = req.body["Subject"]
     const message = req.body["Message"]
-    const messagesData = await sendEmails(req.params.userId, to, subject, message);
+    const messagesData = await sendEmail(req.params.userId, to, subject, message);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);
@@ -34,10 +34,10 @@ mail.post("/:userId/sendEmails", async (req, res) => {
   }
 });
 
-mail.post("/:userId/trashEmails", async (req, res) => {
+mail.post("/:userId/trashEmail", async (req, res) => {
   try {
     const messageId = req.body["id"]
-    const messagesData = await trashEmails(req.params.userId, messageId);
+    const messagesData = await trashEmail(req.params.userId, messageId);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);
@@ -45,10 +45,10 @@ mail.post("/:userId/trashEmails", async (req, res) => {
   }
 });
 
-mail.post("/:userId/untrashEmails", async (req, res) => {
+mail.post("/:userId/untrashEmail", async (req, res) => {
   try {
     const messageId = req.body["id"]
-    const messagesData = await untrashEmails(req.params.userId, messageId);
+    const messagesData = await untrashEmail(req.params.userId, messageId);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);
@@ -56,9 +56,9 @@ mail.post("/:userId/untrashEmails", async (req, res) => {
   }
 });
 
-mail.get("/:userId/getAttachments/:messageId/:attachmentId/:filename", async (req, res) => {
+mail.get("/:userId/getAttachment/:messageId/:attachmentId/:filename", async (req, res) => {
   try {
-    const messagesData = await getAttachments(req.params.userId, req.params.messageId, req.params.attachmentId, req.params.filename);
+    const messagesData = await getAttachment(req.params.userId, req.params.messageId, req.params.attachmentId, req.params.filename);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);
