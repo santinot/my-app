@@ -1,4 +1,5 @@
 let os = require("os");
+const path = require("path");
 let downloadPath = path.join(os.homedir(), "Downloads");
 let qrcode = require("qrcode-terminal");
 let { Client, RemoteAuth } = require("whatsapp-web.js");
@@ -48,12 +49,18 @@ async function createSession(socket) {
 async function getChats(){
   if(!client) return ("Client not created!");
   const response =  client.getChats().then((chat) => { // Return an array of Chat objects
-      const chats = [];
+      const array = [];
       for (let i = 0; i < chat.length; i++) {
           const dateFormat = new Date(chat[i].timestamp * 1000);
-          chats.push([chat[i].id.user, "whatsapp", chat[i].name,chat[i].lastMessage.body ,dateFormat.toLocaleString('it-IT'), ]); //chat[i].lastMessage.body
+          array.push({
+            "id" : chat[i].id.user, 
+            "type" : "whatsapp", 
+            "from" : chat[i].name,
+            "subject" : chat[i].lastMessage.type, 
+            "snippet" : chat[i].lastMessage.body,
+            "date" : dateFormat.toLocaleString('it-IT')}); 
       }
-      return chats;
+      return array;
     });
   return response;
 }

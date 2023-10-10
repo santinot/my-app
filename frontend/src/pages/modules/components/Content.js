@@ -64,11 +64,11 @@ export default function Content() {
       </AppBar>
       {messages.map((message) => (
         <Message 
-          key={message[0]}
-          id={message[0]}
-          title={message[2]}
-          subheader={message[1] === "gmail" ? message[3] + " - " + message[message.length - 1] : message[message.length - 1]}
-          body={message[1] === "gmail" ? message[4] : message[3]}
+          key={message.id}
+          id={message.id}
+          title={message.from}
+          subheader={message.subject + " - " + message.date}
+          body={message.snippet}
         />
       ))}
     </Paper>

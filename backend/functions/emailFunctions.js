@@ -91,20 +91,20 @@ async function getEmails(param_userId, param_labelIds) {
         var attachment = [res.data.id ,part.body.attachmentId];
       };
     };
-    return [
-      res.data.id,
-      (attachment ? ["gmail", attachment] : "gmail"),
-      res.data.payload.headers.filter((header) => header.name === "From")[0]
+    return {
+      "id" : res.data.id,
+      "type" : (attachment ? ["gmail", attachment] : "gmail"),
+      "from" : res.data.payload.headers.filter((header) => header.name === "From")[0]
       .value,
-      res.data.payload.headers.filter((header) => header.name === "Subject")[0]
+      "subject" : res.data.payload.headers.filter((header) => header.name === "Subject")[0]
       .value,
-      res.data.snippet,
-      moment(res.data.payload.headers.filter((header) => header.name === "Date")[0].value, "ddd, DD MMM YYYY HH:mm:ss Z").format("DD/M/YYYY, HH:mm:ss")
-    ];
+      "snippet" : res.data.snippet,
+      "date" : moment(res.data.payload.headers.filter((header) => header.name === "Date")[0].value, "ddd, DD MMM YYYY HH:mm:ss Z").format("DD/M/YYYY, HH:mm:ss")
+    };
   });
   // Wait for all the promises to resolve
-  const lista = await Promise.all(getPromises);
-  return lista;
+  const array = await Promise.all(getPromises);
+  return array;
 }
 
 async function getProfile(param_userId) {
@@ -168,6 +168,7 @@ async function getAttachment(param_userId, param_messageId, param_attachmentId, 
   console.log(`Downloaded ${filename}`);
   return response.data;
 }
+
 
 module.exports = {
   getProfile,
