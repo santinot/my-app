@@ -74,7 +74,8 @@ async function authorize() {
 async function getEmails(param_userId, param_labelIds) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-  const response = await gmail.users.messages.list({ // Get the list of messages
+  const response = await gmail.users.messages.list({
+    // Get the list of messages
     userId: param_userId,
     labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
     maxResults: 10,
@@ -82,24 +83,34 @@ async function getEmails(param_userId, param_labelIds) {
   });
   // Use map to create an array of promises for the get operations
   const getPromises = response.data.messages.map(async (message) => {
-    const res = await gmail.users.messages.get({  // Get the entire actual message using the message id
+    const res = await gmail.users.messages.get({
+      // Get the entire actual message using the message id
       userId: param_userId,
-      id: message.id
+      id: message.id,
     });
-    for (const part of res.data.payload.parts) {
-      if (part.body.attachmentId) {
-        var attachment = [res.data.id ,part.body.attachmentId];
-      };
-    };
+    let media = [];
+    if(res.data.payload.parts){
+      for (let i = 0; i < (res.data.payload.parts).length; i++) {
+        if (res.data.payload.parts[i].body.attachmentId) {
+          media.push(res.data.payload.parts[i].body.attachmentId);
+        }
+      }
+    }
     return {
-      "id" : res.data.id,
-      "type" : (attachment ? ["gmail", attachment] : "gmail"),
-      "from" : res.data.payload.headers.filter((header) => header.name === "From")[0]
-      .value,
-      "subject" : res.data.payload.headers.filter((header) => header.name === "Subject")[0]
-      .value,
-      "snippet" : res.data.snippet,
-      "date" : moment(res.data.payload.headers.filter((header) => header.name === "Date")[0].value, "ddd, DD MMM YYYY HH:mm:ss Z").format("DD/M/YYYY, HH:mm:ss")
+      id: res.data.id,
+      type: media.length != 0 ? ["gmail", media] : "gmail",
+      from: res.data.payload.headers.filter(
+        (header) => header.name === "From"
+      )[0].value,
+      subject: res.data.payload.headers.filter(
+        (header) => header.name === "Subject"
+      )[0].value,
+      snippet: res.data.snippet,
+      date: moment(
+        res.data.payload.headers.filter((header) => header.name === "Date")[0]
+          .value,
+        "ddd, DD MMM YYYY HH:mm:ss Z"
+      ).format("DD/M/YYYY, HH:mm:ss"),
     };
   });
   // Wait for all the promises to resolve
@@ -119,11 +130,11 @@ async function getProfile(param_userId) {
 async function sendEmail(param_userId, param_to, param_subject, param_message) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-  const raw = Buffer.from( 
+  const raw = Buffer.from(
     `From: "me" <${param_userId}>\n` +
-    `To: ${param_to}\n` +
-    `Subject: ${param_subject}\n\n` +
-    `${param_message}`
+      `To: ${param_to}\n` +
+      `Subject: ${param_subject}\n\n` +
+      `${param_message}`
   ).toString("base64");
   const response = await gmail.users.messages.send({
     userId: param_userId,
@@ -154,7 +165,12 @@ async function untrashEmail(param_userId, param_messageId) {
   return response.data;
 }
 
-async function getAttachment(param_userId, param_messageId, param_attachmentId, param_filename) {
+async function getAttachment(
+  param_userId,
+  param_messageId,
+  param_attachmentId,
+  param_filename
+) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.attachments.get({
@@ -163,12 +179,14 @@ async function getAttachment(param_userId, param_messageId, param_attachmentId, 
     id: param_attachmentId,
   });
   // Save the attachment to a file
-  const filename = param_filename || 'untitled-attachment';
-  fs2.writeFileSync(`${downloadPath}/${filename}`, Buffer.from(response.data.data, 'base64'));
+  const filename = param_filename || "untitled-attachment";
+  fs2.writeFileSync(
+    `${downloadPath}/${filename}`,
+    Buffer.from(response.data.data, "base64")
+  );
   console.log(`Downloaded ${filename}`);
   return response.data;
 }
-
 
 module.exports = {
   getProfile,
