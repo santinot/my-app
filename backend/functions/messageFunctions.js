@@ -26,7 +26,7 @@ async function getMessages() {
     return orderByDate(MapReduce(emailMessagesJson).concat(whatsappMessagesJson));
   } catch (error) {
     console.error("An error occurred:", error);
-    return({ error: "Internal whatsapp server error" });
+    return({ error: "Internal server error" });
   }
 }
 

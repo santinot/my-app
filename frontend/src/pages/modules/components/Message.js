@@ -2,20 +2,31 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
-  Stack,
   Avatar,
 } from "@mui/material";
-import FaceIcon from "@mui/icons-material/Face";
 import { red } from "@mui/material/colors";
 import * as React from "react";
 import Typography from "./Typography";
+import Attachments from "./Attachments";
 
+function cardContent(body){
+  if (body === ""){
+    return null;
+  } else {
+    return (
+    <CardContent>
+        <Typography variant="body2" color="text.secondary" sx={{ my:-1 }}>
+          {body}
+        </Typography>
+      </CardContent>
+    );
+  }
+}
 
 function Message(props) {
-    const { title, subheader, body, id} = props;
+  const { title, subheader, body, id, attachments} = props;
   return (
-    <Card sx={{ textAlign: "left" }} id= {id}>
+    <Card sx={{ textAlign: "left", margin:1 }} id= {id}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="user">
@@ -25,15 +36,8 @@ function Message(props) {
         title= {title}
         subheader= {subheader}
       />
-      <Stack direction="row" spacing={1} sx={{marginLeft: 2}}>
-        <Chip icon={<FaceIcon />} label="With Icon" />
-        <Chip icon={<FaceIcon />} label="With Icon" variant="outlined" />
-      </Stack>
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {body}
-        </Typography>
-      </CardContent>
+      <Attachments attachments={attachments} messageId={id}/>
+      {cardContent(body)}
     </Card>
   );
 }
