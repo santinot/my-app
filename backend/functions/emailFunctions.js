@@ -95,7 +95,7 @@ async function getEmails(param_userId, param_labelIds) {
     // Get the list of messages
     userId: param_userId,
     labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
-    maxResults: 4,
+    maxResults: 15,
     pageToken: "", // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
   });
   // Use map to create an array of promises for the get operations

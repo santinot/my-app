@@ -11,6 +11,7 @@ api.get('/', (req, res) => {
 api.use('/email', require('./email'));
 api.use('/message', require('./message'));
 api.use('/whatsapp', require('./whatsapp'));
+api.use('/contact', require('./contact'));
 
 module.exports = api;
 

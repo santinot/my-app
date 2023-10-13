@@ -10,24 +10,24 @@ async function contactsCollection() {
         const collectionExists = collections.some(collection => collection.name === 'contacts');
         if (!collectionExists) {
             await database.createCollection('contacts');
-            console.log('Contacts collection created successfully.');
+            return "Contacts collection created successfully."
         } else {
-            console.log('Contacts collection already exists.');
+            return "Contacts collection already exists.";
         }
     } catch (error) {
-        console.error(error);
+        return(error);
     } finally {
         await client.close();
     }
 }
 
-async function createContact(contactId, email, phone){
+async function createContact(label, email, whatsapp){
     try {
         await client.connect();
         const database = client.db('App');
-        const contact = { id:contactId, email: email, phone: phone };
+        const contact = { label:label, email: email, whatsapp: whatsapp };
         const result = await database.collection('contacts').insertOne(contact);
-        console.log(`Contact with email ${email} and phone ${phone} created successfully.`);
+        console.log(`Contact with email ${email} and whatsapp ${whatsapp} created successfully.`);
         return result;
     } catch (error) {
         console.error(error);
@@ -51,11 +51,11 @@ async function deleteContact(contactid){
     }
 }
 
-async function updateContact(contactid, email, phone){
+async function updateContact(contactid, email, whatsapp){
     try{
         await client.connect();
         const database = client.db('App');
-        const result = await database.collection('contacts').updateOne({ id:contactid }, { $set: { email: email, phone: phone } });
+        const result = await database.collection('contacts').updateOne({ id:contactid }, { $set: { email: email, whatsapp: whatsapp } });
         console.log(`Contact updated successfully.`);
         return result;
     } catch (error) {
@@ -66,7 +66,7 @@ async function updateContact(contactid, email, phone){
     }
 }
 
-async function getContacts(){
+async function getContacts(){ 
     try{
         await client.connect();
         const database = client.db('App');
@@ -81,8 +81,18 @@ async function getContacts(){
     }
 }
 
-async function findContact(){
-    //TODO
+async function checkContact(type, value){ //{_id: ObjectId('65294c66f6b73674888cc5f8')}
+    try{
+        await client.connect();
+        const database = client.db('App');
+        const result = await (type === "gmail" ? database.collection('contacts').findOne({ email: value }) : database.collection('contacts').findOne({ whatsapp: value}));    
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
+    finally{
+        await client.close();
+    }
 }
 
 module.exports = {
@@ -90,4 +100,6 @@ module.exports = {
     createContact,
     deleteContact,
     updateContact,
+    getContacts,
+    checkContact,
 };

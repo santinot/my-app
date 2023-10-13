@@ -69,7 +69,7 @@ export default function Content() {
           title={message.from}
           subheader={message.subject + " - " + message.date}
           body={message.snippet}
-          attachments={message.type === "whatsapp" ? [] : message.type[1]}
+          attachments={Array.isArray(message.type) ? message.type[1] : []}
         />
       ))}
     </Paper>
