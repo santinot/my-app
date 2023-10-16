@@ -1,4 +1,6 @@
 const moment = require("moment");
+const { type } = require("os");
+const checkContact = require("./contactFunctions").checkContact;
 
 function orderByDate(list) {
   // Utilizza moment.js per analizzare le date nell'ultimo elemento di ciascun oggetto
@@ -46,6 +48,107 @@ function MapReduce(list) {
   return result;
 }
 
+// function createThread(listOfMessages) {
+//   //input lista ordinata e raggruppata per mittente
+//   var threads = [];
+//   listOfMessages.forEach((message) => {
+//     let type, from;
+//     if (Array.isArray(message)) {
+//       [type, from] = [message[0].type, message[0].from];
+//     } else {
+//       [type, from] = [message.type, message.from];
+//     }
+//     checkContact(type, from).then((res) => {
+//       if (res != null) {
+//         threads.forEach((thread) => {
+//           if (thread.label == res.label) {
+//             thread.values.push(message);
+//           } else {
+//             threads.push({
+//               label: res.label,
+//               values: [message],
+//             });
+//           }
+//         });
+//       } else {
+//         threads.push(message);
+//       }
+//     });
+//   });
+//   console.log(threads)
+//   return threads;
+// }
+
+async function createThread(listOfMessages) {
+  // Input: lista ordinata e raggruppata per mittente
+  var threads = [];
+
+  // Creiamo una funzione asincrona per poter aspettare che checkContact() sia completato
+  async function processMessage(message) {
+    let type, from;
+    if (Array.isArray(message)) {
+      [type, from] = [
+        Array.isArray(message[0].type) ? message[0].type[0] : message[0].type,
+        message[0].type === "gmail" ? message[0].from : message[0].id,
+      ];
+    } else {
+      [type, from] = [
+        Array.isArray(message.type) ? message.type[0] : message.type,
+        message.type === "gmail" ? message.from : message.id,
+      ];
+    }
+    console.log(type, from);
+    const res = await checkContact(type, from);
+    if (res != null) {
+      const existingThread = threads.find(
+        (thread) => thread.label === res.label
+      );
+      if (existingThread) {
+        existingThread.values.push(message);
+      } else {
+        threads.push({
+          label: res.label,
+          values: [message],
+        });
+      }
+    } else {
+      threads.push(message);
+    }
+  }
+
+  // Utilizziamo Promise.all per elaborare tutti i messaggi in parallelo
+  return Promise.all(listOfMessages.map(processMessage)).then(() => {
+    //console.log(threads);
+    return threads;
+  });
+}
+
+function orderByDateThread(list) {
+  // Utilizza moment.js per analizzare le date nell'ultimo elemento di ciascun oggetto
+  list.sort((a, b) => {
+    if (Array.isArray(a)) {
+      a = a[0].date;
+    } else if (typeof a.values !== "undefined") {
+      a = a.values[0].date;
+    } else {
+      a = a.date;
+    }
+    
+    if (Array.isArray(b)) {
+      b = b[0].date;
+    } else if (typeof b.values !== "undefined") {
+      b = b.values[0].date;
+    } else {
+      b = b.date;
+    }
+
+    const dataA = moment(a, "DD/M/YYYY, HH:mm:ss");
+    const dataB = moment(b, "DD/M/YYYY, HH:mm:ss");
+    return dataB - dataA; // Ordine decrescente (dal più recente al meno recente)
+  });
+  return list;
+}
+
 async function getMessages() {
   try {
     const emailMessages = await fetch(
@@ -69,19 +172,16 @@ async function getMessages() {
       }
     );
     var whatsappMessagesJson = await whatsappMessages.json();
-    return orderByDate(
+    const rawData = orderByDate(
       MapReduce(emailMessagesJson).concat(whatsappMessagesJson)
     );
+    // Eseguiamo la funzione asincrona
+    const result = await createThread(rawData);
+    return orderByDateThread(result);
   } catch (error) {
     console.error("An error occurred:", error);
     return { error: "Internal server error" };
   }
-}
-
-
-
-function createThread(list) {
-
 }
 
 module.exports = {

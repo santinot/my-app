@@ -16,8 +16,6 @@ async function contactsCollection() {
         }
     } catch (error) {
         return(error);
-    } finally {
-        await client.close();
     }
 }
 
@@ -31,8 +29,6 @@ async function createContact(label, email, whatsapp){
         return result;
     } catch (error) {
         console.error(error);
-    } finally {
-        await client.close();
     }
 }
 
@@ -46,8 +42,6 @@ async function deleteContact(contactid){
         return result;
     } catch (error) {
         console.error(error);
-    } finally {
-        await client.close();
     }
 }
 
@@ -61,9 +55,6 @@ async function updateContact(contactid, email, whatsapp){
     } catch (error) {
         console.error(error);
     }
-    finally{
-        await client.close();
-    }
 }
 
 async function getContacts(){ 
@@ -76,22 +67,17 @@ async function getContacts(){
     } catch (error) {
         console.error(error);
     }
-    finally{
-        await client.close();
-    }
 }
 
 async function checkContact(type, value){ //{_id: ObjectId('65294c66f6b73674888cc5f8')}
     try{
         await client.connect();
         const database = client.db('App');
-        const result = await (type === "gmail" ? database.collection('contacts').findOne({ email: value }) : database.collection('contacts').findOne({ whatsapp: value}));    
+        const result = await (type === "gmail" ? database.collection('contacts').findOne({ email: value.match(/<(.*?)>/)?.[1] }) : database.collection('contacts').findOne({ whatsapp: value.slice(2)}));    
+        console.log(result)
         return result;
     } catch (error) {
         console.error(error);
-    }
-    finally{
-        await client.close();
     }
 }
 
