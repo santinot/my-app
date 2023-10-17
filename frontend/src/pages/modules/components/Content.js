@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+//import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
+//import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Message from "./Message";
+import Thread from "./Thread";
+import ContactThread from "./ContactThread";
+let uniqueKey = 0;
 
 export default function Content() {
   const [messages, setMessages] = useState([]);
@@ -62,16 +65,15 @@ export default function Content() {
           </Grid>
         </Toolbar>
       </AppBar>
-      {messages.map((message) => (
-        <Message 
-          key={message.id}
-          id={message.id}
-          title={message.from}
-          subheader={message.subject + " - " + message.date}
-          body={message.snippet}
-          attachments={Array.isArray(message.type) ? message.type[1] : []}
-        />
-      ))}
+      {messages.map((message) => {
+        if (Array.isArray(message)) {
+          return <Thread key={uniqueKey++} threads={message} />;
+        } else if (typeof message.values !== "undefined") {
+          return <ContactThread key={uniqueKey++} threads={message} />;
+        } else {
+          return <Message key={message.id} message={message} />;
+        }
+      })}
     </Paper>
   );
 }

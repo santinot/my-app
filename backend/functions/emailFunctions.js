@@ -86,10 +86,9 @@ function checkToken(error) {
 //@param {google.auth.OAuth2} auth An authorized OAuth2 client.
 
 async function getEmails(param_userId, param_labelIds) {
-  const auth = await authorize().catch( (res) => {
-    checkToken(res.data.error_description)
-    }
-  );
+  const auth = await authorize().catch((res) => {
+    checkToken(res.data.error_description);
+  });
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.list({
     // Get the list of messages
@@ -110,9 +109,9 @@ async function getEmails(param_userId, param_labelIds) {
       for (let i = 0; i < res.data.payload.parts.length; i++) {
         if (res.data.payload.parts[i].body.attachmentId) {
           media.push({
-            "title" : res.data.payload.parts[i].filename,
-            "id" : res.data.payload.parts[i].body.attachmentId
-          })
+            title: res.data.payload.parts[i].filename,
+            id: res.data.payload.parts[i].body.attachmentId,
+          });
         }
       }
     }
@@ -139,10 +138,9 @@ async function getEmails(param_userId, param_labelIds) {
 }
 
 async function getProfile(param_userId) {
-  const auth = await authorize().catch( (res) => {
-    checkToken(res.data.error_description)
-    }
-  );
+  const auth = await authorize().catch((res) => {
+    checkToken(res.data.error_description);
+  });
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.getProfile({
     userId: param_userId,
@@ -151,10 +149,9 @@ async function getProfile(param_userId) {
 }
 
 async function sendEmail(param_userId, param_to, param_subject, param_message) {
-  const auth = await authorize().catch( (res) => {
-    checkToken(res.data.error_description)
-    }
-  );
+  const auth = await authorize().catch((res) => {
+    checkToken(res.data.error_description);
+  });
   const gmail = google.gmail({ version: "v1", auth });
   const raw = Buffer.from(
     `From: "me" <${param_userId}>\n` +
@@ -172,10 +169,9 @@ async function sendEmail(param_userId, param_to, param_subject, param_message) {
 }
 
 async function trashEmail(param_userId, param_messageId) {
-  const auth = await authorize().catch( (res) => {
-    checkToken(res.data.error_description)
-    }
-  );
+  const auth = await authorize().catch((res) => {
+    checkToken(res.data.error_description);
+  });
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.trash({
     userId: param_userId,
@@ -185,10 +181,9 @@ async function trashEmail(param_userId, param_messageId) {
 }
 
 async function untrashEmail(param_userId, param_messageId) {
-  const auth = await authorize().catch( (res) => {
-    checkToken(res.data.error_description)
-    }
-  );
+  const auth = await authorize().catch((res) => {
+    checkToken(res.data.error_description);
+  });
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.untrash({
     userId: param_userId,
@@ -203,10 +198,9 @@ async function getAttachment(
   param_attachmentId,
   param_filename
 ) {
-  const auth = await authorize().catch( (res) => {
-    checkToken(res.data.error_description)
-    }
-  );
+  const auth = await authorize().catch((res) => {
+    checkToken(res.data.error_description);
+  });
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages.attachments.get({
     userId: param_userId,

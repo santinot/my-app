@@ -48,36 +48,6 @@ function MapReduce(list) {
   return result;
 }
 
-// function createThread(listOfMessages) {
-//   //input lista ordinata e raggruppata per mittente
-//   var threads = [];
-//   listOfMessages.forEach((message) => {
-//     let type, from;
-//     if (Array.isArray(message)) {
-//       [type, from] = [message[0].type, message[0].from];
-//     } else {
-//       [type, from] = [message.type, message.from];
-//     }
-//     checkContact(type, from).then((res) => {
-//       if (res != null) {
-//         threads.forEach((thread) => {
-//           if (thread.label == res.label) {
-//             thread.values.push(message);
-//           } else {
-//             threads.push({
-//               label: res.label,
-//               values: [message],
-//             });
-//           }
-//         });
-//       } else {
-//         threads.push(message);
-//       }
-//     });
-//   });
-//   console.log(threads)
-//   return threads;
-// }
 
 async function createThread(listOfMessages) {
   // Input: lista ordinata e raggruppata per mittente
@@ -97,7 +67,6 @@ async function createThread(listOfMessages) {
         message.type === "gmail" ? message.from : message.id,
       ];
     }
-    console.log(type, from);
     const res = await checkContact(type, from);
     if (res != null) {
       const existingThread = threads.find(
@@ -118,7 +87,6 @@ async function createThread(listOfMessages) {
 
   // Utilizziamo Promise.all per elaborare tutti i messaggi in parallelo
   return Promise.all(listOfMessages.map(processMessage)).then(() => {
-    //console.log(threads);
     return threads;
   });
 }
@@ -133,7 +101,7 @@ function orderByDateThread(list) {
     } else {
       a = a.date;
     }
-    
+
     if (Array.isArray(b)) {
       b = b[0].date;
     } else if (typeof b.values !== "undefined") {
@@ -175,7 +143,7 @@ async function getMessages() {
     const rawData = orderByDate(
       MapReduce(emailMessagesJson).concat(whatsappMessagesJson)
     );
-    // Eseguiamo la funzione asincrona
+    // Esecuzione della funzione principale
     const result = await createThread(rawData);
     return orderByDateThread(result);
   } catch (error) {

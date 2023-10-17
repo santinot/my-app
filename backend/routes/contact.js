@@ -31,17 +31,5 @@ contact.get("/contactsCollection", async (req, res) => {
     }
 });
 
-contact.post("/checkContact", async (req, res) => {
-    try {
-        const type = req.body["type"]
-        const value = req.body["value"]
-        const contactData = await checkContact(type, value);
-        res.json(contactData); //ritorna null se non trovato, altrimenti ritorna il contatto -> {"_id": "652d2a6075c37d7391ce49bc", "label": "Santino", "email": "santi2001@hotmail.it", "whatsapp": "3290077255"}
-    } catch (error) {
-        console.error("An error occurred:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-
 
 module.exports = contact;
