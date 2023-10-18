@@ -20,6 +20,9 @@ function cardContent(body) {
 
 function Message(props) {
   const { message } = props;
+  if (!message) {
+    return null;
+  }
   const id = message.id;
   const title = message.from;
   const subheader = message.subject + " - " + message.date;
