@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, Avatar } from "@mui/material";
-import { red } from "@mui/material/colors";
 import * as React from "react";
 import Typography from "./Typography";
 import Attachments from "./Attachments";

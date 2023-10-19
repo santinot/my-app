@@ -164,16 +164,10 @@ theme = {
   },
 };
 
-
 const drawerWidth = 256;
 
 export default function Home() {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -187,8 +181,6 @@ export default function Home() {
             <Navigator
               PaperProps={{ style: { width: drawerWidth } }}
               variant="temporary"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
             />
           )}
 
@@ -198,7 +190,7 @@ export default function Home() {
           />
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header onDrawerToggle={handleDrawerToggle} />
+          <Header/>
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
             <Content />
           </Box>
