@@ -8,12 +8,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Badge } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
 function Header(props) {
-
+const { label } = props;
   return (
     <React.Fragment>
       <AppBar color="primary" position="sticky" elevation={0}>
@@ -21,7 +20,7 @@ function Header(props) {
           <Grid container spacing={1} alignItems="center">
           <Grid item xs />
             <Typography color="inherit" variant="h5" component="h1">
-              <HomeIcon /> Home Page
+              {label}
             </Typography>
             <Grid item xs />
             <Grid item>

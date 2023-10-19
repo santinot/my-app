@@ -14,6 +14,8 @@ import Avatar from "@mui/material/Avatar";
 import LogoutIcon from '@mui/icons-material/Logout';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const categories = [
   {
@@ -55,8 +57,7 @@ const itemCategory = {
 
 export default function Navigator(props) {
   const { ...other } = props;
-  const [label, setLabel] = React.useState("Home Page");
-
+  const [label, setLabel] = React.useState(useLocation().pathname);
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -77,10 +78,12 @@ export default function Navigator(props) {
             </ListItem>
             {children.map(({ id: childId, icon, ref }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={label == childId ? true : false} sx={item} onClick={() => (setLabel(childId))} href={ref}>
+              <Link to={ref} style={{ textDecoration: 'none' }}>
+                <ListItemButton selected={label == ref ? true : false} sx={item} onClick={() => (setLabel(ref))}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>
+              </Link>
               </ListItem>
             ))}
             <Divider sx={{ mt: 3 }} />
