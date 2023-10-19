@@ -22,18 +22,18 @@ const categories = [
       {
         id: "Home Page",
         icon: <HomeIcon />,
-        active: true,
+        ref: "/home",
       },
-      { id: "Contatti", icon: <ContactsIcon /> },
-      { id: "Gmail", icon: <MailOutlineIcon /> },
-      { id: "Whatsapp", icon: <WhatsAppIcon /> },
+      { id: "Rubrica", icon: <ContactsIcon />, ref: "/contacts" },
+      { id: "Gmail", icon: <MailOutlineIcon />, ref: "/gmail" },
+      { id: "Whatsapp", icon: <WhatsAppIcon /> , ref: "/whatsapp"},
     ],
   },
   {
     id: "Pannello di Servizio",
     children: [
-      { id: "Impostazioni", icon: <SettingsIcon /> },
-      { id: "Logout", icon: <LogoutIcon /> },
+      { id: "Impostazioni", icon: <SettingsIcon />, ref: "/settings" },
+      { id: "Logout", icon: <LogoutIcon />, ref: "/logout" },
     ],
   },
 ];
@@ -55,6 +55,7 @@ const itemCategory = {
 
 export default function Navigator(props) {
   const { ...other } = props;
+  const [label, setLabel] = React.useState("Home Page");
 
   return (
     <Drawer variant="permanent" {...other}>
@@ -74,9 +75,9 @@ export default function Navigator(props) {
             <ListItem sx={{ py: 2, px: 3}}>
               <ListItemText sx={{ color: "#fff" }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
+            {children.map(({ id: childId, icon, ref }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item}>
+                <ListItemButton selected={label == childId ? true : false} sx={item} onClick={() => (setLabel(childId))} href={ref}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>
