@@ -48,18 +48,16 @@ function MapReduce(list) {
   return result;
 }
 
-
 async function createThread(listOfMessages) {
   // Input: lista ordinata e raggruppata per mittente
   var threads = [];
 
-  // Creiamo una funzione asincrona per poter aspettare che checkContact() sia completato
   async function processMessage(message) {
     let type, from;
     if (Array.isArray(message)) {
       [type, from] = [
         Array.isArray(message[0].type) ? message[0].type[0] : message[0].type,
-        message[0].type === "gmail" ? message[0].from : message[0].id,
+        message[0].type === "gmail" || message[0].type[0] === "gmail" ? message[0].from : message[0].id,
       ];
     } else {
       [type, from] = [
@@ -68,11 +66,13 @@ async function createThread(listOfMessages) {
       ];
     }
     const res = await checkContact(type, from);
+   
     if (res != null) {
       const existingThread = threads.find(
         (thread) => thread.label === res.label
       );
       if (existingThread) {
+        console.log(message);
         existingThread.values.push(message);
       } else {
         threads.push({
@@ -145,7 +145,7 @@ async function getMessages() {
     );
     // Esecuzione della funzione principale
     const result = await createThread(rawData);
-    return orderByDateThread(result);
+    return (orderByDateThread(result));
   } catch (error) {
     console.error("An error occurred:", error);
     return { error: "Internal server error" };

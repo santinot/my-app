@@ -40,8 +40,4 @@ const { label } = props;
   );
 }
 
-Header.propTypes = {
-  onDrawerToggle: PropTypes.func.isRequired,
-};
-
 export default Header;

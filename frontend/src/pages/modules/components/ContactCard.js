@@ -19,7 +19,7 @@ function cardContent(body) {
   }
 }
 
-function Message(props) {
+export default function ContactCard(props) {
   const { message, label } = props;
   if (!message) {
     return null;
@@ -46,5 +46,3 @@ function Message(props) {
     </Card>
   );
 }
-
-export default Message;
