@@ -19,11 +19,20 @@ export default function ContactThread(props) {
       >
         <ContactCard key={first.id} message={first} label={threads.label} />
       </AccordionSummary>
-      {threads.values.map((message) => (
-        <AccordionDetails key={message.id}>
-          <Message key={message.id} message={message} />
-        </AccordionDetails>
-      ))}
+      {threads.values.map((message) => {
+        if (Array.isArray(message)) {
+          return message.map((innerMessage) => (
+            <AccordionDetails key={innerMessage.id}>
+              <Message key={innerMessage.id} message={innerMessage} />
+            </AccordionDetails>
+          ));
+        }
+        return (
+          <AccordionDetails key={message.id}>
+            <Message key={message.id} message={message} />
+          </AccordionDetails>
+        );
+      })}
     </Accordion>
   );
 }

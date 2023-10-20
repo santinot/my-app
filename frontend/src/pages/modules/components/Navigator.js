@@ -79,7 +79,7 @@ export default function Navigator(props) {
             {children.map(({ id: childId, icon, ref }) => (
               <ListItem disablePadding key={childId}>
               <Link to={ref} style={{ textDecoration: 'none' }}>
-                <ListItemButton selected={label == ref ? true : false} sx={item} onClick={() => (setLabel(ref))}>
+                <ListItemButton selected={label === ref ? true : false} sx={item} onClick={() => (setLabel(ref))}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

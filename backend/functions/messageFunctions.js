@@ -72,7 +72,6 @@ async function createThread(listOfMessages) {
         (thread) => thread.label === res.label
       );
       if (existingThread) {
-        console.log(message);
         existingThread.values.push(message);
       } else {
         threads.push({
