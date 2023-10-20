@@ -31,5 +31,15 @@ contact.get("/contactsCollection", async (req, res) => {
     }
 });
 
+contact.get("/getContacts", async (req, res) => {
+    try {
+        const contactData = await getContacts();
+        res.json(contactData);
+    } catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 
 module.exports = contact;

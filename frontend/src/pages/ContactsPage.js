@@ -8,6 +8,7 @@ import Link from "@mui/material/Link";
 import Navigator from "./modules/components/Navigator";
 import Header from "./modules/components/Header";
 import ContactsIcon from "@mui/icons-material/Contacts";
+import Contacts from "./modules/components/Contacts";
 
 function Copyright() {
   return (
@@ -196,7 +197,7 @@ export default function ContactsPage() {
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
           {/*  */}
-            
+            <Contacts />
           {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>
