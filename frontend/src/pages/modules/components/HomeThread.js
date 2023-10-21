@@ -4,9 +4,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 //import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Message from "./Message";
+import HomeMessage from "./HomeMessage";
 
-export default function Thread(props) {
+export default function HomeThread(props) {
   const { threads } = props;
   const first = threads.shift();
   return (
@@ -16,11 +16,11 @@ export default function Thread(props) {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Message key={first.id} message={first} />
+        <HomeMessage key={first.id} message={first} />
       </AccordionSummary>
       {threads.map((message) => (
         <AccordionDetails key={message.id}>
-          <Message key={message.id} message={message} />
+          <HomeMessage key={message.id} message={message} />
         </AccordionDetails>
       ))}
     </Accordion>

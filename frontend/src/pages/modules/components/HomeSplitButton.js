@@ -11,7 +11,7 @@ import MenuList from '@mui/material/MenuList';
 
 const options = ['Rispondi con Gmail', 'Rispondi con WhatsApp'];
 
-export default function SplitButton() {
+export default function HomeSplitButton() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);

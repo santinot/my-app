@@ -17,7 +17,7 @@ const handleClick = (messageId, id, title) => (event) => {
   })
 }
 
-function Attachments(props) {
+export default function GmailAttachments(props) {
   const { attachments, messageId } = props;
   if (Array.isArray(attachments) && attachments.length > 0) {
     return (
@@ -40,4 +40,3 @@ function Attachments(props) {
   }
 }
 
-export default Attachments;

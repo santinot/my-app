@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import withRoot from "./pages/modules/withRoot";
 import AppAppBar from "./pages/modules/views/AppAppBar";
-import Message from "./pages/modules/components/Message";
+import HomeMessage from "./pages/modules/components/HomeMessage";
 import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:3001");
@@ -48,7 +48,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-      <Message />
+      <HomeMessage />
           Index dell'applicazione web
         </p>
         <div>{x}</div>

@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import Typography from "./modules/components/Typography";
 import AppFooter from "./modules/views/AppFooter";
 import AppAppBar from "./modules/views/AppAppBar";
 import AppForm from "./modules/views/AppForm";
@@ -23,7 +22,7 @@ function SignIn() {
               component="label"
               variant="outlined"
               startIcon=<img
-                src="/google.png"
+                src="img/google.png"
                 alt="Google"
                 width={30}
                 height={30}
@@ -36,7 +35,7 @@ function SignIn() {
               component="label"
               variant="outlined"
               startIcon=<img
-                src="/whatsapp.png"
+                src="img/whatsappIcon.png"
                 alt="Whatsapp"
                 width={35}
                 height={35}

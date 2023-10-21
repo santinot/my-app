@@ -1,7 +1,6 @@
-import { Card, CardContent, CardHeader, Avatar } from "@mui/material";
+import { Card, CardContent, CardHeader, Avatar,Typography } from "@mui/material";
 import * as React from "react";
-import Typography from "./Typography";
-import Attachments from "./Attachments";
+import GmailAttachments from "./GmailAttachments";
 
 function cardContent(body) {
   if (body === "") {
@@ -17,7 +16,7 @@ function cardContent(body) {
   }
 }
 
-function Message(props) {
+export default function HomeMessage(props) {
   const { message } = props;
   if (!message) {
     return null;
@@ -32,15 +31,14 @@ function Message(props) {
     <Card sx={{ textAlign: "left", margin: 1, minWidth:"890px" }} id={id}>
       <CardHeader
         avatar={
-          <Avatar aria-label="user" src={type + ".png"} variant="square"/>
+          <Avatar aria-label="user" src={"img/" + type + ".png"} variant="square"/>
         }
         title={title}
         subheader={subheader}
       />
-      <Attachments attachments={attachments} messageId={id} />
+      <GmailAttachments attachments={attachments} messageId={id} />
       {cardContent(body)}
     </Card>
   );
 }
 
-export default Message;

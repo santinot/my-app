@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import AppBar from '../components/AppBar';
-import Toolbar from '../components/Toolbar';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 
 const rightLink = {
   fontSize: 16,
@@ -13,7 +13,7 @@ const rightLink = {
 function AppAppBar() {
   return (
     <div>
-      <AppBar position="fixed">
+      <MuiAppBar elevation={0} position="fixed">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ flex: 1 }} />
           <Link
@@ -36,7 +36,7 @@ function AppAppBar() {
             </Link>
           </Box>
         </Toolbar>
-      </AppBar>
+      </MuiAppBar>
       <Toolbar />
     </div>
   );

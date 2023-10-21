@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, Avatar } from "@mui/material";
+import { Card, CardContent, CardHeader, Avatar, Typography } from "@mui/material";
 import * as React from "react";
-import Typography from "./Typography";
 
 function cardContent(body) {
   if (body === "") {
@@ -19,7 +18,7 @@ function cardContent(body) {
   }
 }
 
-export default function ContactCard(props) {
+export default function HomeContactCard(props) {
   const { message, label } = props;
   if (!message) {
     return null;
@@ -31,7 +30,7 @@ export default function ContactCard(props) {
     <Card sx={{ textAlign: "left", margin: 1, minWidth: "890px" }} id={id}>
       <CardHeader
         avatar={
-          <Avatar aria-label="user" src="contacts.png" variant="square" />
+          <Avatar aria-label="user" src="img/contacts.png" variant="square" />
         }
         title={
           <Typography variant="h6" gutterBottom>

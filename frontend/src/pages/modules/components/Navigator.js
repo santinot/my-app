@@ -67,7 +67,7 @@ export default function Navigator(props) {
           MessageHub
           <Avatar
             alt="MessageHub"
-            src="network.png"
+            src="img/network.png"
             sx={{ width: 56, height: 56, margin: 1 }}
           />
         </ListItem>

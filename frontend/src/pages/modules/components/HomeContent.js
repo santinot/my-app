@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-//import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-//import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import Message from "./Message";
-import Thread from "./Thread";
-import ContactThread from "./ContactThread";
+import HomeMessage from "./HomeMessage";
+import HomeThread from "./HomeThread";
+import HomeContactThread from "./HomeContactThread";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 let uniqueKey = 0;
 
-export default function Content() {
+export default function HomeContent() {
   const [messages, setMessages] = useState([]);
   useEffect(() => {
     fetch("http://localhost:3001/api/message/getMessages", {
@@ -65,15 +65,21 @@ export default function Content() {
           </Grid>
         </Toolbar>
       </AppBar>
-      {messages.map((message) => {
-        if (Array.isArray(message)) {
-          return <Thread key={uniqueKey++} threads={message} />;
-        } else if (typeof message.values !== "undefined") {
-          return <ContactThread key={uniqueKey++} threads={message} />;
-        } else {
-          return <Message key={message.id} message={message} />;
-        }
-      })}
+      {messages.length === 0 ? (
+        <Box sx={{ width: "100%", mt: 1 }}>
+          <LinearProgress sx={{ height:"10px" }} />
+        </Box>
+      ) : (
+        messages.map((message) => {
+          if (Array.isArray(message)) {
+            return <HomeThread key={uniqueKey++} threads={message} />;
+          } else if (typeof message.values !== "undefined") {
+            return <HomeContactThread key={uniqueKey++} threads={message} />;
+          } else {
+            return <HomeMessage key={message.id} message={message} />;
+          }
+        })
+      )}
     </Paper>
   );
 }

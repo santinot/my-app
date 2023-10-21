@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './modules/components/Navigator';
-import Content from './modules/components/Content';
+import HomeContent from './modules/components/HomeContent';
 import Header from './modules/components/Header';
 import HomeIcon from "@mui/icons-material/Home";
 
@@ -193,7 +193,7 @@ export default function Home() {
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Header label={<><HomeIcon /> Home Page</>}/>
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <Content />
+            <HomeContent />
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />

@@ -7,9 +7,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
+import ContactsInfoBox from "./ContactsInfoBox";
+import LinearProgress from "@mui/material/LinearProgress";
+let uniquekey = 0;
 
-export default function Contacts() {
+export default function ContactsContent() {
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
     fetch("http://localhost:3001/api/contact/getContacts", {
@@ -20,14 +23,12 @@ export default function Contacts() {
     }).then((response) => {
       response.json().then((data) => {
         setContacts(data);
-        console.log(data);
       });
     });
   }, []);
-  console.log(contacts.length);
 
   return (
-    <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
+    <Paper sx={{ margin: "auto", overflow: "hidden" }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -40,20 +41,30 @@ export default function Contacts() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Elenco Contatti
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
 
       <Box sx={{ flexGrow: 1 }} align="center">
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {Array.from(Array(contacts.length)).map((_, index) => (
-          <Grid item xs={2} sm={4} md={4} key={index}>
-            xs=2 
-          </Grid>
-        ))}
-      </Grid>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          {contacts.length === 0 ? (
+            <Box sx={{ width: "100%", mt: 1 }}>
+              <LinearProgress sx={{ height: "10px" }} />
+            </Box>
+          ) : (
+            contacts.map((contact) => (
+              <Grid item key={uniquekey++}>
+                <ContactsInfoBox key={contact._id} info={contact} />
+              </Grid>
+            ))
+          )}
+        </Grid>
       </Box>
     </Paper>
   );

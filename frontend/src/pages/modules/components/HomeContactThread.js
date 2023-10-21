@@ -4,10 +4,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 //import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Message from "./Message";
-import ContactCard from "./ContactCard";
+import HomeMessage from "./HomeMessage";
+import HomeContactCard from "./HomeContactCard";
 
-export default function ContactThread(props) {
+export default function HomeContactThread(props) {
   const { threads } = props;
   const first = threads.values[0];
   return (
@@ -17,19 +17,19 @@ export default function ContactThread(props) {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <ContactCard key={first.id} message={first} label={threads.label} />
+        <HomeContactCard key={first.id} message={first} label={threads.label} />
       </AccordionSummary>
       {threads.values.map((message) => {
         if (Array.isArray(message)) {
           return message.map((innerMessage) => (
             <AccordionDetails key={innerMessage.id}>
-              <Message key={innerMessage.id} message={innerMessage} />
+              <HomeMessage key={innerMessage.id} message={innerMessage} />
             </AccordionDetails>
           ));
         }
         return (
           <AccordionDetails key={message.id}>
-            <Message key={message.id} message={message} />
+            <HomeMessage key={message.id} message={message} />
           </AccordionDetails>
         );
       })}
