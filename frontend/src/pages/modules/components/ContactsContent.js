@@ -5,11 +5,11 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ContactsInfoBox from "./ContactsInfoBox";
 import LinearProgress from "@mui/material/LinearProgress";
+import ContactsCreateModal from "./ContactsCreateModal";
 let uniquekey = 0;
 
 export default function ContactsContent() {
@@ -27,6 +27,7 @@ export default function ContactsContent() {
     });
   }, []);
 
+
   return (
     <Paper sx={{ margin: "auto", overflow: "hidden" }}>
       <AppBar position="static">
@@ -43,7 +44,7 @@ export default function ContactsContent() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Elenco Contatti
           </Typography>
-          <Button color="inherit">Login</Button>
+          <ContactsCreateModal />
         </Toolbar>
       </AppBar>
 
