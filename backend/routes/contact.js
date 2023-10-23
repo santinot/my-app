@@ -52,5 +52,18 @@ contact.delete("/deleteContact/:id", async (req, res) => {
     }
 });
 
+contact.put("/updateContact", async (req, res) => {
+    try{
+        const contactid = req.body["id"];
+        const email = req.body["email"];
+        const whatsapp = req.body["whatsapp"];
+        const contactData = await updateContact(contactid, email, whatsapp);
+        res.json(contactData);
+    } catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 
 module.exports = contact;

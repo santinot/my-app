@@ -4,14 +4,13 @@ import {
   CardHeader,
   Avatar,
   Typography,
-  Badge,
-  Button,
 } from "@mui/material";
 import * as React from "react";
 import ContactDeleteBtn from "./ContactDeleteBtn";
+import ContactPutModal from "./ContactPutModal";
 
 export default function ContactsInfoBox(props) {
-  const { info } = props;
+  const { info, contacts } = props;
   if (!info) {
     return null;
   }
@@ -21,33 +20,32 @@ export default function ContactsInfoBox(props) {
   const email = info.email;
   const whatsapp = info.whatsapp;
   return (
-    <Card sx={{ textAlign: "left", margin: 1, minWidth: "270px" }} id={id}>
-      <Badge
-        key={id}
-        badgeContent={
-          <ContactDeleteBtn id={id} />
+    <Card sx={{ textAlign: "left", margin: 1, mWidth: "270px" }} id={id}>
+      <CardHeader
+        avatar={
+          <Avatar
+            aria-label="user"
+            src="img/user.png"
+            variant="square"
+            sx={{ width: 45, height: 45 }}
+          />
         }
-      >
-        <CardHeader
-          avatar={
-            <Avatar
-              aria-label="user"
-              src="img/user.png"
-              variant="square"
-              sx={{ width: 45, height: 45 }}
-            />
-          }
-          title={
-            <Typography variant="h6" gutterBottom>
-              <Typography variant="button" gutterBottom>
-                Nome Contatto: <br />
-              </Typography>
-              {name}
+        title={
+          <Typography variant="h6" gutterBottom>
+            <Typography variant="button" gutterBottom>
+              Nome Contatto: <br />
             </Typography>
-          }
-          sx={{ pb: 0 }}
-        />
-      </Badge>
+            {name}
+          </Typography>
+        }
+        sx={{ pb: 0 }}
+        action={
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <ContactDeleteBtn id={id} />
+            <ContactPutModal info={{name, email, whatsapp, id}} />
+          </div>
+        }
+      />
       <CardContent sx={{ pt: 0, mb: -2 }}>
         <Typography variant="h6" gutterBottom>
           <Typography variant="button" gutterBottom>

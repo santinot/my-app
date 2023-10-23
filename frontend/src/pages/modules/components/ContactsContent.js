@@ -61,11 +61,12 @@ export default function ContactsContent() {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ flexGrow: 1 }} align="center">
+      <Box sx={{ flexGrow: 1 }}>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
+          sx={{ alignItems: 'center', justifyContent: 'center'}}
         >
           {contacts.length === 0 ? (
             <Box sx={{ width: "100%", mt: 1 }}>
@@ -81,7 +82,7 @@ export default function ContactsContent() {
           ) : (
             contacts.map((contact) => (
               <Grid item key={uniquekey++}>
-                <ContactsInfoBox key={contact._id} info={contact} />
+                <ContactsInfoBox key={contact._id} info={contact} contacts={contacts} />
               </Grid>
             ))
           )}

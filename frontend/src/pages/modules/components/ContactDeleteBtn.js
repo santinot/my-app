@@ -9,10 +9,12 @@ export default function ContactDeleteBtn(props) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       })
         .then((response) => {
-            response.status === 200 ? window.location.reload() : alert("Errore nell'inserimento del contatto, riprova");
+          response.status === 200
+            ? window.location.reload()
+            : alert("Errore nell'inserimento del contatto, riprova");
         })
         .catch((error) => {
           console.error("Errore nella richiesta:", error);
@@ -21,11 +23,8 @@ export default function ContactDeleteBtn(props) {
   };
 
   return (
-    <Button
-      sx={{ marginTop: "50px", marginLeft: "20px" }}
-      onClick={deleteContact}
-    >
-      <Avatar alt="Elimina Contatto" src="img/garbage.png" />
+    <Button onClick={deleteContact}>
+      <Avatar title="Elimina Contatto" src="img/garbage.png" variant="square"/>
     </Button>
   );
 }
