@@ -1,12 +1,15 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Grid, Avatar, CardHeader, AppBar, Toolbar } from "@mui/material";
+import {
+  Grid,
+  Avatar,
+  CardHeader,
+} from "@mui/material";
+import { validationEmail, validationName } from "../form/validation";
 
 const style = {
   position: "absolute",
@@ -21,11 +24,50 @@ const style = {
   p: 4,
 };
 
-const addContact = () => {
-    
-    };
+export default function ContactsAdd(props) {
+  const { contacts } = props;
+  const [contactName, setContactName] = React.useState("");
+  const [contactEmail, setContactEmail] = React.useState("");
+  const [contactWhatsapp, setContactWhatsapp] = React.useState("");
 
-export default function BasicCard() {
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "contactName":
+        setContactName(value);
+        break;
+      case "contactEmail":
+        setContactEmail(value);
+        break;
+      case "contactWhatsapp":
+        setContactWhatsapp(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const addContact = () => {
+    if (contactName === "" || contactEmail === "" || contactWhatsapp === "") { return alert("Riempire tutti i campi"); }
+    if(!validationName(contactName, contacts) && validationEmail(contactEmail) && !isNaN(contactWhatsapp)){
+      fetch("http://localhost:3001/api/contact/addContact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          label: contactName,
+          email: contactEmail,
+          whatsapp: contactWhatsapp,
+        }),
+      }).then((response) => {
+        response.status === 200 ? window.location.reload() : alert("Errore nell'inserimento del contatto, riprova");
+      });
+    } else {
+      return alert("Contatto già presente o email non valida o numero di cellulare non valido");
+    }
+  };
+
   return (
     <Card sx={style}>
       <CardHeader
@@ -47,30 +89,43 @@ export default function BasicCard() {
           </Grid>
           <Grid item xs={9}>
             <TextField
-              id="contact-name"
+              name="contactName"
               label="Nome Contatto"
               type="search"
               variant="filled"
+              onChange={handleInputChange}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
-              id="contact-email"
+              name="contactEmail"
               label="Indirizzo Email"
               type="search"
               variant="filled"
+              onChange={handleInputChange}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
-              id="contact-whatsapp"
+              name="contactWhatsapp"
               label="Numero di Cellulare"
               type="search"
               variant="filled"
+              placeholder="+39 "
+              inputProps={{ maxLength: 10 }}
+              onChange={handleInputChange}
             />
           </Grid>
           <Grid item xs={12} align="right">
-            <Button size="large" variant="contained" sx={{mt:-1}} onClick={addContact()}>Aggiungi</Button>
+            <Button
+              key={"addContact"}
+              size="large"
+              variant="contained"
+              sx={{ mt: -1 }}
+              onClick={addContact}
+            >
+              Aggiungi
+            </Button>
           </Grid>
         </Grid>
       </CardContent>

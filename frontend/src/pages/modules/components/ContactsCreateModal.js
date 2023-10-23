@@ -5,7 +5,8 @@ import Modal from "@mui/material/Modal";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ContactsAdd from "./ContactsAdd";
 
-export default function ContactsCreateModal() {
+export default function ContactsCreateModal(props) {
+  const { contacts } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -13,6 +14,7 @@ export default function ContactsCreateModal() {
   return (
     <div>
       <Button
+        key={"showAddContact"}
         variant="contained"
         startIcon={<PersonAddIcon />}
         size="large"
@@ -29,7 +31,7 @@ export default function ContactsCreateModal() {
         aria-describedby="modal-modal-description"
       >
         <>
-          <ContactsAdd />
+          <ContactsAdd contacts={contacts}/>
         </>
       </Modal>
     </div>

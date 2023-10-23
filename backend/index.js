@@ -5,6 +5,7 @@ const { Server } = require("socket.io");
 const http = require("http");
 app.use(cors());
 app.use(express.json());
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -31,8 +32,3 @@ app.get("/", function (req, res) {
 app.use("/api", require("./routes/api"));
 
 server.listen(3001, () => console.log("Server running on port 3001"));
-
-// È necessario eseguire il seguente comando per ottenere un URL pubblico per il webhook
-// ngrok http --domain=terribly-credible-boxer.ngrok-free.app 3001
-// // http://localhost:3001/webhooks
-// app.use('/webhooks', require('./routes/webhooks'));

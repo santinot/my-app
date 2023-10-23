@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const uri = "mongodb://localhost:27017/";
 const client = new MongoClient(uri);
 
@@ -21,7 +21,7 @@ async function contactsCollection() {
   }
 }
 
-async function createContact(label, email, whatsapp) {
+async function addContact(label, email, whatsapp) {
   try {
     await client.connect();
     const database = client.db("App");
@@ -42,7 +42,7 @@ async function deleteContact(contactid) {
     const database = client.db("App");
     const result = await database
       .collection("contacts")
-      .deleteOne({ id: contactid });
+      .deleteOne({ "_id": new ObjectId(contactid) });
     console.log(`Contact deleted successfully.`);
     return result;
   } catch (error) {
@@ -97,7 +97,7 @@ async function checkContact(type, value) {
 //ritorna null se non trovato, altrimenti ritorna il contatto -> {"_id": "652d2a6075c37d7391ce49bc", "label": "Santino", "email": "santi2001@hotmail.it", "whatsapp": "3290077255"}
 module.exports = {
   contactsCollection,
-  createContact,
+  addContact,
   deleteContact,
   updateContact,
   getContacts,

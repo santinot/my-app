@@ -10,9 +10,23 @@ import Box from "@mui/material/Box";
 import ContactsInfoBox from "./ContactsInfoBox";
 import LinearProgress from "@mui/material/LinearProgress";
 import ContactsCreateModal from "./ContactsCreateModal";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 let uniquekey = 0;
 
 export default function ContactsContent() {
+  const [showProgress, setShowProgress] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowProgress(false);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
     fetch("http://localhost:3001/api/contact/getContacts", {
@@ -27,9 +41,8 @@ export default function ContactsContent() {
     });
   }, []);
 
-
   return (
-    <Paper sx={{ margin: "auto", overflow: "hidden" }}>
+    <Paper sx={{ margin: "auto", overflow: "hidden", maxWidth:"1400px" }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -44,7 +57,7 @@ export default function ContactsContent() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Elenco Contatti
           </Typography>
-          <ContactsCreateModal />
+          <ContactsCreateModal contacts={contacts} />
         </Toolbar>
       </AppBar>
 
@@ -56,7 +69,14 @@ export default function ContactsContent() {
         >
           {contacts.length === 0 ? (
             <Box sx={{ width: "100%", mt: 1 }}>
-              <LinearProgress sx={{ height: "10px" }} />
+              {showProgress ? (
+                <LinearProgress sx={{ height: "10px", marginTop: "10px" }} />
+              ) : (
+                <Alert severity="info" sx={{marginTop:"20px", width:"30%", textAlign:"left"}}>
+                  <AlertTitle><strong>Nessun Contatto Presente in Rubrica</strong></AlertTitle>
+                  Aggiungi un contatto per iniziare
+                </Alert>
+              )}
             </Box>
           ) : (
             contacts.map((contact) => (
