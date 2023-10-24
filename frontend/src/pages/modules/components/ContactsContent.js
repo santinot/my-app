@@ -42,7 +42,7 @@ export default function ContactsContent() {
   }, []);
 
   return (
-    <Paper sx={{ margin: "auto", overflow: "hidden", maxWidth:"1400px" }}>
+    <Paper sx={{ margin: "auto", overflow: "hidden", maxWidth: "1400px" }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -66,23 +66,34 @@ export default function ContactsContent() {
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
-          sx={{ alignItems: 'center', justifyContent: 'center'}}
+          sx={{ alignItems: "center", justifyContent: "center" }}
         >
           {contacts.length === 0 ? (
             <Box sx={{ width: "100%", mt: 1 }}>
               {showProgress ? (
                 <LinearProgress sx={{ height: "10px", marginTop: "10px" }} />
               ) : (
-                <Alert severity="info" sx={{marginTop:"20px", width:"30%", textAlign:"left"}}>
-                  <AlertTitle><strong>Nessun Contatto Presente in Rubrica</strong></AlertTitle>
-                  Aggiungi un contatto per iniziare
-                </Alert>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Alert
+                    severity="info"
+                    sx={{ marginTop: "20px", width: "30%", textAlign: "left" }}
+                  >
+                    <AlertTitle>
+                      <strong>Nessun Contatto Presente in Rubrica</strong>
+                    </AlertTitle>
+                    Aggiungi un contatto per iniziare
+                  </Alert>
+                </div>
               )}
             </Box>
           ) : (
             contacts.map((contact) => (
               <Grid item key={uniquekey++}>
-                <ContactsInfoBox key={contact._id} info={contact} contacts={contacts} />
+                <ContactsInfoBox
+                  key={contact._id}
+                  info={contact}
+                  contacts={contacts}
+                />
               </Grid>
             ))
           )}

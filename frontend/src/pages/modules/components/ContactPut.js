@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Grid, Avatar, CardHeader } from "@mui/material";
-import { validationEmail, validationName } from "../form/validation";
+import { validationEmail } from "../form/validation";
 
 const style = {
   position: "absolute",
@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export default function ContactsAdd(props) {
+export default function ContactsPut(props) {
   const { info } = props;
   const [name, setName] = React.useState(info.name);
   const [email, setEmail] = React.useState(info.email);
@@ -87,7 +87,7 @@ export default function ContactsAdd(props) {
         <Grid container spacing={3}>
           <Grid item xs={3} align="center">
             <Avatar
-              src="/img/addcontact.png"
+              src="/img/form.png"
               variant="square"
               sx={{ width: 56, height: 56 }}
             />
