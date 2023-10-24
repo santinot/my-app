@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, Avatar, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Avatar,
+  Typography,
+} from "@mui/material";
 import * as React from "react";
 
 function cardContent(body) {
@@ -6,11 +12,11 @@ function cardContent(body) {
     return null;
   } else {
     return (
-      <CardContent sx={{paddingTop:"0px"}}>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ my: -1 }}>
-          <Typography variant="subtitle2" color="text.primary" gutterBottom>
-            Ultimo Messaggio:
-          </Typography>
+      <CardContent sx={{ paddingTop: "0px" }}>
+        <Typography variant="subtitle2" color="text.primary" gutterBottom sx={{ my: -1, mb:1 }}>
+          Ultimo Messaggio:
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary" sx={{ my: -1 }} >
           {body}
         </Typography>
       </CardContent>

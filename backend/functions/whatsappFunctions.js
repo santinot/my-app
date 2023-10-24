@@ -58,7 +58,7 @@ async function getChats() {
         type: "whatsapp",
         from: chat[i].name,
         subject: chat[i].lastMessage.type,
-        snippet: chat[i].lastMessage.body,
+        snippet: (chat[i].lastMessage.fromMe ? "Tu: " + chat[i].lastMessage.body : chat[i].lastMessage.body),
         date: dateFormat.toLocaleString("it-IT"),
       });
     }

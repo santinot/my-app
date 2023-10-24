@@ -1,23 +1,39 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import GmailSend from "./GmailSend";
 
-const options = ['Rispondi con Gmail', 'Rispondi con WhatsApp'];
+const options = ["Gmail", "WhatsApp"];
 
-export default function HomeSplitButton() {
+export default function HomeSplitButton(props) {
+  const { info } = props;
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    info.type === "gmail" ? 0 : 1
+  );
 
   const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
+    if (options[selectedIndex] === "Gmail") {
+      console.info(`You clicked ${options[selectedIndex]}`);
+      handleOpenModal();
+    } else if (options[selectedIndex] === "WhatsApp") {
+      // Modal per risposta WhatsApp
+    }
   };
 
   const handleMenuItemClick = (event, index) => {
@@ -39,12 +55,21 @@ export default function HomeSplitButton() {
 
   return (
     <React.Fragment>
-      <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-        <Button onClick={handleClick}>{options[selectedIndex]}</Button>
+      <ButtonGroup
+        variant="contained"
+        color="primary"
+        ref={anchorRef}
+        aria-label="split button"
+      >
+        <Button onClick={handleClick}>
+          <Typography variant="button" display="block">
+            Rispondi con <strong>{options[selectedIndex]}</strong>{" "}
+          </Typography>
+        </Button>
         <Button
           size="small"
-          aria-controls={open ? 'split-button-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? "split-button-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
           aria-label="select merge strategy"
           aria-haspopup="menu"
           onClick={handleToggle}
@@ -67,7 +92,7 @@ export default function HomeSplitButton() {
             {...TransitionProps}
             style={{
               transformOrigin:
-                placement === 'bottom' ? 'center top' : 'center bottom',
+                placement === "bottom" ? "center top" : "center bottom",
             }}
           >
             <Paper>
@@ -89,6 +114,16 @@ export default function HomeSplitButton() {
           </Grow>
         )}
       </Popper>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <>
+          <GmailSend info={info} />
+        </>
+      </Modal>
     </React.Fragment>
   );
 }

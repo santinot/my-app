@@ -2,7 +2,6 @@ import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-//import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HomeMessage from "./HomeMessage";
 import HomeContactCard from "./HomeContactCard";
@@ -23,13 +22,13 @@ export default function HomeContactThread(props) {
         if (Array.isArray(message)) {
           return message.map((innerMessage) => (
             <AccordionDetails key={innerMessage.id}>
-              <HomeMessage key={innerMessage.id} message={innerMessage} />
+              <HomeMessage key={innerMessage.id} message={innerMessage} splitBtn="true"/>
             </AccordionDetails>
           ));
         }
         return (
           <AccordionDetails key={message.id}>
-            <HomeMessage key={message.id} message={message} />
+            <HomeMessage key={message.id} message={message} splitBtn="true"/>
           </AccordionDetails>
         );
       })}
