@@ -11,15 +11,21 @@ import MenuList from "@mui/material/MenuList";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import GmailSend from "./GmailSend";
+import WhatsappSend from "./WhatsappSend";
 
 const options = ["Gmail", "WhatsApp"];
 
 export default function HomeSplitButton(props) {
   const { info } = props;
 
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const [openModalGmail, setopenModalGmail] = React.useState(false);
+  const handleopenModalGmail = () => setopenModalGmail(true);
+  const handlecloseModalGmail = () => setopenModalGmail(false);
+
+  const [openModalWhatsapp, setopenModalWhatsapp] = React.useState(false);
+  const handleopenModalWhatsapp = () => setopenModalWhatsapp(true);
+  const handlecloseModalWhatsapp = () => setopenModalWhatsapp(false);
+  
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -30,9 +36,9 @@ export default function HomeSplitButton(props) {
   const handleClick = () => {
     if (options[selectedIndex] === "Gmail") {
       console.info(`You clicked ${options[selectedIndex]}`);
-      handleOpenModal();
+      handleopenModalGmail();
     } else if (options[selectedIndex] === "WhatsApp") {
-      // Modal per risposta WhatsApp
+      handleopenModalWhatsapp();
     }
   };
 
@@ -115,13 +121,23 @@ export default function HomeSplitButton(props) {
         )}
       </Popper>
       <Modal
-        open={openModal}
-        onClose={handleCloseModal}
+        open={openModalGmail}
+        onClose={handlecloseModalGmail}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <>
-          <GmailSend info={info} closeModal={handleCloseModal} />
+          <GmailSend info={info} closeModal={handlecloseModalGmail} />
+        </>
+      </Modal>
+      <Modal
+        open={openModalWhatsapp}
+        onClose={handlecloseModalWhatsapp}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <>
+          <WhatsappSend id={info.id} closeModal={handlecloseModalWhatsapp}/>
         </>
       </Modal>
     </React.Fragment>

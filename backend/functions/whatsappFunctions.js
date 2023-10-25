@@ -2,10 +2,11 @@ let os = require("os");
 const path = require("path");
 let downloadPath = path.join(os.homedir(), "Downloads");
 let qrcode = require("qrcode-terminal");
-let { Client, RemoteAuth } = require("whatsapp-web.js");
+let { Client, RemoteAuth, Message } = require("whatsapp-web.js");
 let { MongoStore } = require("wwebjs-mongo");
 let mongoose = require("mongoose");
 let client, store;
+
 
 mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
   store = new MongoStore({ mongoose: mongoose });
@@ -93,9 +94,17 @@ async function getAttachment(message) {
   return response.data;
 }
 
+async function sendTextMessage(chatId, content) {
+  const response = client.sendMessage(chatId, content).then((message) => {
+    console.log(message);
+  });
+  return response
+}
+
 module.exports = {
   createSession,
   getChats,
   logoutSession,
   getAttachment,
+  sendTextMessage,
 };

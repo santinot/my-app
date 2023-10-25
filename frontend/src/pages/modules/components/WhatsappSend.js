@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Grid, CardHeader, Alert, Snackbar } from "@mui/material";
-import { validationEmail } from "../form/validation";
 
 const style = {
   position: "absolute",
@@ -20,24 +19,13 @@ const style = {
   p: 4,
 };
 
-export default function GmailSend(props) {
-  const { info, closeModal } = props;
-  const id = info.id;
-  const type = info.type;
-
-  const [to, setTo] = React.useState(info.title.match(/<(.*?)>/)?.[1] || "");
-  const [subject, setSubject] = React.useState("Re:" + info.subject);
+export default function WhatsappSend(props) {
+  const { id, closeModal } = props;
   const [body, setBody] = React.useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case "to":
-        setTo(value);
-        break;
-      case "subject":
-        setSubject(value);
-        break;
       case "body":
         setBody(value);
         break;
@@ -45,6 +33,32 @@ export default function GmailSend(props) {
         break;
     }
   };
+
+  const sendMessage = () => {
+    if (body !== "") {
+      fetch("http://localhost:3000/api/whatsapp/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chatId: id,
+          content: body,
+        }),
+      })
+        .then((response) => {
+          response.status === 200
+            ? handleClick()
+            : alert("Errore nell'invio del messaggio, riprova");
+        })
+        .catch((error) => {
+          console.error("Errore nella richiesta:", error);
+        });
+    } else {
+      return alert("Corpo del messaggio vuoto");
+    }
+  };
+
   //Snackbar
   const [open, setOpen] = React.useState(false);
 
@@ -61,89 +75,41 @@ export default function GmailSend(props) {
     closeModal();
   };
 
-  const sendEmail = () => {
-    if (to === "" || subject === "" || body === "") {
-      return alert("Riempire tutti i campi");
-    }
-    if (validationEmail(to) || body !== "") {
-      fetch("http://localhost:3001/api/email/me/sendEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          To: to,
-          Subject: subject,
-          Message: body,
-        }),
-      })
-        .then((response) => {
-          response.status === 200
-            ? handleClick()
-            : alert("Errore nell'invio dell'email, riprova");
-        })
-        .catch((error) => {
-          console.error("Errore nella richiesta:", error);
-        });
-    } else {
-      return alert("Indirizzo non valido o corpo dell'email vuoto");
-    }
-  };
-
   return (
     <Card sx={style}>
       <CardHeader
         sx={{ bgcolor: "#009be5", height: "30px" }}
         title={
           <Typography variant="h6" component="div" sx={{ color: "white" }}>
-            Scrivi una nuova Email
+            Scrivi un nuovo Messaggio
           </Typography>
         }
       />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <TextField
-              name="to"
-              label="Indirizzo Destinatario"
-              type="search"
-              variant="filled"
-              value={to}
-              onChange={handleInputChange}
-              sx={{ width: "100%" }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              name="subject"
-              label="Oggetto dell'email"
-              type="search"
-              variant="filled"
-              value={subject}
-              onChange={handleInputChange}
-              sx={{ width: "100%" }}
-            />
+          <Grid item xs={12}>
+            {/* box ultimi messaggi */}
           </Grid>
           <Grid item xs={12}>
             <TextField
               name="body"
-              label="Corpo dell'email"
+              label="Corpo del messaggio"
               type="search"
               variant="filled"
               placeholder="Scrivi qui..."
               multiline
-              rows={15}
+              rows={3}
               onChange={handleInputChange}
               sx={{ width: "100%" }}
             />
           </Grid>
           <Grid item xs={12} align="right">
             <Button
-              key={id}
+              key={"key"}
               size="large"
               variant="contained"
               sx={{ mt: -1 }}
-              onClick={sendEmail}
+              onClick={sendMessage}
             >
               Invia
             </Button>
@@ -155,7 +121,7 @@ export default function GmailSend(props) {
             severity="success"
             sx={{ width: "100%" }}
           >
-            Email Inviata Correttamente!
+            Messaggio Inviato Correttamente!
           </Alert>
         </Snackbar>
       </CardContent>
