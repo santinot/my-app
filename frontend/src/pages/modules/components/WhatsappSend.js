@@ -45,7 +45,7 @@ export default function WhatsappSend(props) {
           chatId: id,
           content: body,
         }),
-      })
+      }) //check
         .then((response) => {
           response.status === 200
             ? handleClick()

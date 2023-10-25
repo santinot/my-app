@@ -98,6 +98,7 @@ async function sendTextMessage(chatId, content) {
   const response = client.sendMessage(chatId, content).then((message) => {
     console.log(message);
   });
+  // vedere se funziona 
   return response
 }
 
