@@ -121,7 +121,7 @@ export default function HomeSplitButton(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <GmailSend info={info} />
+          <GmailSend info={info} closeModal={handleCloseModal} />
         </>
       </Modal>
     </React.Fragment>

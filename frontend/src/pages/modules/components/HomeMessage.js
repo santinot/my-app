@@ -31,6 +31,7 @@ export default function HomeMessage(props) {
   const id = message.id;
   const title = message.from;
   const subheader = message.subject + " - " + message.date;
+  const subject = message.subject;
   const body = message.snippet;
   const attachments = Array.isArray(message.type) ? message.type[1] : [];
   const type = Array.isArray(message.type) ? message.type[0] : message.type;
@@ -48,7 +49,9 @@ export default function HomeMessage(props) {
         subheader={subheader}
         action={
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {splitBtn ? <HomeSplitButton info={{id, title, subheader, body, type}}/> : null}
+            {splitBtn ? (
+              <HomeSplitButton info={{ id, title, subject, body, type }} />
+            ) : null}
           </div>
         }
       />

@@ -47,10 +47,7 @@ export default function ContactsPut(props) {
     if (email === "" || whatsapp === "") {
       return alert("Riempire tutti i campi");
     }
-    if (
-      validationEmail(email) &&
-      !isNaN(whatsapp)
-    ) {
+    if (validationEmail(email) && !isNaN(whatsapp)) {
       fetch("http://localhost:3001/api/contact/updateContact", {
         method: "PUT",
         headers: {
@@ -129,7 +126,7 @@ export default function ContactsPut(props) {
           </Grid>
           <Grid item xs={12} align="right">
             <Button
-              key={"updateContact"}
+              key={info.id}
               size="large"
               variant="contained"
               sx={{ mt: -1 }}

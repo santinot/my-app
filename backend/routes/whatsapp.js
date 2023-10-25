@@ -1,5 +1,10 @@
 const whatsapp = require("express").Router();
-const {createSession, getChats, logoutSession, getAttachment} = require("../functions/whatsappFunctions");
+const {
+  createSession,
+  getChats,
+  logoutSession,
+  getAttachment,
+} = require("../functions/whatsappFunctions");
 
 whatsapp.get("/login", async (req, res) => {
   try {

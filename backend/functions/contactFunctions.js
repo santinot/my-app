@@ -25,7 +25,7 @@ async function addContact(label, email, whatsapp) {
   try {
     await client.connect();
     const database = client.db("App");
-    const contact = { "label": label, "email": email, "whatsapp": whatsapp };
+    const contact = { label: label, email: email, whatsapp: whatsapp };
     const result = await database.collection("contacts").insertOne(contact);
     console.log(
       `Contact with email ${email} and whatsapp ${whatsapp} created successfully.`
@@ -42,7 +42,7 @@ async function deleteContact(contactid) {
     const database = client.db("App");
     const result = await database
       .collection("contacts")
-      .deleteOne({ "_id": new ObjectId(contactid) });
+      .deleteOne({ _id: new ObjectId(contactid) });
     console.log(`Contact deleted successfully.`);
     return result;
   } catch (error) {
@@ -57,8 +57,8 @@ async function updateContact(contactid, email, whatsapp) {
     const result = await database
       .collection("contacts")
       .updateOne(
-        { "_id": new ObjectId(contactid)  },
-        { $set: { "email": email, "whatsapp": whatsapp } }
+        { _id: new ObjectId(contactid) },
+        { $set: { email: email, whatsapp: whatsapp } }
       );
     console.log(`Contact updated successfully.`);
     return result;
@@ -103,4 +103,4 @@ module.exports = {
   checkContact,
 };
 
-  //{_id: ObjectId('65294c66f6b73674888cc5f8')}
+//{_id: ObjectId('65294c66f6b73674888cc5f8')}

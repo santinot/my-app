@@ -14,7 +14,7 @@ export default function ContactDeleteBtn(props) {
         .then((response) => {
           response.status === 200
             ? window.location.reload()
-            : alert("Errore nell'inserimento del contatto, riprova");
+            : alert("Errore nell'eliminazione del contatto, riprova");
         })
         .catch((error) => {
           console.error("Errore nella richiesta:", error);
@@ -23,8 +23,8 @@ export default function ContactDeleteBtn(props) {
   };
 
   return (
-    <Button onClick={deleteContact}>
-      <Avatar title="Elimina Contatto" src="img/garbage.png" variant="square"/>
+    <Button key={id} onClick={deleteContact}>
+      <Avatar title="Elimina Contatto" src="img/garbage.png" variant="square" />
     </Button>
   );
 }

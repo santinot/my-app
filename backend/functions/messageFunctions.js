@@ -57,7 +57,9 @@ async function createThread(listOfMessages) {
     if (Array.isArray(message)) {
       [type, from] = [
         Array.isArray(message[0].type) ? message[0].type[0] : message[0].type,
-        message[0].type === "gmail" || message[0].type[0] === "gmail" ? message[0].from : message[0].id,
+        message[0].type === "gmail" || message[0].type[0] === "gmail"
+          ? message[0].from
+          : message[0].id,
       ];
     } else {
       [type, from] = [
@@ -66,7 +68,7 @@ async function createThread(listOfMessages) {
       ];
     }
     const res = await checkContact(type, from);
-   
+
     if (res != null) {
       const existingThread = threads.find(
         (thread) => thread.label === res.label
@@ -144,7 +146,7 @@ async function getMessages() {
     );
     // Esecuzione della funzione principale
     const result = await createThread(rawData);
-    return (orderByDateThread(result));
+    return orderByDateThread(result);
   } catch (error) {
     console.error("An error occurred:", error);
     return { error: "Internal server error" };
