@@ -2,7 +2,6 @@ import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-//import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HomeMessage from "./HomeMessage";
 
@@ -15,6 +14,7 @@ export default function HomeThread(props) {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        // disabled = "true"
       >
         <HomeMessage key={first.id} message={first} />
       </AccordionSummary>

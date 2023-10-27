@@ -4,10 +4,13 @@ import {
   CardHeader,
   Avatar,
   Typography,
+  unsupportedProp,
 } from "@mui/material";
 import * as React from "react";
 import GmailAttachments from "./GmailAttachments";
 import HomeSplitButton from "./HomeSplitButton";
+import GmailBtn from "./GmailBtn";
+import WhatsappBtn from "./WhatsappBtn";
 
 function cardContent(body) {
   if (body === "") {
@@ -24,6 +27,11 @@ function cardContent(body) {
 }
 
 export default function HomeMessage(props) {
+  const handleClick = (e) => {
+    // Evita che l'evento clic si propaghi all'elemento Accordion
+    e.stopPropagation();
+  };
+
   const { message, splitBtn } = props;
   if (!message) {
     return null;
@@ -36,7 +44,7 @@ export default function HomeMessage(props) {
   const type = Array.isArray(message.type) ? message.type[0] : message.type;
   const id = (type === "whatsapp" ? message.chatId : message.id);
   return (
-    <Card sx={{ textAlign: "left", margin: 1, minWidth: "890px" }} id={id}>
+    <Card sx={{ textAlign: "left", margin: 1, minWidth: "890px" }} id={id} onClick={handleClick}>
       <CardHeader
         avatar={
           <Avatar
@@ -51,6 +59,12 @@ export default function HomeMessage(props) {
           <div style={{ display: "flex", flexDirection: "column" }}>
             {splitBtn ? (
               <HomeSplitButton info={{ id, title, subject, body, type }} />
+            ) : null}
+            {splitBtn === undefined && type === "gmail" ? (
+              <GmailBtn info={{ id, title, subject, body, type }} />
+            ) : null}
+            {splitBtn === undefined && type === "whatsapp" ? (
+              <WhatsappBtn info={{ id, title, subject, body, type }} />
             ) : null}
           </div>
         }

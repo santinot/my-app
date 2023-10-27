@@ -13,6 +13,7 @@ import Modal from "@mui/material/Modal";
 import GmailSend from "./GmailSend";
 import WhatsappSend from "./WhatsappSend";
 
+const color = "#7174D0";
 const options = ["Gmail", "WhatsApp"];
 
 export default function HomeSplitButton(props) {
@@ -59,17 +60,18 @@ export default function HomeSplitButton(props) {
     setOpen(false);
   };
 
+  
+
   return (
     <React.Fragment>
       <ButtonGroup
         variant="contained"
-        color="primary"
         ref={anchorRef}
         aria-label="split button"
       >
         <Button onClick={handleClick}>
-          <Typography variant="button" display="block">
-            Rispondi con <strong>{options[selectedIndex]}</strong>{" "}
+          <Typography  display="block">
+            Rispondi con <strong>{options[selectedIndex]}</strong>
           </Typography>
         </Button>
         <Button
@@ -111,7 +113,7 @@ export default function HomeSplitButton(props) {
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
                     >
-                      {option}
+                      Rispondi con {option}
                     </MenuItem>
                   ))}
                 </MenuList>
