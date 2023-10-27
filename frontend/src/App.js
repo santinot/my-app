@@ -18,8 +18,26 @@ socket.on("test", (data) => {
 function App() {
   // Hooks
   const [x, setMessage] = useState("");
-  useEffect(() => {
-    fetch("http://localhost:3001/api/test", {
+  // useEffect(() => {
+  //   fetch("http://localhost:3001/api/whatsapp/login", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     }
+  //   })
+  //   .then((response) => {
+  //     response.json().then((data) => {
+  //       setMessage(data.message); 
+  //       console.log(data) // Printed twice for the strict mode
+  //     })
+  //   })
+  // }, []);
+
+  const [count, setCount] = useState(0);
+
+  function click() {
+    setCount(count + 1);
+    fetch("http://localhost:3001/api/whatsapp/login", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,19 +45,10 @@ function App() {
     })
     .then((response) => {
       response.json().then((data) => {
-        setMessage(data.message); 
-        console.log(data) // Printed twice for the strict mode
+        setMessage(data.message);
+        window.location.href = "http://localhost:3001/home";
       })
     })
-      // .then((response) => response.json())
-      // .then((data) => setMessage(data.message));
-  }, []);
-
-  const [count, setCount] = useState(0);
-
-  function click() {
-    setCount(count + 1);
-    setMessage("Hai cliccato " + (count+1) + " volte");
   }
 
   return (

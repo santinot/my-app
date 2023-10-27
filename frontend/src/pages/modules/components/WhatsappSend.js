@@ -12,7 +12,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
-  height: 620,
+  height: 300,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -20,7 +20,7 @@ const style = {
 };
 
 export default function WhatsappSend(props) {
-  const { id, closeModal } = props;
+  const { chatId, closeModal } = props;
   const [body, setBody] = React.useState("");
 
   const handleInputChange = (event) => {
@@ -36,16 +36,16 @@ export default function WhatsappSend(props) {
 
   const sendMessage = () => {
     if (body !== "") {
-      fetch("http://localhost:3000/api/whatsapp/send", {
+      fetch("http://localhost:3001/api/whatsapp/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          chatId: id,
+          chatId: chatId,
           content: body,
         }),
-      }) //check
+      })
         .then((response) => {
           response.status === 200
             ? handleClick()
@@ -115,7 +115,7 @@ export default function WhatsappSend(props) {
             </Button>
           </Grid>
         </Grid>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
           <Alert
             onClose={handleClose}
             severity="success"

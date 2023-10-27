@@ -137,7 +137,7 @@ export default function HomeSplitButton(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <WhatsappSend id={info.id} closeModal={handlecloseModalWhatsapp}/>
+          <WhatsappSend chatId={info.id} closeModal={handlecloseModalWhatsapp}/>
         </>
       </Modal>
     </React.Fragment>

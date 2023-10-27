@@ -10,7 +10,7 @@ import ContactDeleteBtn from "./ContactDeleteBtn";
 import ContactPutModal from "./ContactPutModal";
 
 export default function ContactsInfoBox(props) {
-  const { info, contacts } = props;
+  const { info } = props;
   if (!info) {
     return null;
   }

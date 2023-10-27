@@ -56,6 +56,7 @@ async function getChats() {
       const dateFormat = new Date(chat[i].timestamp * 1000);
       array.push({
         id: chat[i].id.user,
+        chatId: chat[i].id._serialized,
         type: "whatsapp",
         from: chat[i].name,
         subject: chat[i].lastMessage.type,
@@ -96,10 +97,9 @@ async function getAttachment(message) {
 
 async function sendTextMessage(chatId, content) {
   const response = client.sendMessage(chatId, content).then((message) => {
-    console.log(message);
-  });
-  // vedere se funziona 
-  return response
+    return message;
+  } )
+  return await response;
 }
 
 module.exports = {

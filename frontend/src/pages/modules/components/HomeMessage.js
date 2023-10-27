@@ -28,13 +28,13 @@ export default function HomeMessage(props) {
   if (!message) {
     return null;
   }
-  const id = message.id;
   const title = message.from;
   const subheader = message.subject + " - " + message.date;
   const subject = message.subject;
   const body = message.snippet;
   const attachments = Array.isArray(message.type) ? message.type[1] : [];
   const type = Array.isArray(message.type) ? message.type[0] : message.type;
+  const id = (type === "whatsapp" ? message.chatId : message.id);
   return (
     <Card sx={{ textAlign: "left", margin: 1, minWidth: "890px" }} id={id}>
       <CardHeader

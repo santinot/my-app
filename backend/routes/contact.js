@@ -5,7 +5,6 @@ const {
   deleteContact,
   updateContact,
   getContacts,
-  checkContact,
 } = require("../functions/contactFunctions");
 
 contact.post("/addContact", async (req, res) => {

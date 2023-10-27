@@ -92,7 +92,6 @@ export default function ContactsContent() {
                 <ContactsInfoBox
                   key={contact._id}
                   info={contact}
-                  contacts={contacts}
                 />
               </Grid>
             ))
