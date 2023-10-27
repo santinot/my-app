@@ -2,7 +2,7 @@ let os = require("os");
 const path = require("path");
 let downloadPath = path.join(os.homedir(), "Downloads");
 let qrcode = require("qrcode-terminal");
-let { Client, RemoteAuth, Message } = require("whatsapp-web.js");
+let { Client, RemoteAuth } = require("whatsapp-web.js");
 let { MongoStore } = require("wwebjs-mongo");
 let mongoose = require("mongoose");
 let client, store;
@@ -99,7 +99,16 @@ async function sendTextMessage(chatId, content) {
   const response = client.sendMessage(chatId, content).then((message) => {
     return message;
   } )
-  return await response;
+  return response;
+}
+
+async function singleChat(chatId,limit){
+  const response = client.getChatById(chatId).then((chat) => {
+    return chat.fetchMessages({ limit: limit }).then((messages) => {
+      return messages;
+    });
+  });
+  return response;
 }
 
 module.exports = {
@@ -108,4 +117,5 @@ module.exports = {
   logoutSession,
   getAttachment,
   sendTextMessage,
+  singleChat,
 };

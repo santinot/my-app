@@ -5,6 +5,7 @@ const {
   logoutSession,
   getAttachment,
   sendTextMessage,
+  singleChat,
 } = require("../functions/whatsappFunctions");
 
 whatsapp.get("/login", async (req, res) => {
@@ -49,8 +50,17 @@ whatsapp.post("/download", async (req, res) => {
 
 whatsapp.post("/send", async (req, res) => {
   try{
-    console.log(req.body);
     const response = await sendTextMessage(req.body.chatId, req.body.content);
+    res.send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong!");
+  }
+});
+
+whatsapp.get("/singleChat/:chatId/:limit", async (req, res) => {
+  try{
+    const response = await singleChat(req.params.chatId, req.params.limit);
     res.send(response);
   } catch (err) {
     console.log(err);

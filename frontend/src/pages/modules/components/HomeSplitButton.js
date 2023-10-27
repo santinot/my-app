@@ -13,7 +13,6 @@ import Modal from "@mui/material/Modal";
 import GmailSend from "./GmailSend";
 import WhatsappSend from "./WhatsappSend";
 
-const color = "#7174D0";
 const options = ["Gmail", "WhatsApp"];
 
 export default function HomeSplitButton(props) {

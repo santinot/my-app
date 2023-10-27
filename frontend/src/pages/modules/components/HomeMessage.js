@@ -4,7 +4,6 @@ import {
   CardHeader,
   Avatar,
   Typography,
-  unsupportedProp,
 } from "@mui/material";
 import * as React from "react";
 import GmailAttachments from "./GmailAttachments";
