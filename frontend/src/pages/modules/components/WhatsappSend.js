@@ -1,10 +1,20 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { Grid, CardHeader, Alert, Snackbar } from "@mui/material";
+import {
+  Grid,
+  CardHeader,
+  Alert,
+  Snackbar,
+  Box,
+  Stack,
+  LinearProgress,
+} from "@mui/material";
+import WhatsappAttachements from "./WhatsappAttachments";
 
 const style = {
   position: "absolute",
@@ -12,7 +22,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
-  height: 300,
+  height: "auto",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -22,6 +32,21 @@ const style = {
 export default function WhatsappSend(props) {
   const { chatId, closeModal } = props;
   const [body, setBody] = React.useState("");
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/api/whatsapp/singleChat/" + chatId + "/5", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      response.json().then((data) => {
+        setMessages(data);
+        console.log(data);
+      });
+    });
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -88,7 +113,48 @@ export default function WhatsappSend(props) {
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            {/* box ultimi messaggi */}
+            <Box borderRadius={1} border={1} borderColor="#009BE5">
+              <Stack sx={{ px: 2, mt: 1, mb: 1 }} spacing={2}>
+                {messages.length === 0 ? (
+                  <Box sx={{ width: "100%", mt: 1 }}>
+                    <LinearProgress sx={{ height: "10px" }} />
+                  </Box>
+                ) : (
+                  messages.map((message) => {
+                    if (message.attachment !== null) {
+                      return (
+                        <WhatsappAttachements attachments={message.attachment} key={message.id}/>
+                      );
+                    } else {
+                      return (
+                        <TextField
+                          key={message.id}
+                          defaultValue={message.snippet}
+                          variant="outlined"
+                          multiline
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          sx={{
+                            alignSelf: `${
+                              message.fromMe ? "flex-end" : "flex-start"
+                            }`,
+                            bgcolor: `${
+                              message.fromMe ? "#6B95BC" : "#E0E0E0"
+                            }`,
+                            color: `${message.fromMe ? "white" : "black"}`,
+                            width: "70%",
+                            maxHeight: "100px",
+                            overflow: "auto",
+                            borderRadius: "5px",
+                          }}
+                        />
+                      );
+                    }
+                  })
+                )}
+              </Stack>
+            </Box>
           </Grid>
           <Grid item xs={12}>
             <TextField

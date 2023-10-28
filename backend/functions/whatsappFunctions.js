@@ -7,7 +7,6 @@ let { MongoStore } = require("wwebjs-mongo");
 let mongoose = require("mongoose");
 let client, store;
 
-
 mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
   store = new MongoStore({ mongoose: mongoose });
 });
@@ -81,34 +80,58 @@ async function logoutSession() {
   return response;
 }
 
-async function getAttachment(message) {
-  const response = message.downloadMedia().then((media) => {
-    return response.push(media.data, media.mimetype, media.filename);
-  });
+async function getAttachment(name, data) {
   // Save the attachment to a file
-  const filename = response[2] || "untitled-attachment";
+  const filename = name || "untitled-attachment";
   fs2.writeFileSync(
     `${downloadPath}/${filename}`,
-    Buffer.from(response[0], "base64")
+    Buffer.from(data, "base64")
   );
   console.log(`Downloaded ${filename}`);
-  return response.data;
+  return 0;
 }
 
 async function sendTextMessage(chatId, content) {
   const response = client.sendMessage(chatId, content).then((message) => {
     return message;
-  } )
+  });
   return response;
 }
 
-async function singleChat(chatId,limit){
-  const response = client.getChatById(chatId).then((chat) => {
-    return chat.fetchMessages({ limit: limit }).then((messages) => {
-      return messages;
+async function singleChat(chatId, limit) {
+  const chat = await client.getChatById(chatId);
+  const messages = await chat.fetchMessages({ limit: limit });
+
+  const messageArray = [];
+
+  for (let i = 0; i < messages.length; i++) {
+    const message = messages[i];
+    const attachment = [];
+
+    if (message.hasMedia) {
+      const media = await message.downloadMedia();
+      attachment.push({
+        mimetype: media.mimetype,
+        data: media.data,
+        name: media.filename,
+      });
+    }
+
+    const dateFormat = new Date(message.timestamp * 1000);
+
+    messageArray.push({
+      id: message.id.id,
+      chatId: message.id.remote,
+      type: "whatsapp",
+      attachment: attachment.length !== 0 ? attachment : null,
+      fromMe: message.fromMe,
+      subject: message.type,
+      snippet: message.body,
+      date: dateFormat.toLocaleString("it-IT"),
     });
-  });
-  return response;
+  }
+
+  return messageArray;
 }
 
 module.exports = {

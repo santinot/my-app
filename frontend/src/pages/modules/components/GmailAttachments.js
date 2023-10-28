@@ -3,7 +3,7 @@ import Chip from "@mui/material/Chip";
 import AttachFile from "@mui/icons-material/AttachFile";
 import Stack from "@mui/material/Stack";
 
-const handleClick = (messageId, id, title) => (event) => {
+const handleClick = (messageId, id, title) => () => {
   fetch("http://localhost:3001/api/email/me/getAttachment/" + messageId + "/" + id + "/" + title, {
     method: "GET",
     headers: {

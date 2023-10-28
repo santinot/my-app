@@ -7,23 +7,6 @@ import {
 } from "@mui/material";
 import * as React from "react";
 
-function cardContent(body) {
-  if (body === "") {
-    return null;
-  } else {
-    return (
-      <CardContent sx={{ paddingTop: "0px" }}>
-        <Typography variant="subtitle2" color="text.primary" gutterBottom sx={{ my: -1, mb:1 }}>
-          Ultimo Messaggio:
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ my: -1 }} >
-          {body}
-        </Typography>
-      </CardContent>
-    );
-  }
-}
-
 export default function HomeContactCard(props) {
   const { message, label } = props;
   if (!message) {
@@ -47,7 +30,25 @@ export default function HomeContactCard(props) {
           </Typography>
         }
       />
-      {cardContent(body)}
+      {body === "" ? null : (
+        <CardContent sx={{ paddingTop: "4px", overflow:"auto", maxHeight:"100px" }}>
+          <Typography
+            variant="subtitle2"
+            color="text.primary"
+            gutterBottom
+            sx={{ my: -1, mb: 1 }}
+          >
+            Ultimo Messaggio:
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            sx={{ my: -1 }}
+          >
+            {body}
+          </Typography>
+        </CardContent>
+      )}
     </Card>
   );
 }

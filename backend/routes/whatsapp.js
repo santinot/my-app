@@ -40,7 +40,7 @@ whatsapp.get("/logout", async (req, res) => {
 
 whatsapp.post("/download", async (req, res) => {
   try {
-    const response = await getAttachment(req.body.message);
+    const response = await getAttachment(req.body.name, req.body.data);
     res.send(response);
   } catch (err) {
     console.log(err);

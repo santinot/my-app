@@ -26,7 +26,7 @@ export default function HomeContent() {
     }).then((response) => {
       response.json().then((data) => {
         setMessages(data);
-        console.log(data); // Printed twice for the strict mode
+        console.log(data);
       });
     });
   }, []);
