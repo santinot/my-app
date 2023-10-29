@@ -31,7 +31,7 @@ export default function ContactsCreateModal(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <ContactsAdd contacts={contacts}/>
+          <ContactsAdd contacts={contacts} />
         </>
       </Modal>
     </div>

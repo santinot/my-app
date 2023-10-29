@@ -46,7 +46,7 @@ export default function WhatsappSend(props) {
         console.log(data);
       });
     });
-  }, []);
+  }, [chatId]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

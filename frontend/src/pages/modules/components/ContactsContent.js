@@ -89,10 +89,7 @@ export default function ContactsContent() {
           ) : (
             contacts.map((contact) => (
               <Grid item key={uniquekey++}>
-                <ContactsInfoBox
-                  key={contact._id}
-                  info={contact}
-                />
+                <ContactsInfoBox key={contact._id} info={contact} />
               </Grid>
             ))
           )}

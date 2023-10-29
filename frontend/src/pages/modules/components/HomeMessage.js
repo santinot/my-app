@@ -11,19 +11,6 @@ import HomeSplitButton from "./HomeSplitButton";
 import GmailBtn from "./GmailBtn";
 import WhatsappBtn from "./WhatsappBtn";
 
-function cardContent(body) {
-  if (body === "") {
-    return null;
-  } else {
-    return (
-      <CardContent>
-        <Typography variant="subtitle1" color="text.primary" sx={{ my: -1 }}>
-          {body}
-        </Typography>
-      </CardContent>
-    );
-  }
-}
 
 export default function HomeMessage(props) {
   const handleClick = (e) => {
@@ -41,9 +28,13 @@ export default function HomeMessage(props) {
   const body = message.snippet;
   const attachments = Array.isArray(message.type) ? message.type[1] : [];
   const type = Array.isArray(message.type) ? message.type[0] : message.type;
-  const id = (type === "whatsapp" ? message.chatId : message.id);
+  const id = type === "whatsapp" ? message.chatId : message.id;
   return (
-    <Card sx={{ textAlign: "left", margin: 1, minWidth: "890px" }} id={id} onClick={handleClick}>
+    <Card
+      sx={{ textAlign: "left", margin: 1, minWidth: "890px" }}
+      id={id}
+      onClick={handleClick}
+    >
       <CardHeader
         avatar={
           <Avatar
@@ -69,7 +60,11 @@ export default function HomeMessage(props) {
         }
       />
       <GmailAttachments attachments={attachments} messageId={id} />
-      {cardContent(body)}
+      <CardContent>
+        <Typography variant="subtitle1" color="text.primary" sx={{ my: -1 }}>
+          {body === "" ? null : body}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }

@@ -23,7 +23,6 @@ const style = {
 export default function GmailSend(props) {
   const { info, closeModal } = props;
   const id = info.id;
-  //const type = info.type;
 
   const [to, setTo] = React.useState(info.title.match(/<(.*?)>/)?.[1] || "");
   const [subject, setSubject] = React.useState("Re:" + info.subject);
@@ -65,7 +64,7 @@ export default function GmailSend(props) {
     if (to === "" || subject === "" || body === "") {
       return alert("Riempire tutti i campi");
     }
-    if (validationEmail(to) || body !== "") {
+    if (validationEmail(to) && body !== "") {
       fetch("http://localhost:3001/api/email/me/sendEmail", {
         method: "POST",
         headers: {

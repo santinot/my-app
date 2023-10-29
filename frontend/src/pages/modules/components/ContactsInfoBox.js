@@ -42,7 +42,7 @@ export default function ContactsInfoBox(props) {
         action={
           <div style={{ display: "flex", flexDirection: "column" }}>
             <ContactDeleteBtn id={id} />
-            <ContactPutModal info={{name, email, whatsapp, id}} />
+            <ContactPutModal info={{ name, email, whatsapp, id }} />
           </div>
         }
       />

@@ -14,7 +14,6 @@ export default function HomeThread(props) {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        // disabled = "true"
       >
         <HomeMessage key={first.id} message={first} />
       </AccordionSummary>

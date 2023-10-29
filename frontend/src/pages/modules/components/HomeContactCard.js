@@ -31,7 +31,9 @@ export default function HomeContactCard(props) {
         }
       />
       {body === "" ? null : (
-        <CardContent sx={{ paddingTop: "4px", overflow:"auto", maxHeight:"100px" }}>
+        <CardContent
+          sx={{ paddingTop: "4px", overflow: "auto", maxHeight: "100px" }}
+        >
           <Typography
             variant="subtitle2"
             color="text.primary"

@@ -17,6 +17,7 @@ let uniqueKey = 0;
 
 export default function HomeContent() {
   const [messages, setMessages] = useState([]);
+  // fare aggiornamento automcatica nel momento in  cui arrivano nuovi messaggi
   useEffect(() => {
     fetch("http://localhost:3001/api/message/getMessages", {
       method: "GET",
@@ -67,7 +68,7 @@ export default function HomeContent() {
       </AppBar>
       {messages.length === 0 ? (
         <Box sx={{ width: "100%", mt: 1 }}>
-          <LinearProgress sx={{ height:"10px" }} />
+          <LinearProgress sx={{ height: "10px" }} />
         </Box>
       ) : (
         messages.map((message) => {
