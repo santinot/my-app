@@ -10,7 +10,7 @@ export default function HomeContactThread(props) {
   const { threads } = props;
   const first = threads.values[0];
   return (
-    <Accordion>
+    <Accordion sx={{bgcolor:"#FAF7FF"}}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
@@ -21,13 +21,13 @@ export default function HomeContactThread(props) {
       {threads.values.map((message) => {
         if (Array.isArray(message)) {
           return message.map((innerMessage) => (
-            <AccordionDetails key={innerMessage.id}>
+            <AccordionDetails key={innerMessage.id} sx={{pt:0, pb:0}}>
               <HomeMessage key={innerMessage.id} message={innerMessage} splitBtn="true"/>
             </AccordionDetails>
           ));
         }
         return (
-          <AccordionDetails key={message.id}>
+          <AccordionDetails key={message.id} sx={{pt:0, pb:0}}>
             <HomeMessage key={message.id} message={message} splitBtn="true"/>
           </AccordionDetails>
         );

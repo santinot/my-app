@@ -63,7 +63,7 @@ async function createThread(listOfMessages) {
     } else {
       [type, from] = [
         Array.isArray(message.type) ? message.type[0] : message.type,
-        message.type === "gmail" ? message.from : message.id,
+        (message.type === "gmail" || message.type[0] === "gmail") ? message.from : message.id,
       ];
     }
     const res = await checkContact(type, from);
