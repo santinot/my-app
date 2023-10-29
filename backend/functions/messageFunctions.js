@@ -1,5 +1,4 @@
 const moment = require("moment");
-const { type } = require("os");
 const checkContact = require("./contactFunctions").checkContact;
 
 function orderByDate(list) {

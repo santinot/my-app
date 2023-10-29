@@ -14,6 +14,7 @@ export function validationName(value, list) {
     if ((contact.label).toLowerCase() === value.toLowerCase()) {
       bool = true;
     }
+    return (bool);
   });
   return (bool);
 }

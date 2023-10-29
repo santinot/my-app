@@ -15,21 +15,20 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import io from "socket.io-client";
 let uniqueKey = 0;
-let flag = 0;
 const socket = io.connect("http://localhost:3001");
 
 socket.on("connect", () => {
   console.log("sono connesso");
 });
 
-socket.on("newMessage", (data) => {
-  console.log(data);
-  flag = !flag;
-});
-
 export default function HomeContent() {
   const [messages, setMessages] = useState([]);
-  // fare aggiornamento automcatica nel momento in  cui arrivano nuovi messaggi
+  const [flag, setFlag] = useState(0);
+
+  socket.on("newMessage", () => {
+    setFlag(!flag);
+  });
+
   useEffect(() => {
     fetch("http://localhost:3001/api/message/getMessages", {
       method: "GET",
@@ -70,7 +69,7 @@ export default function HomeContent() {
             </Grid>
             <Grid item>
               <Tooltip title="Reload">
-                <IconButton>
+                <IconButton onClick={() => setFlag(!flag)}>
                   <RefreshIcon color="inherit" sx={{ display: "block" }} />
                 </IconButton>
               </Tooltip>
