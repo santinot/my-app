@@ -26,7 +26,11 @@ async function createSession(socket) {
 
   client.on("ready", () => {
     console.log("Client is ready!");
-    socket.emit("test", "socket.io");
+  });
+
+  client.on("message", (message) => {
+    console.log(message);
+    socket.emit("newMessage", message);
   });
 
   client.on("auth_failure", (session) => {

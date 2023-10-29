@@ -13,7 +13,19 @@ import HomeThread from "./HomeThread";
 import HomeContactThread from "./HomeContactThread";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
+import io from "socket.io-client";
 let uniqueKey = 0;
+let flag = 0;
+const socket = io.connect("http://localhost:3001");
+
+socket.on("connect", () => {
+  console.log("sono connesso");
+});
+
+socket.on("newMessage", (data) => {
+  console.log(data);
+  flag = !flag;
+});
 
 export default function HomeContent() {
   const [messages, setMessages] = useState([]);
@@ -30,7 +42,7 @@ export default function HomeContent() {
         console.log(data);
       });
     });
-  }, []);
+  }, [flag]);
 
   return (
     <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>

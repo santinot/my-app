@@ -11,7 +11,7 @@ export function validationEmail(value) {
 export function validationName(value, list) {
   let bool = false
   list.map((contact) => {
-    if ((contact.label).toLowerCase() == value.toLowerCase()) {
+    if ((contact.label).toLowerCase() === value.toLowerCase()) {
       bool = true;
     }
   });
