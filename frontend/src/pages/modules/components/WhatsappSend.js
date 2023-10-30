@@ -123,7 +123,15 @@ export default function WhatsappSend(props) {
                   messages.map((message) => {
                     if (message.attachment !== null) {
                       return (
-                        <WhatsappAttachements attachments={message.attachment} key={message.id}/>
+                        <WhatsappAttachements
+                          attachments={message.attachment}
+                          key={message.id}
+                          sx={{
+                            alignSelf: `${
+                              message.fromMe ? "flex-end" : "flex-start"
+                            }`,
+                          }}
+                        />
                       );
                     } else {
                       return (

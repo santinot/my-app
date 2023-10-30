@@ -8,6 +8,7 @@ import Link from "@mui/material/Link";
 import Navigator from "./modules/components/Navigator";
 import Header from "./modules/components/Header";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import GmailContent from "./modules/components/GmailContent";
 
 function Copyright() {
   return (
@@ -196,7 +197,7 @@ export default function GmailPage() {
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
           {/*  */}
-            
+            <GmailContent />
           {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>

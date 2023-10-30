@@ -8,6 +8,7 @@ import Link from "@mui/material/Link";
 import Navigator from "./modules/components/Navigator";
 import Header from "./modules/components/Header";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import WhatsappContent from "./modules/components/WhatsappContent";
 
 function Copyright() {
   return (
@@ -196,7 +197,7 @@ export default function WhatsappPage() {
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
           {/*  */}
-            
+            <WhatsappContent />
           {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>

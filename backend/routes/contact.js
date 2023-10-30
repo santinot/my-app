@@ -20,9 +20,9 @@ contact.post("/addContact", async (req, res) => {
   }
 });
 
-contact.get("/contactsCollection", async (req, res) => {
+contact.get("/contactsCollection/:id", async (req, res) => {
   try {
-    const contactData = await contactsCollection();
+    const contactData = await contactsCollection(req.params.id);
     res.json(contactData);
   } catch (error) {
     console.error("An error occurred:", error);

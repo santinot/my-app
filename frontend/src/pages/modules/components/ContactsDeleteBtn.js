@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Avatar } from "@mui/material";
 
-export default function ContactDeleteBtn(props) {
+export default function ContactsDeleteBtn(props) {
   const { id } = props;
   const deleteContact = () => {
     if (window.confirm("Sei sicuro di voler eliminare il contatto?")) {

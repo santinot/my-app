@@ -24,7 +24,7 @@ export default function GmailSend(props) {
   const { info, closeModal } = props;
   const id = info.id;
 
-  const [to, setTo] = React.useState(info.title.match(/<(.*?)>/)?.[1] || "");
+  const [to, setTo] = React.useState(info.title);
   const [subject, setSubject] = React.useState("Re:" + info.subject);
   const [body, setBody] = React.useState("");
 

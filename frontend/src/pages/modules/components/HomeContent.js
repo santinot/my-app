@@ -25,9 +25,10 @@ export default function HomeContent() {
   const [messages, setMessages] = useState([]);
   const [flag, setFlag] = useState(0);
 
-  socket.on("newMessage", () => {
-    setFlag(!flag);
-  });
+  //Consente l'aggiornamento del component quando viene ricevuto o inviato un nuovo messaggio
+  // socket.on("newMessage", () => {
+  //   setFlag(!flag);
+  // });
 
   useEffect(() => {
     fetch("http://localhost:3001/api/message/getMessages", {

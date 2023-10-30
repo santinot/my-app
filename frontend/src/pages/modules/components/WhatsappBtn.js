@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import { green } from "@mui/material/colors";
 import WhatsappSend from "./WhatsappSend";
 
-export default function GmailBtn(props) {
+export default function WhatsappBtn(props) {
   const { info } = props;
 
   const [open, setOpen] = React.useState(false);

@@ -11,19 +11,6 @@ import HomeSplitButton from "./HomeSplitButton";
 import GmailBtn from "./GmailBtn";
 import WhatsappBtn from "./WhatsappBtn";
 
-function cardContent(body) {
-  if (body === "") {
-    return null;
-  } else {
-    return (
-      <CardContent>
-        <Typography variant="subtitle1" color="text.primary" sx={{ my: -1 }}>
-          {body}
-        </Typography>
-      </CardContent>
-    );
-  }
-}
 
 export default function HomeMessage(props) {
   const handleClick = (e) => {
@@ -73,7 +60,13 @@ export default function HomeMessage(props) {
         }
       />
       <GmailAttachments attachments={attachments} messageId={id} />
-      {cardContent(body)}
+      {body === "" ? null : (
+        <CardContent>
+          <Typography variant="subtitle1" color="text.primary" sx={{ my: -1 }}>
+            {body}
+          </Typography>
+        </CardContent>
+      )}
     </Card>
   );
 }
