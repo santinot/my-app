@@ -5,9 +5,12 @@ const { Server } = require("socket.io");
 const http = require("http");
 app.use(cors());
 app.use(express.json());
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 const server = http.createServer(app);
 
+// Socket.io - WebSockets
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -24,11 +27,16 @@ app.use((req, res, next) => {
   return next();
 });
 
-// http://localhost:3001/
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
-// http://localhost:3001/api
+// Session
+app.use(cookieParser());
+ 
+app.use(session({
+    secret: "santimoncsecraetkey",
+    saveUninitialized: true,
+    resave: true
+}));
+
+// Endpoint for the API http://localhost:3001/api/...
 app.use("/api", require("./routes/api"));
 
 server.listen(3001, () => console.log("Server running on port 3001"));

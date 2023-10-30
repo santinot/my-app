@@ -1,8 +1,6 @@
 import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import withRoot from "./pages/modules/withRoot";
-import AppAppBar from "./pages/modules/views/AppAppBar";
 import io from "socket.io-client";
 import Button from "@mui/material/Button";
 
@@ -12,7 +10,7 @@ socket.on("connect", () => {
   console.log("sono connesso");
 });
 
-function App() {
+export default function App() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -37,7 +35,6 @@ function App() {
 
   return (
     <div className="App">
-      <AppAppBar />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Web Application Index</p>
@@ -51,4 +48,4 @@ function App() {
   );
 }
 
-export default withRoot(App);
+

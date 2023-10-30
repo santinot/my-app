@@ -33,7 +33,6 @@ async function createSession(socket) {
   });
 
   client.on("message_create", (message) => {
-    console.log(message);
     socket.emit("newMessage", message);
   });
 
