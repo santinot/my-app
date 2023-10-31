@@ -76,7 +76,7 @@ function checkToken(error) {
         if (err) {
           return "Error:", err;
         } else {
-          return "Token expired, try again.";
+          return { error : "Token expired, try again." };
         }
       });
     }

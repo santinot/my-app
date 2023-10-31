@@ -21,11 +21,13 @@ async function createSession(socket) {
   });
 
   client.on("qr", (qr) => {
-    qrcode.generate(qr, { small: true });
+    socket.emit("qr", qr);
+    //qrcode.generate(qr, { small: true });
   });
 
   client.on("ready", () => {
     console.log("Client is ready!");
+    socket.emit("clientReady", 200);
   });
 
   client.on("message", (message) => {

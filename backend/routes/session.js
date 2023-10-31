@@ -1,20 +1,28 @@
+const { MongoClient, ObjectId } = require("mongodb");
+const uri = "mongodb://localhost:27017/";
+const client = new MongoClient(uri);
+
 const session = require("express").Router();
 
-session.post("/", (req, res) => {
-    req.session.user = req.body.user;
+session.post("/create", (req, res) => {
+    req.session.user = req.body.userId;
     req.session.save();
-    res.send("login");
+    res.status(200).send("session saved");
 });
 
 session.get("/user", (req, res) => {
     const sessionuser = req.session.user;
-    res.send(sessionuser);
+    console.log(sessionuser);
+    res.json({ session: sessionuser });
 });
 
 session.get("/logout", (req, res) => {
     req.session.destroy();
-    res.send("logout");
+    res.status(200).send("session destroyed");
 });
 
 
 module.exports = session;
+
+
+  

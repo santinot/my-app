@@ -3,22 +3,153 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { Avatar, Grid } from "@mui/material";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:3001");
 
-export default function Login() {
+export default function SignInPage() {
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const [userFlag, setUserFlag] = React.useState(false);
+  const [whatsappFlag, setWhatsappFlag] = React.useState(false);
+  const [gmailFlag, setGmailFlag] = React.useState(false);
+
+  socket.on("clientReady", () => {
+    setWhatsappFlag(true);
+  });
+
+  socket.on("qrCode", (qr) => {
+    console.log(qr); //TODO: render qr code and sessions
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "username":
+        setUsername(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const test = () => {
+    fetch("http://localhost:3001/api/session/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      response.json().then((data) => {
+        alert(data.session);
+      });
+    });
+  };
+
+  const handleUserLogin = () => {
+    if (username === "" || password === "") {
+      alert("Inserisci un username e una password validi.");
+      return;
+    } else {
+      fetch("http://localhost:3001/api/user/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+      }).then((response) => {
+        response.json().then((data) => {
+          if (data.acknowledged === true) {
+            fetch("http://localhost:3001/api/session/create", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ userId: data.userId }),
+            });
+            setUserFlag(true);
+            alert("Accesso effettuato.");
+          } else {
+            alert("Errore nel login, riprova.");
+          }
+        });
+      });
+    }
+  };
+
   const handleWhatsAppLogin = () => {
-    // Gestisci l'accesso a WhatsApp qui
+    if (userFlag === false) {
+      alert("Inserisci prima le credenziali di accesso.");
+      return;
+    } else {
+      fetch("http://localhost:3001/api/whatsapp/login", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => {
+        console.log(response);
+      });
+    }
   };
 
   const handleGmailLogin = () => {
-    // Gestisci l'accesso a Gmail qui
+    if (userFlag === false) {
+      alert("Inserisci prima le credenziali di accesso.");
+      return;
+    } else {
+      fetch("http://localhost:3001/api/email/me/getProfile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => {
+        response.json().then((data) => {
+          if (data.emailAddress) {
+            setGmailFlag(true);
+            console.log(data);
+          } else if (data.error) {
+            alert("Accesso scaduto, riprova.");
+          }
+        });
+      });
+    }
+  };
+
+  const handleUserSignUp = () => {
+    if (username === "" || password === "") {
+      alert("Inserisci un username e una password validi.");
+      return;
+    } else {
+      fetch("http://localhost:3001/api/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+      }).then((response) => {
+        response.json().then((data) => {
+          if (data.acknowledged === true) {
+            alert("Account creato con successo.");
+          } else {
+            alert("Username già in uso, riprova.");
+          }
+        });
+      });
+    }
   };
 
   return (
     <div
       style={{
         display: "flex",
-        justifyContent: 'center',
+        justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
         padding: "16px",
@@ -38,21 +169,21 @@ export default function Login() {
           borderRadius: "20px",
         }}
       >
-      <Grid container alignItems="center">
-      <Avatar
-          aria-label="whatsapp"
-          src={"img/network.png"}
-          variant="square"
-          sx={{ width: 70, height: 70, mr: 2 }}
-        />
+        <Grid container alignItems="center">
+          <Avatar
+            aria-label="whatsapp"
+            src={"img/network.png"}
+            variant="square"
+            sx={{ width: 70, height: 70, mr: 2 }}
+          />
 
-        <Typography variant="h3" align="center" style={{ color: "white" }}>
-        MessageHub Application
-        </Typography>
-
+          <Typography variant="h3" align="center" style={{ color: "white" }}>
+            MessageHub Application
+          </Typography>
         </Grid>
       </Paper>
       <TextField
+        name="username"
         label="Username"
         variant="filled"
         style={{
@@ -61,11 +192,63 @@ export default function Login() {
           backgroundColor: "#e3e7f2",
           borderRadius: "4px",
         }}
+        onChange={handleInputChange}
+      />
+      <TextField
+        name="password"
+        label="Password"
+        variant="filled"
+        type="password"
+        style={{
+          marginBottom: "16px",
+          width: "300px",
+          backgroundColor: "#e3e7f2",
+          borderRadius: "4px",
+        }}
+        onChange={handleInputChange}
       />
       <Button
         variant="contained"
         size="large"
-        style={{ marginBottom: "16px", minWidth:"500px", borderRadius:"20px", backgroundColor: "#2eb161" }}
+        sx={{
+          borderRadius: "20px",
+          backgroundColor: "#7792BC",
+          minWidth: "300px",
+        }}
+        onClick={handleUserLogin}
+      >
+        <Typography align="center" style={{ color: "black", fontSize: "20px" }}>
+          Accedi come Utente
+        </Typography>
+      </Button>
+      <Typography align="center" style={{ color: "white", fontSize: "20px" }}>
+        oppure
+      </Typography>
+      <Button
+        variant="contained"
+        size="large"
+        sx={{
+          marginBottom: "40px",
+          borderRadius: "20px",
+          backgroundColor: "#7792BC",
+          minWidth: "300px",
+        }}
+        onClick={handleUserSignUp}
+      >
+        <Typography align="center" style={{ color: "black", fontSize: "20px" }}>
+          Registrati
+        </Typography>
+      </Button>
+      <Button onClick={test}> ciao</Button>
+
+      <Button
+        variant="contained"
+        size="large"
+        style={{
+          minWidth: "500px",
+          borderRadius: "20px",
+          backgroundColor: "#007830",
+        }}
         onClick={handleWhatsAppLogin}
       >
         <Avatar
@@ -74,15 +257,22 @@ export default function Login() {
           variant="square"
           sx={{ width: 40, height: 40, marginRight: "10px" }}
         />
-        <Typography  align="center" style={{ color: "black", fontSize:"30px" }}>
+        <Typography align="center" style={{ color: "black", fontSize: "30px" }}>
           Accedi con WhatsApp
         </Typography>
       </Button>
-
+      <Typography align="center" style={{ color: "white", fontSize: "30px" }}>
+        e
+      </Typography>
       <Button
         variant="contained"
         size="large"
-        style={{ marginBottom: "16px", minWidth:"500px", borderRadius:"20px", backgroundColor: "#f05042" }}
+        style={{
+          marginBottom: "16px",
+          minWidth: "500px",
+          borderRadius: "20px",
+          backgroundColor: "#B43A35",
+        }}
         onClick={handleGmailLogin}
       >
         <Avatar
@@ -91,10 +281,48 @@ export default function Login() {
           variant="square"
           sx={{ width: 40, height: 40, marginRight: "10px" }}
         />
-        <Typography  align="center" style={{ color: "black", fontSize:"30px" }}>
+        <Typography align="center" style={{ color: "black", fontSize: "30px" }}>
           Accedi con Gmail
         </Typography>
       </Button>
+      <FormGroup sx={{ color: "white", mt: "12px" }}>
+        <FormControlLabel
+          control={
+            <Avatar
+              aria-label="gmail"
+              src={"img/" + (userFlag ? "check-mark" : "cancel") + ".png"}
+              variant="square"
+              sx={{ width: 40, height: 40, marginRight: "10px" }}
+            />
+          }
+          label="Accesso Utente"
+          sx={{ mb: "12px" }}
+        />
+        <FormControlLabel
+          control={
+            <Avatar
+              aria-label="gmail"
+              src={"img/" + (whatsappFlag ? "check-mark" : "cancel") + ".png"}
+              variant="square"
+              sx={{ width: 40, height: 40, marginRight: "10px" }}
+            />
+          }
+          label="Accesso WhatsApp"
+          sx={{ mb: "12px" }}
+        />
+        <FormControlLabel
+          control={
+            <Avatar
+              aria-label="gmail"
+              src={"img/" + (gmailFlag ? "check-mark" : "cancel") + ".png"}
+              variant="square"
+              sx={{ width: 40, height: 40, marginRight: "10px" }}
+            />
+          }
+          label="Accesso Gmail"
+          sx={{ mb: "12px" }}
+        />
+      </FormGroup>
     </div>
   );
 }

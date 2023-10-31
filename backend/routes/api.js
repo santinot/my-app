@@ -8,5 +8,6 @@ api.use("/message", require("./message"));
 api.use("/whatsapp", require("./whatsapp"));
 api.use("/contact", require("./contact"));
 api.use("/session", require("./session"));
+api.use("/user", require("./user"));
 
 module.exports = api;

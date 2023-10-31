@@ -32,8 +32,8 @@ app.use(cookieParser());
  
 app.use(session({
     secret: "santimoncsecraetkey",
-    saveUninitialized: true,
-    resave: true
+    saveUninitialized: false,
+    resave: false
 }));
 
 // Endpoint for the API http://localhost:3001/api/...
