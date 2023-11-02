@@ -10,7 +10,7 @@ import ContactsDeleteBtn from "./ContactsDeleteBtn";
 import ContactsPutModal from "./ContactsPutModal";
 
 export default function ContactsInfoBox(props) {
-  const { info } = props;
+  const { info, user } = props;
   if (!info) {
     return null;
   }
@@ -41,8 +41,8 @@ export default function ContactsInfoBox(props) {
         sx={{ pb: 0 }}
         action={
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <ContactsDeleteBtn id={id} />
-            <ContactsPutModal info={{ name, email, whatsapp, id }} />
+            <ContactsDeleteBtn id={id} user={user} />
+            <ContactsPutModal info={{ name, email, whatsapp, id }} user={user}/>
           </div>
         }
       />

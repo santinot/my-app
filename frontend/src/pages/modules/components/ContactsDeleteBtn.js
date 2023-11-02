@@ -2,10 +2,10 @@ import React from "react";
 import { Button, Avatar } from "@mui/material";
 
 export default function ContactsDeleteBtn(props) {
-  const { id } = props;
+  const { id, user } = props;
   const deleteContact = () => {
     if (window.confirm("Sei sicuro di voler eliminare il contatto?")) {
-      fetch("http://localhost:3001/api/contact/deleteContact/" + id, {
+      fetch("http://localhost:3001/api/contact/deleteContact/" + user + "/" + id, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

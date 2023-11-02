@@ -10,6 +10,8 @@ import Header from "./modules/components/Header";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import ContactsContent from "./modules/components/ContactsContent";
 
+const user = "santimonc";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -197,7 +199,7 @@ export default function ContactsPage() {
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
           {/*  */}
-            <ContactsContent />
+            <ContactsContent user={user}/>
           {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>

@@ -3,7 +3,7 @@ import { Button, Avatar, Modal } from "@mui/material";
 import ContactsPut from "./ContactsPut";
 
 export default function ContactsPutModal(props) {
-  const { info } = props;
+  const { info, user } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -25,7 +25,7 @@ export default function ContactsPutModal(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <ContactsPut info={info} />
+          <ContactsPut info={info} user={user} />
         </>
       </Modal>
     </>

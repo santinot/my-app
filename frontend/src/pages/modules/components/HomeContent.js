@@ -21,7 +21,8 @@ socket.on("connect", () => {
   console.log("sono connesso");
 });
 
-export default function HomeContent() {
+export default function HomeContent(props) {
+  const { user } = props;
   const [messages, setMessages] = useState([]);
   const [flag, setFlag] = useState(0);
 
@@ -31,7 +32,7 @@ export default function HomeContent() {
   // });
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/message/getMessages", {
+    fetch("http://localhost:3001/api/message/getMessages/" + user, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +43,7 @@ export default function HomeContent() {
         console.log(data);
       });
     });
-  }, [flag]);
+  }, [flag, user]);
 
   return (
     <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>

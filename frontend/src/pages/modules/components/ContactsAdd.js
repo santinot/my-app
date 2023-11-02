@@ -25,7 +25,7 @@ const style = {
 };
 
 export default function ContactsAdd(props) {
-  const { contacts } = props;
+  const { contacts, user } = props;
   const [contactName, setContactName] = React.useState("");
   const [contactEmail, setContactEmail] = React.useState("");
   const [contactWhatsapp, setContactWhatsapp] = React.useState("");
@@ -56,6 +56,7 @@ export default function ContactsAdd(props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          user: user,
           label: contactName,
           email: contactEmail,
           whatsapp: contactWhatsapp,

@@ -6,7 +6,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ContactsAdd from "./ContactsAdd";
 
 export default function ContactsCreateModal(props) {
-  const { contacts } = props;
+  const { contacts, user } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -31,7 +31,7 @@ export default function ContactsCreateModal(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <ContactsAdd contacts={contacts} />
+          <ContactsAdd contacts={contacts} user={user} />
         </>
       </Modal>
     </div>

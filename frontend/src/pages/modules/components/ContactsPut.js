@@ -21,7 +21,7 @@ const style = {
 };
 
 export default function ContactsPut(props) {
-  const { info } = props;
+  const { info, user } = props;
   const [name, setName] = React.useState(info.name);
   const [email, setEmail] = React.useState(info.email);
   const [whatsapp, setWhatsapp] = React.useState(info.whatsapp);
@@ -54,6 +54,7 @@ export default function ContactsPut(props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          user: user,
           id: info.id,
           email: email,
           whatsapp: whatsapp,

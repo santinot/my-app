@@ -5,9 +5,23 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { Avatar, Grid } from "@mui/material";
+import { Avatar, Grid, Modal, Box } from "@mui/material";
 import io from "socket.io-client";
+import QRCode from "react-qr-code";
 const socket = io.connect("http://localhost:3001");
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "330px",
+  height: "400px",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function SignInPage() {
   const [username, setUsername] = React.useState("");
@@ -17,12 +31,18 @@ export default function SignInPage() {
   const [whatsappFlag, setWhatsappFlag] = React.useState(false);
   const [gmailFlag, setGmailFlag] = React.useState(false);
 
+  const [qrCode, setQrCode] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+
   socket.on("clientReady", () => {
+    setOpen(false);
     setWhatsappFlag(true);
   });
 
   socket.on("qrCode", (qr) => {
-    console.log(qr); //TODO: render qr code and sessions
+    setQrCode(qr);
+    setOpen(true);
   });
 
   const handleInputChange = (event) => {
@@ -72,6 +92,10 @@ export default function SignInPage() {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ userId: data.userId }),
+            }).then((response) => {
+              response.json().then((data) => {
+                console.log(data);
+              });
             });
             setUserFlag(true);
             alert("Accesso effettuato.");
@@ -261,6 +285,21 @@ export default function SignInPage() {
           Accedi con WhatsApp
         </Typography>
       </Button>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography align="center" sx={{ mb:"20px" }}>
+            Scannerizza il QR Code con WhatsApp
+          </Typography>
+         <QRCode value={qrCode} />
+        </Box>
+      </Modal>
+
       <Typography align="center" style={{ color: "white", fontSize: "30px" }}>
         e
       </Typography>

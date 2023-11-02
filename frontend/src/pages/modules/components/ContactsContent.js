@@ -14,7 +14,8 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 let uniquekey = 0;
 
-export default function ContactsContent() {
+export default function ContactsContent(props) {
+  const { user } = props;
   const [showProgress, setShowProgress] = useState(true);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function ContactsContent() {
 
   const [contacts, setContacts] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/api/contact/getContacts", {
+    fetch("http://localhost:3001/api/contact/getContacts/" + user, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +40,7 @@ export default function ContactsContent() {
         setContacts(data);
       });
     });
-  }, []);
+  }, [user]);
 
   return (
     <Paper sx={{ margin: "auto", overflow: "hidden", maxWidth: "1400px" }}>
@@ -57,7 +58,7 @@ export default function ContactsContent() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Elenco Contatti
           </Typography>
-          <ContactsCreateModal contacts={contacts} />
+          <ContactsCreateModal contacts={contacts} user={user} />
         </Toolbar>
       </AppBar>
 
@@ -89,7 +90,7 @@ export default function ContactsContent() {
           ) : (
             contacts.map((contact) => (
               <Grid item key={uniquekey++}>
-                <ContactsInfoBox key={contact._id} info={contact} />
+                <ContactsInfoBox key={contact._id} info={contact} user={user}/>
               </Grid>
             ))
           )}

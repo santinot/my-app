@@ -10,6 +10,8 @@ import HomeContent from './modules/components/HomeContent';
 import Header from './modules/components/Header';
 import HomeIcon from "@mui/icons-material/Home";
 
+const user = 'santimonc';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -193,7 +195,7 @@ export default function Home() {
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Header label={<><HomeIcon /> Home Page</>}/>
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <HomeContent />
+          <HomeContent user={user} />
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />

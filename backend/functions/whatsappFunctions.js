@@ -21,8 +21,8 @@ async function createSession(socket) {
   });
 
   client.on("qr", (qr) => {
-    socket.emit("qr", qr);
-    //qrcode.generate(qr, { small: true });
+    socket.emit("qrCode", qr);
+    qrcode.generate(qr, { small: true });
   });
 
   client.on("ready", () => {

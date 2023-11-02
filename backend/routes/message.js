@@ -1,9 +1,9 @@
 const message = require("express").Router();
 const { getMessages } = require("../functions/messageFunctions");
 
-message.get("/getMessages", async (req, res) => {
+message.get("/getMessages/:user", async (req, res) => {
   try {
-    const messagesData = await getMessages();
+    const messagesData = await getMessages(req.params.user);
     res.json(messagesData);
   } catch (error) {
     console.error("An error occurred:", error);

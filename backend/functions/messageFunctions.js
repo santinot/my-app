@@ -47,7 +47,7 @@ function MapReduce(list) {
   return result;
 }
 
-async function createThread(listOfMessages) {
+async function createThread(listOfMessages, user) {
   // Input: lista ordinata e raggruppata per mittente
   var threads = [];
 
@@ -66,7 +66,7 @@ async function createThread(listOfMessages) {
         (message.type === "gmail" || message.type[0] === "gmail") ? message.from : message.id,
       ];
     }
-    const res = await checkContact(type, from);
+    const res = await checkContact(user, type, from);
 
     if (res != null) {
       const existingThread = threads.find(
@@ -117,7 +117,7 @@ function orderByDateThread(list) {
   return list;
 }
 
-async function getMessages() {
+async function getMessages(user) {
   try {
     const emailMessages = await fetch(
       "http://localhost:3001/api/email/me/getEmails/inbox",
@@ -144,7 +144,7 @@ async function getMessages() {
       MapReduce(emailMessagesJson).concat(whatsappMessagesJson)
     );
     // Esecuzione della funzione principale
-    const result = await createThread(rawData);
+    const result = await createThread(rawData , user);
     return orderByDateThread(result);
   } catch (error) {
     console.error("An error occurred:", error);
