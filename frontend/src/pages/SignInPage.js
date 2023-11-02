@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -86,17 +86,6 @@ export default function SignInPage() {
       }).then((response) => {
         response.json().then((data) => {
           if (data.acknowledged === true) {
-            fetch("http://localhost:3001/api/session/create", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ userId: data.userId }),
-            }).then((response) => {
-              response.json().then((data) => {
-                console.log(data);
-              });
-            });
             setUserFlag(true);
             alert("Accesso effettuato.");
           } else {
@@ -168,6 +157,30 @@ export default function SignInPage() {
       });
     }
   };
+
+  useEffect(() => {
+    if (userFlag && whatsappFlag && gmailFlag) {
+      fetch("http://localhost:3001/api/session/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: username }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            console.log("Session created.")
+            //insert redirect here
+          } else {
+            alert("Error.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again later.");
+        });
+    }
+  }, [userFlag, whatsappFlag, gmailFlag, username]);
 
   return (
     <div
@@ -293,10 +306,10 @@ export default function SignInPage() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography align="center" sx={{ mb:"20px" }}>
+          <Typography align="center" sx={{ mb: "20px" }}>
             Scannerizza il QR Code con WhatsApp
           </Typography>
-         <QRCode value={qrCode} />
+          <QRCode value={qrCode} />
         </Box>
       </Modal>
 

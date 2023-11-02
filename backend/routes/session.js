@@ -1,7 +1,3 @@
-const { MongoClient, ObjectId } = require("mongodb");
-const uri = "mongodb://localhost:27017/";
-const client = new MongoClient(uri);
-
 const session = require("express").Router();
 
 session.post("/create", (req, res) => {
