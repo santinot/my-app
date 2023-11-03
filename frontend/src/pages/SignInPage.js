@@ -6,9 +6,8 @@ import Paper from "@mui/material/Paper";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Avatar, Grid, Modal, Box } from "@mui/material";
-import io from "socket.io-client";
 import QRCode from "react-qr-code";
-const socket = io.connect("http://localhost:3001");
+
 
 const style = {
   position: "absolute",
@@ -23,7 +22,8 @@ const style = {
   p: 4,
 };
 
-export default function SignInPage() {
+export default function SignInPage(props) {
+  const {socket} = props;
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -57,19 +57,6 @@ export default function SignInPage() {
       default:
         break;
     }
-  };
-
-  const test = () => {
-    fetch("http://localhost:3001/api/session/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      response.json().then((data) => {
-        alert(data.session);
-      });
-    });
   };
 
   const handleUserLogin = () => {
@@ -158,29 +145,55 @@ export default function SignInPage() {
     }
   };
 
-  useEffect(() => {
-    if (userFlag && whatsappFlag && gmailFlag) {
-      fetch("http://localhost:3001/api/session/create", {
-        method: "POST",
+  // useEffect(() => {
+  //   if (userFlag && whatsappFlag && gmailFlag) {
+  //     fetch("http://localhost:3001/api/session/create/" + username, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //       .then((response) =>
+  //         response.json().then((data) => {
+  //           if (data.loggedIn) {
+  //             console.log("Session created." + data.userId);
+  //             window.location.href = "/home"; 
+  //           } else {
+  //             alert("Error.");
+  //           }
+  //         })
+  //       )
+  //       .catch((error) => {
+  //         console.error("Error:", error);
+  //         alert("An error occurred. Please try again later.");
+  //       });
+  //   }
+  // }, [userFlag, whatsappFlag, gmailFlag, username]);
+
+    useEffect(() => {
+    if (userFlag) {
+      fetch("http://localhost:3001/api/session/create/" + username, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: username }),
       })
-        .then((response) => {
-          if (response.status === 200) {
-            console.log("Session created.")
-            //insert redirect here
-          } else {
-            alert("Error.");
-          }
-        })
+        .then((response) =>
+          response.json().then((data) => {
+            if (data.status === 200) {
+              console.log(data.text);
+              window.location.href = "/home"; 
+            } else {
+              alert("Error.");
+            }
+          })
+        )
         .catch((error) => {
           console.error("Error:", error);
           alert("An error occurred. Please try again later.");
         });
     }
-  }, [userFlag, whatsappFlag, gmailFlag, username]);
+  }, [userFlag, username]);
 
   return (
     <div
@@ -276,8 +289,6 @@ export default function SignInPage() {
           Registrati
         </Typography>
       </Button>
-      <Button onClick={test}> ciao</Button>
-
       <Button
         variant="contained"
         size="large"

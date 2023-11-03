@@ -13,7 +13,7 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 let uniquekey = 0;
 
-export default function GmailContent() {
+export default function WhatsappContent() {
   const [showProgress, setShowProgress] = useState(true);
 
   useEffect(() => {

@@ -10,8 +10,6 @@ import Header from "./modules/components/Header";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import ContactsContent from "./modules/components/ContactsContent";
 
-const user = "santimonc";
-
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -170,6 +168,24 @@ theme = {
 const drawerWidth = 256;
 
 export default function ContactsPage() {
+  const [user, setUser] = React.useState("");
+  React.useEffect(() => {
+    fetch("http://localhost:3001/api/session/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.userId) {
+          setUser(data.userId);
+        } else {
+          window.location.href = "/";
+        }
+      });
+  }, []);
+
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (

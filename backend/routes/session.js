@@ -1,24 +1,37 @@
 const session = require("express").Router();
 
-session.post("/create", (req, res) => {
-    req.session.user = req.body.userId;
+session.get("/create/:userId", (req, res) => {
+  try {
+    req.session.user = req.params.userId;
     req.session.save();
-    res.status(200).send("session saved");
+    return res.json({
+      status: 200,
+      text: "session created " + req.session.user,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({ status: 500, text: "session not created" });
+  }
 });
 
 session.get("/user", (req, res) => {
+  try {
     const sessionuser = req.session.user;
-    console.log(sessionuser);
-    res.json({ session: sessionuser });
+    res.json({ loggedIn: true, userId: sessionuser });
+  } catch (err) {
+    console.log(err);
+    res.json({ loggedIn: false, userId: null });
+  }
 });
 
 session.get("/logout", (req, res) => {
+  try {
     req.session.destroy();
     res.status(200).send("session destroyed");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("session not destroyed");
+  }
 });
 
-
 module.exports = session;
-
-
-  

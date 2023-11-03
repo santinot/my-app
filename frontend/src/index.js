@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-//import App from "./App";
 import SignInPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
 import ContactsPage from "./pages/ContactsPage";
@@ -11,20 +10,18 @@ import GmailPage from "./pages/GmailPage";
 import WhatsappPage from "./pages/WhatsappPage";
 import SettingsPage from "./pages/SettingsPage";
 import LogoutPage from "./pages/LogoutPage";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:3001");
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <SignInPage />,
+    element: <SignInPage socket={socket} />,
   },
-  // {
-  //   path: "/sign-in",
-  //   element: <SignInPage />,
-  // },
   {
     path: "/home",
-    element: <HomePage />,
+    element: <HomePage socket={socket}/>,
   },
   {
     path: "/contacts",

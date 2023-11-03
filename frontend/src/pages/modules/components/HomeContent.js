@@ -13,16 +13,10 @@ import HomeThread from "./HomeThread";
 import HomeContactThread from "./HomeContactThread";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
-import io from "socket.io-client";
 let uniqueKey = 0;
-const socket = io.connect("http://localhost:3001");
-
-socket.on("connect", () => {
-  console.log("sono connesso");
-});
 
 export default function HomeContent(props) {
-  const { user } = props;
+  const { user, socket } = props;
   const [messages, setMessages] = useState([]);
   const [flag, setFlag] = useState(0);
 
