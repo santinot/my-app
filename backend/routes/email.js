@@ -6,6 +6,7 @@ const {
   trashEmail,
   untrashEmail,
   getAttachment,
+  singleEmail,
 } = require("../functions/emailFunctions");
 
 email.get("/:userId/getProfile", async (req, res) => {
@@ -88,5 +89,18 @@ email.get(
     }
   }
 );
+
+email.get("/:userId/singleEmail/:messageId", async (req, res) => {
+  try {
+    const messagesData = await singleEmail(
+      req.params.userId,
+      req.params.messageId
+    );
+    res.json(messagesData);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 module.exports = email;

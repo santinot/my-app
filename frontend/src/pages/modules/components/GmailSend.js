@@ -13,7 +13,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
-  height: 620,
+  height: "auto",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -27,6 +27,20 @@ export default function GmailSend(props) {
   const [to, setTo] = React.useState((info.title).match(/<([^>]+)>/)?.[1]);
   const [subject, setSubject] = React.useState("Re:" + info.subject);
   const [body, setBody] = React.useState("");
+
+  const [email, setEmail] = React.useState([]);
+  React.useEffect(() => {
+    fetch("http://localhost:3001/api/email/me/singleEmail/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+      });
+    });
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -123,6 +137,23 @@ export default function GmailSend(props) {
               sx={{ width: "100%" }}
             />
           </Grid>
+
+
+          <Grid item xs={12}>
+            <TextField
+              name="body"
+              label="Corpo dell'email"
+              type="search"
+              variant="filled"
+              placeholder="Scrivi qui..."
+              multiline
+              rows={5}
+              onChange={handleInputChange}
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+
+
           <Grid item xs={12}>
             <TextField
               name="body"

@@ -228,6 +228,31 @@ async function getAttachment(
   return response.data;
 }
 
+async function singleEmail(param_userId, param_messageId){
+  const auth = await authorize();
+  const gmail = google.gmail({ version: "v1", auth });
+  const response = await gmail.users.messages
+    .get({
+      userId: param_userId,
+      id: param_messageId,
+    })
+    .catch((res) => {
+      return checkToken(res.response.data.error_description);
+    });
+    var text = "";
+    var decodedText = "";
+    response.data.payload.parts.forEach(element => {
+      if(element.mimeType === "text/plain"){
+        text = element.body.data;
+      }
+      decodedText = Buffer.from(text, 'base64').toString('utf-8');
+      decodedText = decodedText.replace(/^-+/g, '');
+      decodedText = decodedText.replace(/^[\r\n]+|[\r\n]+$/g, '');
+
+  });
+  return decodedText;
+}
+
 module.exports = {
   getProfile,
   getEmails,
@@ -235,4 +260,5 @@ module.exports = {
   trashEmail,
   untrashEmail,
   getAttachment,
+  singleEmail,
 };
