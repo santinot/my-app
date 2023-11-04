@@ -9,6 +9,7 @@ import Navigator from "./modules/components/Navigator";
 import HomeContent from "./modules/components/HomeContent";
 import Header from "./modules/components/Header";
 import HomeIcon from "@mui/icons-material/Home";
+import Cookies from "js-cookie";
 
 function Copyright() {
   return (
@@ -169,24 +170,13 @@ const drawerWidth = 256;
 
 export default function HomePage(props) {
   const { socket } = props;
-  const [user, setUser] = React.useState("");
-  React.useEffect(() => {
-    fetch("http://localhost:3001/api/session/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.loggedIn) {
-          console.log(data);
-          console.log("utente loggato: " + data.userId);
-          // } else {
-          //   window.location.href = "/";
-        }
-      });
-  }, []);
+
+  const user =
+    Cookies.get("userId") ||
+    (() => {
+      alert("Sessione scaduta, effettuare nuovamente il login");
+      window.location.href = "/signin";
+    })();
 
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 

@@ -13,10 +13,10 @@ import GmailContent from "./modules/components/GmailContent";
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Santino Moncata
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}.
     </Typography>
   );
@@ -191,14 +191,18 @@ export default function GmailPage() {
           />
         </Box>
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <Header label={<><MailOutlineIcon /> Messaggi di Gmail</>} />
+          <Header
+            label={
+              <>
+                <MailOutlineIcon /> Messaggi di Gmail
+              </>
+            }
+          />
           <Box
             component="main"
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
-          {/*  */}
             <GmailContent />
-          {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>
             <Copyright />

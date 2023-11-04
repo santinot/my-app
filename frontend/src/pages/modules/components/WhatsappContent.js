@@ -43,7 +43,7 @@ export default function WhatsappContent() {
   console.log(messages);
 
   return (
-    <Paper sx={{ margin: "auto", overflow: "hidden", maxWidth: "900px" }}>
+    <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -60,40 +60,30 @@ export default function WhatsappContent() {
           </Typography>
         </Toolbar>
       </AppBar>
-
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          sx={{ alignItems: "center", justifyContent: "center" }}
-        >
-          {messages.length === 0 ? (
-            <Box sx={{ width: "100%", mt: 1 }}>
-              {showProgress ? (
-                <LinearProgress sx={{ height: "10px", marginTop: "10px" }} />
-              ) : (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <Alert
-                    severity="info"
-                    sx={{ marginTop: "20px", width: "30%", textAlign: "left" }}
-                  >
-                    <AlertTitle>
-                      <strong>Nessun WhatsApp-Message Ricevuto</strong>
-                    </AlertTitle>
-                  </Alert>
-                </div>
-              )}
-            </Box>
+      {messages.length === 0 ? (
+        <Box sx={{ width: "100%", mt: 1 }}>
+          {showProgress ? (
+            <LinearProgress sx={{ height: "10px", marginTop: "10px" }} />
           ) : (
-            messages.map((message) => (
-              <Grid item key={uniquekey++}>
-                <HomeMessage key={uniquekey++} message={message} />
-              </Grid>
-            ))
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Alert
+                severity="info"
+                sx={{ marginTop: "20px", width: "30%", textAlign: "left" }}
+              >
+                <AlertTitle>
+                  <strong>Nessun WhatsApp-Message Ricevuto</strong>
+                </AlertTitle>
+              </Alert>
+            </div>
           )}
-        </Grid>
-      </Box>
+        </Box>
+      ) : (
+        messages.map((message) => (
+          <Grid item key={uniquekey++}>
+            <HomeMessage key={uniquekey++} message={message} />
+          </Grid>
+        ))
+      )}
     </Paper>
   );
 }

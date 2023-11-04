@@ -9,14 +9,15 @@ import Navigator from "./modules/components/Navigator";
 import Header from "./modules/components/Header";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import ContactsContent from "./modules/components/ContactsContent";
+import Cookies from "js-cookie";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Santino Moncata
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}.
     </Typography>
   );
@@ -168,25 +169,14 @@ theme = {
 const drawerWidth = 256;
 
 export default function ContactsPage() {
-  const [user, setUser] = React.useState("");
-  React.useEffect(() => {
-    fetch("http://localhost:3001/api/session/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.userId) {
-          setUser(data.userId);
-        } else {
-          window.location.href = "/";
-        }
-      });
-  }, []);
-
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const user =
+    Cookies.get("userId") ||
+    (() => {
+      alert("Sessione scaduta, effettuare nuovamente il login");
+      window.location.href = "/signin";
+    })();
 
   return (
     <ThemeProvider theme={theme}>
@@ -209,14 +199,20 @@ export default function ContactsPage() {
           />
         </Box>
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <Header label={<><ContactsIcon /> Contatti in Rubrica</>} />
+          <Header
+            label={
+              <>
+                <ContactsIcon /> Contatti in Rubrica
+              </>
+            }
+          />
           <Box
             component="main"
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
-          {/*  */}
-            <ContactsContent user={user}/>
-          {/*  */}
+            {/*  */}
+            <ContactsContent user={user} />
+            {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>
             <Copyright />

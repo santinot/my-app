@@ -1,12 +1,8 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { Badge } from "@mui/material";
 
 const color = "#0068AD";
 
@@ -22,16 +18,6 @@ function Header(props) {
               {label}
             </Typography>
             <Grid item xs />
-            <Grid item>
-              <Tooltip title="Nuovi Messaggi">
-                <IconButton color="inherit" size="small">
-                  Notifiche
-                  <Badge badgeContent={4} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
-            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>

@@ -12,6 +12,7 @@ mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
 });
 
 async function createSession(socket) {
+  if (client) return socket.emit("clientReady", 200);
   client = new Client({
     authStrategy: new RemoteAuth({
       store: store,

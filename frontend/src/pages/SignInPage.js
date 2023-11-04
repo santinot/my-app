@@ -7,7 +7,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Avatar, Grid, Modal, Box } from "@mui/material";
 import QRCode from "react-qr-code";
-
+import Cookies from "js-cookie";
 
 const style = {
   position: "absolute",
@@ -23,7 +23,9 @@ const style = {
 };
 
 export default function SignInPage(props) {
-  const {socket} = props;
+  const { socket } = props;
+  const [userId, setUserId] = React.useState("");
+
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -71,9 +73,11 @@ export default function SignInPage(props) {
         },
         body: JSON.stringify({ username: username, password: password }),
       }).then((response) => {
+        console.log(response);
         response.json().then((data) => {
           if (data.acknowledged === true) {
             setUserFlag(true);
+            setUserId(data.userId);
             alert("Accesso effettuato.");
           } else {
             alert("Errore nel login, riprova.");
@@ -145,55 +149,12 @@ export default function SignInPage(props) {
     }
   };
 
-  // useEffect(() => {
-  //   if (userFlag && whatsappFlag && gmailFlag) {
-  //     fetch("http://localhost:3001/api/session/create/" + username, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //       .then((response) =>
-  //         response.json().then((data) => {
-  //           if (data.loggedIn) {
-  //             console.log("Session created." + data.userId);
-  //             window.location.href = "/home"; 
-  //           } else {
-  //             alert("Error.");
-  //           }
-  //         })
-  //       )
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //         alert("An error occurred. Please try again later.");
-  //       });
-  //   }
-  // }, [userFlag, whatsappFlag, gmailFlag, username]);
-
-    useEffect(() => {
-    if (userFlag) {
-      fetch("http://localhost:3001/api/session/create/" + username, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) =>
-          response.json().then((data) => {
-            if (data.status === 200) {
-              console.log(data.text);
-              window.location.href = "/home"; 
-            } else {
-              alert("Error.");
-            }
-          })
-        )
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("An error occurred. Please try again later.");
-        });
+  useEffect(() => {
+    if (userFlag && whatsappFlag && gmailFlag) {
+      if (Cookies.set("userId", userId)) window.location.href = "/home";
+      else alert("Errore nel login, riprova.");
     }
-  }, [userFlag, username]);
+  }, [userFlag, whatsappFlag, gmailFlag, userId]);
 
   return (
     <div
