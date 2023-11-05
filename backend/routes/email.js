@@ -3,11 +3,10 @@ const {
   getProfile,
   getEmails,
   sendEmail,
-  trashEmail,
-  untrashEmail,
   getAttachment,
   singleEmail,
-  pageTokenList
+  pageTokenList,
+  logoutProfile,
 } = require("../functions/emailFunctions");
 
 email.get("/:userId/getProfile", async (req, res) => {
@@ -52,27 +51,27 @@ email.post("/:userId/sendEmail", async (req, res) => {
   }
 });
 
-email.post("/:userId/trashEmail", async (req, res) => {
-  try {
-    const messageId = req.body["id"];
-    const messagesData = await trashEmail(req.params.userId, messageId);
-    res.json(messagesData);
-  } catch (error) {
-    console.error("An error occurred:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+// email.post("/:userId/trashEmail", async (req, res) => {
+//   try {
+//     const messageId = req.body["id"];
+//     const messagesData = await trashEmail(req.params.userId, messageId);
+//     res.json(messagesData);
+//   } catch (error) {
+//     console.error("An error occurred:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 
-email.post("/:userId/untrashEmail", async (req, res) => {
-  try {
-    const messageId = req.body["id"];
-    const messagesData = await untrashEmail(req.params.userId, messageId);
-    res.json(messagesData);
-  } catch (error) {
-    console.error("An error occurred:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+// email.post("/:userId/untrashEmail", async (req, res) => {
+//   try {
+//     const messageId = req.body["id"];
+//     const messagesData = await untrashEmail(req.params.userId, messageId);
+//     res.json(messagesData);
+//   } catch (error) {
+//     console.error("An error occurred:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 
 email.get(
   "/:userId/getAttachment/:messageId/:attachmentId/:filename",
@@ -118,4 +117,16 @@ email.get("/:userId/pageTokenList/:labelIds/", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+email.get("/:userId/logoutProfile", async (req, res) => {
+  try {
+    const response = logoutProfile(req.params.userId);
+    res.sendStatus(response);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = email;

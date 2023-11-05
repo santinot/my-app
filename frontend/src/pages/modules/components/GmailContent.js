@@ -43,7 +43,7 @@ export default function GmailContent() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false);
-    }, 5000);
+    }, 7000);
 
     return () => {
       clearTimeout(timer);
@@ -89,7 +89,7 @@ export default function GmailContent() {
       {emails.length > 0 && (
         <Stack justifyContent="center" alignItems="center" height="5vh">
           <Pagination
-            count={10}
+            count={pageTokens.length-2}
             variant="outlined"
             shape="rounded"
             page={page}
@@ -124,7 +124,7 @@ export default function GmailContent() {
       {emails.length > 0 && (
         <Stack justifyContent="center" alignItems="center" height="5vh">
           <Pagination
-            count={10}
+            count={pageTokens.length-2}
             variant="outlined"
             shape="rounded"
             page={page}

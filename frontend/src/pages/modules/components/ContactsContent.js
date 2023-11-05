@@ -21,7 +21,7 @@ export default function ContactsContent(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false);
-    }, 5000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);

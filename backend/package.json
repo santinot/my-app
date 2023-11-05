@@ -11,6 +11,7 @@
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.0",
     "axios": "^1.5.0",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -25,6 +26,7 @@
     "nodemailer": "^6.9.5",
     "os": "^0.1.2",
     "qrcode-terminal": "^0.12.0",
+    "rimraf": "^5.0.5",
     "socket.io": "^4.7.2",
     "unzipper": "^0.10.14",
     "whatsapp-web.js": "https://github.com/Julzk/whatsapp-web.js/tarball/jkr_hotfix_8",

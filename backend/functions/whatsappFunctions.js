@@ -1,10 +1,15 @@
-let os = require("os");
+const os = require("os");
+const fs = require("fs");
 const path = require("path");
-let downloadPath = path.join(os.homedir(), "Downloads");
-let qrcode = require("qrcode-terminal");
+const rimraf = require("rimraf");
+const qrcode = require("qrcode-terminal");
 let { Client, RemoteAuth } = require("whatsapp-web.js");
 let { MongoStore } = require("wwebjs-mongo");
 let mongoose = require("mongoose");
+
+const sessionPath = path.join(__dirname, "../.wwebjs_auth");
+const cachePath = path.join(__dirname, "../.wwebjs_cache");
+const downloadPath = path.join(os.homedir(), "Downloads");
 let client, store;
 
 mongoose.connect("mongodb://localhost:27017/whatsapp").then(() => {
@@ -23,7 +28,7 @@ async function createSession(socket) {
 
   client.on("qr", (qr) => {
     socket.emit("qrCode", qr);
-    qrcode.generate(qr, { small: true });
+    //qrcode.generate(qr, { small: true });
   });
 
   client.on("ready", () => {
@@ -81,22 +86,52 @@ async function getChats() {
 }
 
 async function logoutSession() {
-  const response = client.logout().then(() => {
-    const db = mongoose.connection.db;
-    db.collection("whatsapp-RemoteAuth-User.chunks").drop();
-    db.collection("whatsapp-RemoteAuth-User.files").drop();
-    return "Client logged out!";
-  });
+  const response = await client
+    .logout()
+    .then(async () => {
+      const db = mongoose.connection.db;
+      if (
+        await db
+          .listCollections({ name: "whatsapp-RemoteAuth-User.chunks" })
+          .hasNext()
+      ) {
+        await db.collection("whatsapp-RemoteAuth-User.chunks").drop();
+      }
+      if (
+        await db
+          .listCollections({ name: "whatsapp-RemoteAuth-User.files" })
+          .hasNext()
+      ) {
+        await db.collection("whatsapp-RemoteAuth-User.files").drop();
+      }
+
+      try {
+        if (fs.existsSync(sessionPath)) {
+          rimraf.sync(sessionPath);
+        }
+
+        if (fs.existsSync(cachePath)) {
+          rimraf.sync(cachePath);
+        }
+
+        return 200;
+      } catch (error) {
+        console.error("Errore durante la rimozione di file o cartelle:", error);
+        return 500;
+      }
+    })
+    .catch((error) => {
+      console.error("Errore durante il logout:", error);
+      return 500;
+    });
+
   return response;
 }
 
 async function getAttachment(name, data) {
   // Save the attachment to a file
   const filename = name || "untitled-attachment";
-  fs2.writeFileSync(
-    `${downloadPath}/${filename}`,
-    Buffer.from(data, "base64")
-  );
+  fs2.writeFileSync(`${downloadPath}/${filename}`, Buffer.from(data, "base64"));
   console.log(`Downloaded ${filename}`);
   return 0;
 }

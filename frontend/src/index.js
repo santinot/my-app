@@ -9,7 +9,6 @@ import ContactsPage from "./pages/ContactsPage";
 import GmailPage from "./pages/GmailPage";
 import WhatsappPage from "./pages/WhatsappPage";
 import SettingsPage from "./pages/SettingsPage";
-import LogoutPage from "./pages/LogoutPage";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:3001");
 
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
   {
     path: "/settings",
     element: <SettingsPage />,
-  },
-  {
-    path: "/logout",
-    element: <LogoutPage />,
   },
   {
     path: "*",

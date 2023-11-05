@@ -31,7 +31,7 @@ whatsapp.get("/chats", async (req, res) => {
 whatsapp.get("/logout", async (req, res) => {
   try {
     const response = await logoutSession();
-    res.send(response);
+    res.sendStatus(response);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");

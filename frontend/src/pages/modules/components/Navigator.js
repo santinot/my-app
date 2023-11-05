@@ -11,7 +11,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
-import LogoutIcon from '@mui/icons-material/Logout';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { useLocation } from 'react-router-dom';
@@ -35,7 +34,6 @@ const categories = [
     id: "Pannello di Servizio",
     children: [
       { id: "Impostazioni", icon: <SettingsIcon />, ref: "/settings" },
-      { id: "Logout", icon: <LogoutIcon />, ref: "/logout" },
     ],
   },
 ];

@@ -76,7 +76,7 @@ function checkToken(error) {
         if (err) {
           return "Error:", err;
         } else {
-          return { error : "Token expired, try again." };
+          return { error: "Token expired, try again." };
         }
       });
     }
@@ -84,32 +84,34 @@ function checkToken(error) {
 }
 //@param {google.auth.OAuth2} auth An authorized OAuth2 client.
 
-async function pageTokenList(param_userId, param_labelIds){
+async function pageTokenList(param_userId, param_labelIds) {
   const nextPageTokens = [];
-  nextPageTokens[0] = ""; 
+  nextPageTokens.push("");
 
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-  
-  let pageToken = ""; 
-  
-  for (let i = 0; i < 10; i++){
+
+  let pageToken = "";
+
+  do {
     const response = await gmail.users.messages.list({
       userId: param_userId,
       labelIds: [param_labelIds.toUpperCase()],
       maxResults: 30,
       pageToken,
-    }).catch((res) => {
-      return checkToken(res.response.data.error_description);
+    }).catch((error) => {
+      console.error("Error:", error);
+      return checkToken(error.response.data.error_description);
     });
-  
+
     const nextPageToken = response.data.nextPageToken;
-    nextPageTokens.push(nextPageToken); 
-    pageToken = nextPageToken; 
-  }
-  
-  return(nextPageTokens); 
+    nextPageTokens.push(nextPageToken);
+    pageToken = nextPageToken;
+  } while (pageToken);
+
+  return nextPageTokens;
 }
+
 
 async function getEmails(param_userId, param_labelIds, param_pageToken) {
   const auth = await authorize();
@@ -120,7 +122,7 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
       userId: param_userId,
       labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
       maxResults: 30,
-      pageToken: (param_pageToken === undefined ? "" : param_pageToken), // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
+      pageToken: param_pageToken === undefined ? "" : param_pageToken, // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
     })
     .catch((res) => {
       return checkToken(res.response.data.error_description);
@@ -200,33 +202,33 @@ async function sendEmail(param_userId, param_to, param_subject, param_message) {
   return response.data;
 }
 
-async function trashEmail(param_userId, param_messageId) {
-  const auth = await authorize();
-  const gmail = google.gmail({ version: "v1", auth });
-  const response = await gmail.users.messages
-    .trash({
-      userId: param_userId,
-      id: param_messageId,
-    })
-    .catch((res) => {
-      return checkToken(res.response.data.error_description);
-    });
-  return response.data;
-}
+// async function trashEmail(param_userId, param_messageId) {
+//   const auth = await authorize();
+//   const gmail = google.gmail({ version: "v1", auth });
+//   const response = await gmail.users.messages
+//     .trash({
+//       userId: param_userId,
+//       id: param_messageId,
+//     })
+//     .catch((res) => {
+//       return checkToken(res.response.data.error_description);
+//     });
+//   return response.data;
+// }
 
-async function untrashEmail(param_userId, param_messageId) {
-  const auth = await authorize();
-  const gmail = google.gmail({ version: "v1", auth });
-  const response = await gmail.users.messages
-    .untrash({
-      userId: param_userId,
-      id: param_messageId,
-    })
-    .catch((res) => {
-      return checkToken(res.response.data.error_description);
-    });
-  return response.data;
-}
+// async function untrashEmail(param_userId, param_messageId) {
+//   const auth = await authorize();
+//   const gmail = google.gmail({ version: "v1", auth });
+//   const response = await gmail.users.messages
+//     .untrash({
+//       userId: param_userId,
+//       id: param_messageId,
+//     })
+//     .catch((res) => {
+//       return checkToken(res.response.data.error_description);
+//     });
+//   return response.data;
+// }
 
 async function getAttachment(
   param_userId,
@@ -255,7 +257,7 @@ async function getAttachment(
 }
 
 // Get a single email
-async function singleEmail(param_userId, param_messageId){
+async function singleEmail(param_userId, param_messageId) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages
@@ -266,27 +268,39 @@ async function singleEmail(param_userId, param_messageId){
     .catch((res) => {
       return checkToken(res.response.data.error_description);
     });
-    var text = "";
-    var decodedText = "";
-    response.data.payload.parts.forEach(element => {
-      if(element.mimeType === "text/plain"){
-        text = element.body.data;
-        decodedText = Buffer.from(text, 'base64').toString('utf-8');
-        decodedText = decodedText.replace(/^-+/g, '');
-        decodedText = decodedText.replace(/^[\r\n]+|[\r\n]+$/g, '');
-      }
-
+  var text = "";
+  var decodedText = "";
+  response.data.payload.parts.forEach((element) => {
+    if (element.mimeType === "text/plain") {
+      text = element.body.data;
+      decodedText = Buffer.from(text, "base64").toString("utf-8");
+      decodedText = decodedText.replace(/^-+/g, "");
+      decodedText = decodedText.replace(/^[\r\n]+|[\r\n]+$/g, "");
+    }
   });
   return decodedText;
+}
+
+function logoutProfile() {
+  try {
+    if (fs2.existsSync(TOKEN_PATH)) {
+      fs2.unlinkSync(TOKEN_PATH);
+      return 200; 
+    } else {
+      return 404; 
+    }
+  } catch (error) {
+    console.error("Errore durante il logout del profilo:", error);
+    return 500; 
+  }
 }
 
 module.exports = {
   getProfile,
   getEmails,
   sendEmail,
-  trashEmail,
-  untrashEmail,
   getAttachment,
   singleEmail,
   pageTokenList,
+  logoutProfile,
 };
