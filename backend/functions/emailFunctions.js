@@ -84,7 +84,34 @@ function checkToken(error) {
 }
 //@param {google.auth.OAuth2} auth An authorized OAuth2 client.
 
-async function getEmails(param_userId, param_labelIds) {
+async function pageTokenList(param_userId, param_labelIds){
+  const nextPageTokens = [];
+  nextPageTokens[0] = ""; 
+
+  const auth = await authorize();
+  const gmail = google.gmail({ version: "v1", auth });
+  
+  let pageToken = ""; 
+  
+  for (let i = 0; i < 10; i++){
+    const response = await gmail.users.messages.list({
+      userId: param_userId,
+      labelIds: [param_labelIds.toUpperCase()],
+      maxResults: 30,
+      pageToken,
+    }).catch((res) => {
+      return checkToken(res.response.data.error_description);
+    });
+  
+    const nextPageToken = response.data.nextPageToken;
+    nextPageTokens.push(nextPageToken); 
+    pageToken = nextPageToken; 
+  }
+  
+  return(nextPageTokens); 
+}
+
+async function getEmails(param_userId, param_labelIds, param_pageToken) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages
@@ -93,7 +120,7 @@ async function getEmails(param_userId, param_labelIds) {
       userId: param_userId,
       labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
       maxResults: 30,
-      pageToken: "", // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
+      pageToken: (param_pageToken === undefined ? "" : param_pageToken), // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
     })
     .catch((res) => {
       return checkToken(res.response.data.error_description);
@@ -218,7 +245,6 @@ async function getAttachment(
     .catch((res) => {
       return checkToken(res.response.data.error_description);
     });
-  // Save the attachment to a file
   const filename = param_filename || "untitled-attachment";
   fs2.writeFileSync(
     `${downloadPath}/${filename}`,
@@ -228,6 +254,7 @@ async function getAttachment(
   return response.data;
 }
 
+// Get a single email
 async function singleEmail(param_userId, param_messageId){
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
@@ -244,10 +271,10 @@ async function singleEmail(param_userId, param_messageId){
     response.data.payload.parts.forEach(element => {
       if(element.mimeType === "text/plain"){
         text = element.body.data;
+        decodedText = Buffer.from(text, 'base64').toString('utf-8');
+        decodedText = decodedText.replace(/^-+/g, '');
+        decodedText = decodedText.replace(/^[\r\n]+|[\r\n]+$/g, '');
       }
-      decodedText = Buffer.from(text, 'base64').toString('utf-8');
-      decodedText = decodedText.replace(/^-+/g, '');
-      decodedText = decodedText.replace(/^[\r\n]+|[\r\n]+$/g, '');
 
   });
   return decodedText;
@@ -261,4 +288,5 @@ module.exports = {
   untrashEmail,
   getAttachment,
   singleEmail,
+  pageTokenList,
 };

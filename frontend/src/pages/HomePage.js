@@ -175,7 +175,7 @@ export default function HomePage(props) {
     Cookies.get("userId") ||
     (() => {
       alert("Sessione scaduta, effettuare nuovamente il login");
-      window.location.href = "/signin";
+      window.location.href = "/";
     })();
 
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));

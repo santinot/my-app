@@ -28,19 +28,18 @@ export default function GmailSend(props) {
   const [subject, setSubject] = React.useState("Re:" + info.subject);
   const [body, setBody] = React.useState("");
 
-  const [email, setEmail] = React.useState([]);
-  React.useEffect(() => {
-    fetch("http://localhost:3001/api/email/me/singleEmail/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      response.json().then((data) => {
-        console.log(data);
-      });
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   fetch("http://localhost:3001/api/email/me/singleEmail/" + id, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then((response) => {
+  //     response.json().then((data) => {
+  //       console.log(data);
+  //     });
+  //   });
+  // }, [id]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -138,11 +137,11 @@ export default function GmailSend(props) {
             />
           </Grid>
 
-
-          <Grid item xs={12}>
+          {/* Box email del mittente?? */}
+          {/* <Grid item xs={12}>
             <TextField
               name="body"
-              label="Corpo dell'email"
+              label="Email del mittente"
               type="search"
               variant="filled"
               placeholder="Scrivi qui..."
@@ -151,7 +150,7 @@ export default function GmailSend(props) {
               onChange={handleInputChange}
               sx={{ width: "100%" }}
             />
-          </Grid>
+          </Grid> */}
 
 
           <Grid item xs={12}>

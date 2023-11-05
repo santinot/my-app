@@ -7,6 +7,7 @@ const {
   untrashEmail,
   getAttachment,
   singleEmail,
+  pageTokenList
 } = require("../functions/emailFunctions");
 
 email.get("/:userId/getProfile", async (req, res) => {
@@ -19,11 +20,12 @@ email.get("/:userId/getProfile", async (req, res) => {
   }
 });
 
-email.get("/:userId/getEmails/:labelIds/", async (req, res) => {
+email.get("/:userId/getEmails/:labelIds/:pageToken?", async (req, res) => {
   try {
     const messagesData = await getEmails(
       req.params.userId,
-      req.params.labelIds
+      req.params.labelIds,
+      req.params.pageToken
     );
     res.json(messagesData);
   } catch (error) {
@@ -103,4 +105,17 @@ email.get("/:userId/singleEmail/:messageId", async (req, res) => {
   }
 });
 
+
+email.get("/:userId/pageTokenList/:labelIds/", async (req, res) => {
+  try {
+    const messagesData = await pageTokenList(
+      req.params.userId,
+      req.params.labelIds
+    );
+    res.json(messagesData);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = email;

@@ -11,10 +11,34 @@ import HomeMessage from "./HomeMessage";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
+
 let uniquekey = 0;
 
 export default function GmailContent() {
   const [showProgress, setShowProgress] = useState(true);
+  const [page, setPage] = React.useState(1);
+  const [emails, setEmails] = useState([]);
+  const [pageTokens, setPageTokens] = useState([]);
+
+  const handleChangePage = (event, value) => {
+    setPage(value);
+    window.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:3001/api/email/me/pageTokenList/inbox", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      response.json().then((data) => {
+        setPageTokens(data);
+      });
+    });
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,10 +50,12 @@ export default function GmailContent() {
     };
   }, []);
 
-  const [emails, setEmails] = useState([]);
-
   useEffect(() => {
-    fetch("http://localhost:3001/api/email/me/getEmails/inbox", {
+    if(pageTokens.length === 0){
+      setEmails([]);
+      return;
+    }
+    fetch("http://localhost:3001/api/email/me/getEmails/inbox/" + pageTokens[(page-1) < 0 ? undefined : (page-1)], {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +65,7 @@ export default function GmailContent() {
         setEmails(data);
       });
     });
-  }, []);
+  }, [pageTokens, page]);
   console.log(emails);
 
   return (
@@ -60,6 +86,17 @@ export default function GmailContent() {
           </Typography>
         </Toolbar>
       </AppBar>
+      {emails.length > 0 && (
+        <Stack justifyContent="center" alignItems="center" height="5vh">
+          <Pagination
+            count={10}
+            variant="outlined"
+            shape="rounded"
+            page={page}
+            onChange={handleChangePage}
+          />
+        </Stack>
+      )}
       {emails.length === 0 ? (
         <Box sx={{ width: "100%", mt: 1 }}>
           {showProgress ? (
@@ -83,6 +120,17 @@ export default function GmailContent() {
             <HomeMessage key={uniquekey++} message={email} />
           </Grid>
         ))
+      )}
+      {emails.length > 0 && (
+        <Stack justifyContent="center" alignItems="center" height="5vh">
+          <Pagination
+            count={10}
+            variant="outlined"
+            shape="rounded"
+            page={page}
+            onChange={handleChangePage}
+          />
+        </Stack>
       )}
     </Paper>
   );
