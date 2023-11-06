@@ -2,6 +2,7 @@ const { MongoClient, ObjectId } = require("mongodb");
 const uri = "mongodb://localhost:27017/";
 const client = new MongoClient(uri);
 
+// Add contact to the database
 async function addContact(user, label, email, whatsapp) {
   try {
     await client.connect();
@@ -10,15 +11,13 @@ async function addContact(user, label, email, whatsapp) {
     const result = await database
       .collection("contacts/" + user)
       .insertOne(contact);
-    console.log(
-      `Contact with email ${email} and whatsapp ${whatsapp} created successfully.`
-    );
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
+// Delete contact from the database
 async function deleteContact(user, contactid) {
   try {
     await client.connect();
@@ -26,13 +25,13 @@ async function deleteContact(user, contactid) {
     const result = await database
       .collection("contacts/" + user)
       .deleteOne({ _id: new ObjectId(contactid) });
-    console.log(`Contact deleted successfully.`);
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
+// Update contact in the database
 async function updateContact(user, contactid, email, whatsapp) {
   try {
     await client.connect();
@@ -43,13 +42,13 @@ async function updateContact(user, contactid, email, whatsapp) {
         { _id: new ObjectId(contactid) },
         { $set: { email: email, whatsapp: whatsapp } }
       );
-    console.log(`Contact updated successfully.`);
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
+// Get all contacts of the user
 async function getContacts(user) {
   try {
     await client.connect();
@@ -58,13 +57,13 @@ async function getContacts(user) {
       .collection("contacts/" + user)
       .find()
       .toArray();
-    console.log(`Contacts retrieved successfully.`);
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
+// Check if the sender is a contact
 async function checkContact(user, type, value) {
   try {
     await client.connect();
@@ -77,11 +76,12 @@ async function checkContact(user, type, value) {
           .collection("contacts/" + user)
           .findOne({ whatsapp: value.slice(2) }));
     return result;
+    // example response -> {"_id": "652d2a6075c37d7391ce49bc", "label": "Santino", "email": "santi2001@hotmail.it", "whatsapp": "3290077255"}
   } catch (error) {
     console.error(error);
   }
 }
-//ritorna null se non trovato, altrimenti ritorna il contatto -> {"_id": "652d2a6075c37d7391ce49bc", "label": "Santino", "email": "santi2001@hotmail.it", "whatsapp": "3290077255"}
+
 module.exports = {
   addContact,
   deleteContact,
@@ -89,5 +89,3 @@ module.exports = {
   getContacts,
   checkContact,
 };
-
-//{_id: ObjectId('65294c66f6b73674888cc5f8')}

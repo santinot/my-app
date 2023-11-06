@@ -1,11 +1,19 @@
 const user = require("express").Router();
 const bcrypt = require("bcryptjs");
-const { signUp, signIn, deleteUser, getUser, modifyUser, logoutUser } = require("../functions/userFunction");
+const {
+  signUp,
+  signIn,
+  deleteUser,
+  getUser,
+  modifyUser,
+  logoutUser,
+} = require("../functions/userFunction");
 
+// Sign up
 user.post("/signup", async (req, res) => {
   try {
     const username = req.body["username"];
-    const password = await bcrypt.hash(req.body["password"], 8).then(hash => {
+    const password = await bcrypt.hash(req.body["password"], 8).then((hash) => {
       return hash;
     });
     const userData = await signUp(username, password);
@@ -16,6 +24,7 @@ user.post("/signup", async (req, res) => {
   }
 });
 
+// Login
 user.post("/signin", async (req, res) => {
   try {
     const username = req.body["username"];
@@ -28,6 +37,7 @@ user.post("/signin", async (req, res) => {
   }
 });
 
+// Delete user
 user.delete("/delete", async (req, res) => {
   try {
     const userId = req.body["userId"];
@@ -39,6 +49,7 @@ user.delete("/delete", async (req, res) => {
   }
 });
 
+// Get user information
 user.get("/get/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -50,11 +61,12 @@ user.get("/get/:userId", async (req, res) => {
   }
 });
 
+// Modify user information
 user.put("/modify", async (req, res) => {
   try {
     const userId = req.body["userId"];
     const username = req.body["username"];
-    const password = await bcrypt.hash(req.body["password"], 8).then(hash => {
+    const password = await bcrypt.hash(req.body["password"], 8).then((hash) => {
       return hash;
     });
     const userData = await modifyUser(userId, username, password);
@@ -65,6 +77,7 @@ user.put("/modify", async (req, res) => {
   }
 });
 
+// Logout
 user.get("/logout", async (req, res) => {
   try {
     const userData = await logoutUser();
@@ -74,6 +87,5 @@ user.get("/logout", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 module.exports = user;

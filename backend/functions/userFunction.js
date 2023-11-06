@@ -3,6 +3,7 @@ const uri = "mongodb://localhost:27017/";
 const client = new MongoClient(uri);
 const bcrypt = require("bcryptjs");
 
+// Add user to the database
 async function signUp(username, password) {
   try {
     await client.connect();
@@ -20,7 +21,6 @@ async function signUp(username, password) {
     } else {
       const user = { username: username, password: password };
       const result = await database.collection("users").insertOne(user);
-      console.log(`User with username ${username} created successfully.`);
       return result;
     }
   } catch (error) {
@@ -28,6 +28,7 @@ async function signUp(username, password) {
   }
 }
 
+// Check if user exists in the database
 async function signIn(username, password) {
   try {
     await client.connect();
@@ -58,6 +59,7 @@ async function signIn(username, password) {
   }
 }
 
+// Delete user from the database and all his contacts
 async function deleteUser(userId) {
   try {
     await client.connect();
@@ -74,6 +76,7 @@ async function deleteUser(userId) {
   }
 }
 
+// Get user from the database
 async function getUser(userId) {
   try {
     await client.connect();
@@ -88,6 +91,7 @@ async function getUser(userId) {
   }
 }
 
+// Update user in the database
 async function modifyUser(userId, username, password) {
   try {
     await client.connect();
@@ -107,6 +111,7 @@ async function modifyUser(userId, username, password) {
   }
 }
 
+// Logout user from whatsapp and gmail
 async function logoutUser() {
   try {
     const gmailResponse = await fetch(

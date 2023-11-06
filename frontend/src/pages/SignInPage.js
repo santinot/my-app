@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Avatar, Grid, Modal, Box } from "@mui/material";
+import {
+  Avatar,
+  Grid,
+  Modal,
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  FormGroup,
+  FormControlLabel,
+} from "@mui/material";
 import QRCode from "react-qr-code";
 import Cookies from "js-cookie";
 

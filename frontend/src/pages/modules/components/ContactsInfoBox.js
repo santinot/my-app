@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Card,
   CardContent,
@@ -5,7 +6,6 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
-import * as React from "react";
 import ContactsDeleteBtn from "./ContactsDeleteBtn";
 import ContactsPutModal from "./ContactsPutModal";
 
@@ -42,7 +42,10 @@ export default function ContactsInfoBox(props) {
         action={
           <div style={{ display: "flex", flexDirection: "column" }}>
             <ContactsDeleteBtn id={id} user={user} />
-            <ContactsPutModal info={{ name, email, whatsapp, id }} user={user}/>
+            <ContactsPutModal
+              info={{ name, email, whatsapp, id }}
+              user={user}
+            />
           </div>
         }
       />

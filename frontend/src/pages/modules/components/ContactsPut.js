@@ -1,10 +1,14 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { Grid, Avatar, CardHeader } from "@mui/material";
+import {
+  Grid,
+  Avatar,
+  CardHeader,
+  TextField,
+  Typography,
+  Button,
+  CardContent,
+  Card,
+} from "@mui/material";
 import { validationEmail } from "../form/validation";
 
 const style = {

@@ -9,6 +9,7 @@ const {
   logoutProfile,
 } = require("../functions/emailFunctions");
 
+// Get user profile data
 email.get("/:userId/getProfile", async (req, res) => {
   try {
     const profileData = await getProfile(req.params.userId);
@@ -19,6 +20,7 @@ email.get("/:userId/getProfile", async (req, res) => {
   }
 });
 
+// Get all user emails of a specific label and page
 email.get("/:userId/getEmails/:labelIds/:pageToken?", async (req, res) => {
   try {
     const messagesData = await getEmails(
@@ -33,6 +35,7 @@ email.get("/:userId/getEmails/:labelIds/:pageToken?", async (req, res) => {
   }
 });
 
+// Send email
 email.post("/:userId/sendEmail", async (req, res) => {
   try {
     const to = req.body["To"];
@@ -73,6 +76,7 @@ email.post("/:userId/sendEmail", async (req, res) => {
 //   }
 // });
 
+// Download document attachment
 email.get(
   "/:userId/getAttachment/:messageId/:attachmentId/:filename",
   async (req, res) => {
@@ -91,6 +95,7 @@ email.get(
   }
 );
 
+// Get single email message
 email.get("/:userId/singleEmail/:messageId", async (req, res) => {
   try {
     const messagesData = await singleEmail(
@@ -104,7 +109,7 @@ email.get("/:userId/singleEmail/:messageId", async (req, res) => {
   }
 });
 
-
+// Get page token list
 email.get("/:userId/pageTokenList/:labelIds/", async (req, res) => {
   try {
     const messagesData = await pageTokenList(
@@ -118,7 +123,7 @@ email.get("/:userId/pageTokenList/:labelIds/", async (req, res) => {
   }
 });
 
-
+// Logout profile
 email.get("/:userId/logoutProfile", async (req, res) => {
   try {
     const response = logoutProfile(req.params.userId);

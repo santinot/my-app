@@ -1,10 +1,12 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import {
+  useMediaQuery,
+  CssBaseline,
+  Box,
+  Typography,
+  Link,
+} from "@mui/material";
 import Navigator from "./modules/components/Navigator";
 import Header from "./modules/components/Header";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";

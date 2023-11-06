@@ -1,15 +1,17 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import {
+  Button,
+  ButtonGroup,
+  Grow,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList,
+  Typography,
+  Modal,
+} from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import GmailSend from "./GmailSend";
 import WhatsappSend from "./WhatsappSend";
 
@@ -25,7 +27,6 @@ export default function HomeSplitButton(props) {
   const [openModalWhatsapp, setopenModalWhatsapp] = React.useState(false);
   const handleopenModalWhatsapp = () => setopenModalWhatsapp(true);
   const handlecloseModalWhatsapp = () => setopenModalWhatsapp(false);
-  
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -59,8 +60,6 @@ export default function HomeSplitButton(props) {
     setOpen(false);
   };
 
-  
-
   return (
     <React.Fragment>
       <ButtonGroup
@@ -69,7 +68,7 @@ export default function HomeSplitButton(props) {
         aria-label="split button"
       >
         <Button onClick={handleClick}>
-          <Typography  display="block">
+          <Typography display="block">
             Rispondi con <strong>{options[selectedIndex]}</strong>
           </Typography>
         </Button>
@@ -138,7 +137,10 @@ export default function HomeSplitButton(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <WhatsappSend chatId={info.id} closeModal={handlecloseModalWhatsapp}/>
+          <WhatsappSend
+            chatId={info.id}
+            closeModal={handlecloseModalWhatsapp}
+          />
         </>
       </Modal>
     </React.Fragment>

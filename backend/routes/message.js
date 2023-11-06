@@ -1,6 +1,7 @@
 const message = require("express").Router();
 const { getMessages } = require("../functions/messageFunctions");
 
+// Get all messages (whatsapp and gmail)
 message.get("/getMessages/:user", async (req, res) => {
   try {
     const messagesData = await getMessages(req.params.user);

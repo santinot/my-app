@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Card,
   CardContent,
@@ -5,7 +6,6 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
-import * as React from "react";
 
 export default function HomeContactCard(props) {
   const { message, label } = props;
@@ -32,7 +32,12 @@ export default function HomeContactCard(props) {
       />
       {body === "" ? null : (
         <CardContent
-          sx={{ paddingTop: "4px", overflow: "auto", maxHeight: "100px", minHeight: "50px" }}
+          sx={{
+            paddingTop: "4px",
+            overflow: "auto",
+            maxHeight: "100px",
+            minHeight: "50px",
+          }}
         >
           <Typography
             variant="subtitle2"

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
@@ -32,9 +32,9 @@ const style = {
 export default function WhatsappSend(props) {
   const { chatId, closeModal } = props;
   const [body, setBody] = React.useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch("http://localhost:3001/api/whatsapp/singleChat/" + chatId + "/5", {
       method: "GET",
       headers: {

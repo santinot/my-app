@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Card,
   CardContent,
@@ -5,16 +6,14 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
-import * as React from "react";
 import GmailAttachments from "./GmailAttachments";
 import HomeSplitButton from "./HomeSplitButton";
 import GmailBtn from "./GmailBtn";
 import WhatsappBtn from "./WhatsappBtn";
 
-
 export default function HomeMessage(props) {
+  // Prevent the click event from propagating to the Accordion element
   const handleClick = (e) => {
-    // Evita che l'evento clic si propaghi all'elemento Accordion
     e.stopPropagation();
   };
 
@@ -28,7 +27,7 @@ export default function HomeMessage(props) {
   const body = message.snippet;
   const attachments = Array.isArray(message.type) ? message.type[1] : [];
   const type = Array.isArray(message.type) ? message.type[0] : message.type;
-  const id = (type === "whatsapp" ? message.chatId : message.id);
+  const id = type === "whatsapp" ? message.chatId : message.id;
   return (
     <Card
       sx={{ textAlign: "left", margin: 1, minWidth: "890px" }}
@@ -48,7 +47,7 @@ export default function HomeMessage(props) {
         action={
           <div style={{ display: "flex", flexDirection: "column" }}>
             {splitBtn ? (
-              <HomeSplitButton info={{ id, title, subject, body, type }} />
+              <HomeSplitButton info={{ id, title, subject, body, type }}/>
             ) : null}
             {splitBtn === undefined && type === "gmail" ? (
               <GmailBtn info={{ id, title, subject, body, type }} />

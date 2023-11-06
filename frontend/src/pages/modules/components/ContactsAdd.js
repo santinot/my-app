@@ -1,13 +1,13 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import {
   Grid,
   Avatar,
   CardHeader,
+  TextField,
+  Button,
+  Typography,
+  Card,
+  CardContent,
 } from "@mui/material";
 import { validationEmail, validationName } from "../form/validation";
 
@@ -48,8 +48,14 @@ export default function ContactsAdd(props) {
   };
 
   const addContact = () => {
-    if (contactName === "" || contactEmail === "" || contactWhatsapp === "") { return alert("Riempire tutti i campi"); }
-    if(!validationName(contactName, contacts) && validationEmail(contactEmail) && !isNaN(contactWhatsapp)){
+    if (contactName === "" || contactEmail === "" || contactWhatsapp === "") {
+      return alert("Riempire tutti i campi");
+    }
+    if (
+      !validationName(contactName, contacts) &&
+      validationEmail(contactEmail) &&
+      !isNaN(contactWhatsapp)
+    ) {
       fetch("http://localhost:3001/api/contact/addContact", {
         method: "POST",
         headers: {
@@ -62,10 +68,14 @@ export default function ContactsAdd(props) {
           whatsapp: contactWhatsapp,
         }),
       }).then((response) => {
-        response.status === 200 ? window.location.reload() : alert("Errore nell'inserimento del contatto, riprova");
+        response.status === 200
+          ? window.location.reload()
+          : alert("Errore nell'inserimento del contatto, riprova");
       });
     } else {
-      return alert("Contatto già presente o email non valida o numero di cellulare non valido");
+      return alert(
+        "Contatto già presente o email non valida o numero di cellulare non valido"
+      );
     }
   };
 

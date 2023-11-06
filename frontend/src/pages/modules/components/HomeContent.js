@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
+import * as React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Paper,
+  Grid,
+  Tooltip,
+  IconButton,
+  LinearProgress,
+  Box,
+  Typography,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import HomeContactThread from "./HomeContactThread";
 import HomeMessage from "./HomeMessage";
 import HomeThread from "./HomeThread";
-import HomeContactThread from "./HomeContactThread";
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
 let uniqueKey = 0;
 
 export default function HomeContent(props) {
   const { user, socket } = props;
-  const [messages, setMessages] = useState([]);
-  const [flag, setFlag] = useState(0);
+  const [messages, setMessages] = React.useState([]);
+  const [flag, setFlag] = React.useState(0);
 
   //Consente l'aggiornamento del component quando viene ricevuto o inviato un nuovo messaggio
   // socket.on("newMessage", () => {
   //   setFlag(!flag);
   // });
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch("http://localhost:3001/api/message/getMessages/" + user, {
       method: "GET",
       headers: {
@@ -41,7 +43,7 @@ export default function HomeContent(props) {
 
   return (
     <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
-    <AppBar position="static">
+      <AppBar position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -56,15 +58,15 @@ export default function HomeContent(props) {
             Elenco Messaggi
           </Typography>
           <Grid item>
-              <Tooltip title="Reload">
-                <IconButton onClick={() => setFlag(!flag)}>
-                  <RefreshIcon sx={{ display: "block", color:"white" }} />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            <Tooltip title="Reload">
+              <IconButton onClick={() => setFlag(!flag)}>
+                <RefreshIcon sx={{ display: "block", color: "white" }} />
+              </IconButton>
+            </Tooltip>
+          </Grid>
         </Toolbar>
       </AppBar>
-      
+
       {messages.length === 0 ? (
         <Box sx={{ width: "100%", mt: 1 }}>
           <LinearProgress sx={{ height: "10px" }} />
@@ -74,7 +76,7 @@ export default function HomeContent(props) {
           if (Array.isArray(message)) {
             return <HomeThread key={uniqueKey++} threads={message} />;
           } else if (typeof message.values !== "undefined") {
-            return <HomeContactThread key={uniqueKey++} threads={message} />;
+            return <HomeContactThread key={uniqueKey++} threads={message}/>;
           } else {
             return <HomeMessage key={message.id} message={message} />;
           }

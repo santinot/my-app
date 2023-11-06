@@ -69,10 +69,12 @@ async function authorize() {
   return client;
 }
 
+// Check if token is still valid or not
 function checkToken(error) {
   if (error === "Token has been expired or revoked.") {
     if (fs2.existsSync(TOKEN_PATH)) {
       fs2.unlink(TOKEN_PATH, (err) => {
+        // Delete token.json
         if (err) {
           return "Error:", err;
         } else {
@@ -84,45 +86,42 @@ function checkToken(error) {
 }
 //@param {google.auth.OAuth2} auth An authorized OAuth2 client.
 
+// Get page token list
 async function pageTokenList(param_userId, param_labelIds) {
   const nextPageTokens = [];
   nextPageTokens.push("");
-
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-
   let pageToken = "";
-
   do {
-    const response = await gmail.users.messages.list({
-      userId: param_userId,
-      labelIds: [param_labelIds.toUpperCase()],
-      maxResults: 30,
-      pageToken,
-    }).catch((error) => {
-      console.error("Error:", error);
-      return checkToken(error.response.data.error_description);
-    });
-
+    const response = await gmail.users.messages
+      .list({
+        userId: param_userId,
+        labelIds: [param_labelIds.toUpperCase()],
+        maxResults: 30,   // Number of email in a page
+        pageToken,
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return checkToken(error.response.data.error_description);
+      });
     const nextPageToken = response.data.nextPageToken;
     nextPageTokens.push(nextPageToken);
     pageToken = nextPageToken;
-  } while (pageToken);
-
+  } while (pageToken); 
   return nextPageTokens;
 }
 
-
+// Get emails
 async function getEmails(param_userId, param_labelIds, param_pageToken) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages
-    .list({
-      // Get the list of messages
+    .list({   // Get the list of messages
       userId: param_userId,
-      labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
+      labelIds: [param_labelIds.toUpperCase()],   // "INBOX" is the default value, but you can use other labels, like "TRASH"
       maxResults: 30,
-      pageToken: param_pageToken === undefined ? "" : param_pageToken, // if empty, get the first page of results. For the next page, use the nextPageToken returned by the previous call
+      pageToken: param_pageToken === undefined ? "" : param_pageToken,  // if empty, get the first page of results
     })
     .catch((res) => {
       return checkToken(res.response.data.error_description);
@@ -135,6 +134,7 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
       id: message.id,
     });
     let media = [];
+    // Check if there are attachments
     if (res.data.payload.parts) {
       for (let i = 0; i < res.data.payload.parts.length; i++) {
         if (res.data.payload.parts[i].body.attachmentId) {
@@ -167,6 +167,7 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
   return array;
 }
 
+// Get profile informations
 async function getProfile(param_userId) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
@@ -180,10 +181,12 @@ async function getProfile(param_userId) {
   return response.data;
 }
 
+// Send email
 async function sendEmail(param_userId, param_to, param_subject, param_message) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
-  const raw = Buffer.from(
+  // Create the message in base64 format
+  const raw = Buffer.from(  
     `From: "me" <${param_userId}>\n` +
       `To: ${param_to}\n` +
       `Subject: ${param_subject}\n\n` +
@@ -230,6 +233,7 @@ async function sendEmail(param_userId, param_to, param_subject, param_message) {
 //   return response.data;
 // }
 
+// Download attachment by id and save it to the download folder of pc
 async function getAttachment(
   param_userId,
   param_messageId,
@@ -256,7 +260,7 @@ async function getAttachment(
   return response.data;
 }
 
-// Get a single email
+// Get a single email ???
 async function singleEmail(param_userId, param_messageId) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
@@ -281,17 +285,18 @@ async function singleEmail(param_userId, param_messageId) {
   return decodedText;
 }
 
+// Logout deleting token.json file 
 function logoutProfile() {
   try {
     if (fs2.existsSync(TOKEN_PATH)) {
       fs2.unlinkSync(TOKEN_PATH);
-      return 200; 
+      return 200;
     } else {
-      return 404; 
+      return 404;
     }
   } catch (error) {
     console.error("Errore durante il logout del profilo:", error);
-    return 500; 
+    return 500;
   }
 }
 

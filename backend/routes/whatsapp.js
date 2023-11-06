@@ -8,6 +8,7 @@ const {
   singleChat,
 } = require("../functions/whatsappFunctions");
 
+// Login 
 whatsapp.get("/login", async (req, res) => {
   try {
     const response = await createSession(req.io);
@@ -18,6 +19,7 @@ whatsapp.get("/login", async (req, res) => {
   }
 });
 
+// Get all chats
 whatsapp.get("/chats", async (req, res) => {
   try {
     const response = await getChats();
@@ -28,6 +30,7 @@ whatsapp.get("/chats", async (req, res) => {
   }
 });
 
+// Logout
 whatsapp.get("/logout", async (req, res) => {
   try {
     const response = await logoutSession();
@@ -38,6 +41,7 @@ whatsapp.get("/logout", async (req, res) => {
   }
 });
 
+// Download attachment
 whatsapp.post("/download", async (req, res) => {
   try {
     const response = await getAttachment(req.body.name, req.body.data);
@@ -48,8 +52,9 @@ whatsapp.post("/download", async (req, res) => {
   }
 });
 
+// Send message
 whatsapp.post("/send", async (req, res) => {
-  try{
+  try {
     const response = await sendTextMessage(req.body.chatId, req.body.content);
     res.send(response);
   } catch (err) {
@@ -58,8 +63,9 @@ whatsapp.post("/send", async (req, res) => {
   }
 });
 
+// Get single chat
 whatsapp.get("/singleChat/:chatId/:limit", async (req, res) => {
-  try{
+  try {
     const response = await singleChat(req.params.chatId, req.params.limit);
     res.send(response);
   } catch (err) {

@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import * as React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Paper,
+  IconButton,
+  Typography,
+  Grid,
+  Box,
+  LinearProgress,
+  Alert,
+  AlertTitle,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import HomeMessage from "./HomeMessage";
-import LinearProgress from "@mui/material/LinearProgress";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 let uniquekey = 0;
 
 export default function WhatsappContent() {
-  const [showProgress, setShowProgress] = useState(true);
+  const [showProgress, setShowProgress] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false);
     }, 5000);
@@ -26,9 +28,9 @@ export default function WhatsappContent() {
     };
   }, []);
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch("http://localhost:3001/api/whatsapp/chats", {
       method: "GET",
       headers: {

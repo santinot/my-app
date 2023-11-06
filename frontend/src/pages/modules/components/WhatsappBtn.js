@@ -1,7 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
+import { Button, Typography, Modal } from "@mui/material";
 import { green } from "@mui/material/colors";
 import WhatsappSend from "./WhatsappSend";
 
@@ -9,8 +7,12 @@ export default function WhatsappBtn(props) {
   const { info } = props;
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {setOpen(true)};
-  const handleClose = () => {setOpen(false)};
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -20,7 +22,7 @@ export default function WhatsappBtn(props) {
         size="small"
         onClick={handleOpen}
       >
-        <Typography  display="block">
+        <Typography display="block">
           Rispondi con <strong>WhatsApp</strong>
         </Typography>
       </Button>

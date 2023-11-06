@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import * as React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Paper,
+  IconButton,
+  Typography,
+  Grid,
+  Box,
+  LinearProgress,
+  Alert,
+  AlertTitle,
+  Stack,
+  Pagination,
+} from "@mui/material";
 import HomeMessage from "./HomeMessage";
-import LinearProgress from "@mui/material/LinearProgress";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Stack from "@mui/material/Stack";
-import Pagination from "@mui/material/Pagination";
-
+import MenuIcon from "@mui/icons-material/Menu";
 let uniquekey = 0;
 
 export default function GmailContent() {
-  const [showProgress, setShowProgress] = useState(true);
+  const [showProgress, setShowProgress] = React.useState(true);
   const [page, setPage] = React.useState(1);
-  const [emails, setEmails] = useState([]);
-  const [pageTokens, setPageTokens] = useState([]);
+  const [emails, setEmails] = React.useState([]);
+  const [pageTokens, setPageTokens] = React.useState([]);
 
   const handleChangePage = (event, value) => {
     setPage(value);
     window.scrollTo(0, 0);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch("http://localhost:3001/api/email/me/pageTokenList/inbox", {
       method: "GET",
       headers: {
@@ -40,7 +41,7 @@ export default function GmailContent() {
     });
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false);
     }, 7000);
@@ -50,17 +51,21 @@ export default function GmailContent() {
     };
   }, []);
 
-  useEffect(() => {
-    if(pageTokens.length === 0){
+  React.useEffect(() => {
+    if (pageTokens.length === 0) {
       setEmails([]);
       return;
     }
-    fetch("http://localhost:3001/api/email/me/getEmails/inbox/" + pageTokens[(page-1) < 0 ? undefined : (page-1)], {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
+    fetch(
+      "http://localhost:3001/api/email/me/getEmails/inbox/" +
+        pageTokens[page - 1 < 0 ? undefined : page - 1],
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((response) => {
       response.json().then((data) => {
         setEmails(data);
       });
@@ -89,7 +94,7 @@ export default function GmailContent() {
       {emails.length > 0 && (
         <Stack justifyContent="center" alignItems="center" height="5vh">
           <Pagination
-            count={pageTokens.length-2}
+            count={pageTokens.length - 2}
             variant="outlined"
             shape="rounded"
             page={page}
@@ -124,7 +129,7 @@ export default function GmailContent() {
       {emails.length > 0 && (
         <Stack justifyContent="center" alignItems="center" height="5vh">
           <Pagination
-            count={pageTokens.length-2}
+            count={pageTokens.length - 2}
             variant="outlined"
             shape="rounded"
             page={page}

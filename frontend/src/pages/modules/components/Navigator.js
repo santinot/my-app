@@ -1,20 +1,21 @@
 import * as React from "react";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  Divider,
+  Drawer,
+  List,
+  Box,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Avatar from "@mui/material/Avatar";
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { useLocation, Link } from "react-router-dom";
 
 const categories = [
   {
@@ -27,7 +28,7 @@ const categories = [
       },
       { id: "Rubrica", icon: <ContactsIcon />, ref: "/contacts" },
       { id: "Gmail", icon: <MailOutlineIcon />, ref: "/gmail" },
-      { id: "Whatsapp", icon: <WhatsAppIcon /> , ref: "/whatsapp"},
+      { id: "Whatsapp", icon: <WhatsAppIcon />, ref: "/whatsapp" },
     ],
   },
   {
@@ -71,17 +72,21 @@ export default function Navigator(props) {
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: "#101F33" }}>
-            <ListItem sx={{ py: 2, px: 3}}>
+            <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: "#fff" }}>{id}</ListItemText>
             </ListItem>
             {children.map(({ id: childId, icon, ref }) => (
               <ListItem disablePadding key={childId}>
-              <Link to={ref} style={{ textDecoration: 'none' }}>
-                <ListItemButton selected={label === ref ? true : false} sx={item} onClick={() => (setLabel(ref))}>
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText>{childId}</ListItemText>
-                </ListItemButton>
-              </Link>
+                <Link to={ref} style={{ textDecoration: "none" }}>
+                  <ListItemButton
+                    selected={label === ref ? true : false}
+                    sx={item}
+                    onClick={() => setLabel(ref)}
+                  >
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText>{childId}</ListItemText>
+                  </ListItemButton>
+                </Link>
               </ListItem>
             ))}
             <Divider sx={{ mt: 3 }} />

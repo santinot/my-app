@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import {
+  AppBar,
+  Toolbar,
+  Paper,
+  IconButton,
+  Typography,
+  Grid,
+  Box,
+  LinearProgress,
+  Alert,
+  AlertTitle,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import ContactsInfoBox from "./ContactsInfoBox";
-import LinearProgress from "@mui/material/LinearProgress";
 import ContactsCreateModal from "./ContactsCreateModal";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 let uniquekey = 0;
 
 export default function ContactsContent(props) {
@@ -90,7 +92,7 @@ export default function ContactsContent(props) {
           ) : (
             contacts.map((contact) => (
               <Grid item key={uniquekey++}>
-                <ContactsInfoBox key={contact._id} info={contact} user={user}/>
+                <ContactsInfoBox key={contact._id} info={contact} user={user} />
               </Grid>
             ))
           )}

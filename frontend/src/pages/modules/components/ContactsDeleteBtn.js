@@ -5,12 +5,15 @@ export default function ContactsDeleteBtn(props) {
   const { id, user } = props;
   const deleteContact = () => {
     if (window.confirm("Sei sicuro di voler eliminare il contatto?")) {
-      fetch("http://localhost:3001/api/contact/deleteContact/" + user + "/" + id, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        "http://localhost:3001/api/contact/deleteContact/" + user + "/" + id,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           response.status === 200
             ? window.location.reload()

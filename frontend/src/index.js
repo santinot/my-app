@@ -12,7 +12,6 @@ import SettingsPage from "./pages/SettingsPage";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:3001");
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,7 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <HomePage socket={socket}/>,
+    element: <HomePage socket={socket} />,
   },
   {
     path: "/contacts",
@@ -42,10 +41,7 @@ const router = createBrowserRouter([
     path: "*",
     element: <h1 align="center">Error 404, Page Not Found</h1>,
   },
-  
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-    <RouterProvider router={router} />
-);
+root.render(<RouterProvider router={router} />);

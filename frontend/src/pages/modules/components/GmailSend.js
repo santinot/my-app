@@ -1,10 +1,15 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { Grid, CardHeader, Alert, Snackbar } from "@mui/material";
+import {
+  Grid,
+  CardHeader,
+  Alert,
+  Snackbar,
+  CardContent,
+  Card,
+  Button,
+  Typography,
+  TextField,
+} from "@mui/material";
 import { validationEmail } from "../form/validation";
 
 const style = {
@@ -24,10 +29,11 @@ export default function GmailSend(props) {
   const { info, closeModal } = props;
   const id = info.id;
 
-  const [to, setTo] = React.useState((info.title).match(/<([^>]+)>/)?.[1]);
+  const [to, setTo] = React.useState(info.title.match(/<([^>]+)>/)?.[1]);
   const [subject, setSubject] = React.useState("Re:" + info.subject);
   const [body, setBody] = React.useState("");
 
+  //???
   // React.useEffect(() => {
   //   fetch("http://localhost:3001/api/email/me/singleEmail/" + id, {
   //     method: "GET",
@@ -151,7 +157,6 @@ export default function GmailSend(props) {
               sx={{ width: "100%" }}
             />
           </Grid> */}
-
 
           <Grid item xs={12}>
             <TextField

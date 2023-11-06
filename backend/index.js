@@ -1,13 +1,16 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const { Server } = require("socket.io");
 const http = require("http");
 const cookieParser = require("cookie-parser");
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-}));
+
+const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 

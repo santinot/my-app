@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import * as React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Paper,
+  IconButton,
+  Typography,
+  Grid,
+  Box,
+  Avatar,
+  TextField,
+  Button,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
 import Cookies from "js-cookie";
 let uniquekey = 0;
 
 export default function SettingsContent(props) {
   const { user } = props;
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -32,7 +34,7 @@ export default function SettingsContent(props) {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch("http://localhost:3001/api/user/get/" + user, {
       method: "GET",
       headers: {

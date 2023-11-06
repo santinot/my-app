@@ -1,15 +1,17 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import {
+  useMediaQuery,
+  CssBaseline,
+  Box,
+  Typography,
+  Link,
+} from "@mui/material";
 import Navigator from "./modules/components/Navigator";
 import Header from "./modules/components/Header";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Cookies from "js-cookie";
 import SettingsContent from "./modules/components/SettingsContent";
+import Cookies from "js-cookie";
 
 function Copyright() {
   return (
@@ -211,7 +213,7 @@ export default function ContactsPage() {
             sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
           >
             {/*  */}
-              <SettingsContent user={user}/>
+            <SettingsContent user={user} />
             {/*  */}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>

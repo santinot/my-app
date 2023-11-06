@@ -6,6 +6,7 @@ const {
   getContacts,
 } = require("../functions/contactFunctions");
 
+// Add contact
 contact.post("/addContact", async (req, res) => {
   try {
     const user = req.body["user"];
@@ -20,6 +21,7 @@ contact.post("/addContact", async (req, res) => {
   }
 });
 
+// Get all contacts
 contact.get("/getContacts/:user", async (req, res) => {
   try {
     const contactData = await getContacts(req.params.user);
@@ -30,6 +32,7 @@ contact.get("/getContacts/:user", async (req, res) => {
   }
 });
 
+// Delete contact
 contact.delete("/deleteContact/:user/:id", async (req, res) => {
   try {
     const contactData = await deleteContact(req.params.user, req.params.id);
@@ -40,6 +43,7 @@ contact.delete("/deleteContact/:user/:id", async (req, res) => {
   }
 });
 
+// Update contact
 contact.put("/updateContact", async (req, res) => {
   try {
     const user = req.body["user"];
