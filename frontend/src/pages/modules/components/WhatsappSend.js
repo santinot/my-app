@@ -35,7 +35,7 @@ export default function WhatsappSend(props) {
   const [messages, setMessages] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:3001/api/whatsapp/singleChat/" + (chatId.endsWith("@c.us") ? chatId : whatsappContact) + "/5", {
+    fetch("http://localhost:3001/api/whatsapp/singleChat/" + (chatId.endsWith(".us") ? chatId : whatsappContact) + "/5", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -17,15 +17,16 @@ import WhatsappSend from "./WhatsappSend";
 import Cookies from "js-cookie";
 
 const options = ["Gmail", "WhatsApp"];
-const user =
-    Cookies.get("userId") ||
-    (() => {
-      alert("Sessione scaduta, effettuare nuovamente il login");
-      window.location.href = "/";
-    })();
 
 export default function HomeSplitButton(props) {
   const { info } = props;
+  
+  const user =
+      Cookies.get("userId") ||
+      (() => {
+        alert("Sessione scaduta, effettuare nuovamente il login");
+        window.location.href = "/";
+      })();
 
   const [openModalGmail, setopenModalGmail] = React.useState(false);
   const handleopenModalGmail = () => setopenModalGmail(true);

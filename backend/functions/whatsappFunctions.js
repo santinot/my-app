@@ -97,7 +97,7 @@ async function getChats() {
 // Logout from WhatsApp deleting session files from MongoDB and local storage cache
 async function logoutSession() {
   const response = await client
-    .logout()
+    .destroy()
     .then(async () => {
       const db = mongoose.connection.db;
       if (
