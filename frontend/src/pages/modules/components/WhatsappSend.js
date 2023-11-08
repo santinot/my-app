@@ -30,12 +30,12 @@ const style = {
 };
 
 export default function WhatsappSend(props) {
-  const { chatId, closeModal } = props;
+  const { chatId, closeModal, whatsappContact } = props;
   const [body, setBody] = React.useState("");
   const [messages, setMessages] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:3001/api/whatsapp/singleChat/" + chatId + "/5", {
+    fetch("http://localhost:3001/api/whatsapp/singleChat/" + (chatId.endsWith("@c.us") ? chatId : whatsappContact) + "/5", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export default function WhatsappSend(props) {
         console.log(data);
       });
     });
-  }, [chatId]);
+  }, [chatId, whatsappContact]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -67,7 +67,7 @@ export default function WhatsappSend(props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          chatId: chatId,
+          chatId: (chatId.endsWith("@c.us") ? chatId : whatsappContact),
           content: body,
         }),
       })

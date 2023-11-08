@@ -14,8 +14,15 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import GmailSend from "./GmailSend";
 import WhatsappSend from "./WhatsappSend";
+import Cookies from "js-cookie";
 
 const options = ["Gmail", "WhatsApp"];
+const user =
+    Cookies.get("userId") ||
+    (() => {
+      alert("Sessione scaduta, effettuare nuovamente il login");
+      window.location.href = "/";
+    })();
 
 export default function HomeSplitButton(props) {
   const { info } = props;
@@ -34,9 +41,25 @@ export default function HomeSplitButton(props) {
     info.type === "gmail" ? 0 : 1
   );
 
+  const [gmailContact, setGmailContact] = React.useState([]);
+  const [whatsappContact, setWhatsappContact] = React.useState([]);
+  React.useEffect(() => {
+    fetch("http://localhost:3001/api/contact/getContactByLabel/" + user + "/" + info.contact, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      console.log(response);
+      response.json().then((data) => {
+          setGmailContact(data.email);
+          setWhatsappContact("39" + data.whatsapp + "@c.us");
+      });
+    })
+  }, [info.contact]);
+
   const handleClick = () => {
     if (options[selectedIndex] === "Gmail") {
-      console.info(`You clicked ${options[selectedIndex]}`);
       handleopenModalGmail();
     } else if (options[selectedIndex] === "WhatsApp") {
       handleopenModalWhatsapp();
@@ -127,7 +150,7 @@ export default function HomeSplitButton(props) {
         aria-describedby="modal-modal-description"
       >
         <>
-          <GmailSend info={info} closeModal={handlecloseModalGmail} />
+          <GmailSend info={info} gmailContact={gmailContact} closeModal={handlecloseModalGmail} />
         </>
       </Modal>
       <Modal
@@ -139,6 +162,7 @@ export default function HomeSplitButton(props) {
         <>
           <WhatsappSend
             chatId={info.id}
+            whatsappContact={whatsappContact}
             closeModal={handlecloseModalWhatsapp}
           />
         </>

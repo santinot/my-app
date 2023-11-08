@@ -76,7 +76,7 @@ export default function HomeContent(props) {
           if (Array.isArray(message)) {
             return <HomeThread key={uniqueKey++} threads={message} />;
           } else if (typeof message.values !== "undefined") {
-            return <HomeContactThread key={uniqueKey++} threads={message}/>;
+            return <HomeContactThread key={uniqueKey++} threads={message} contact={message.label}/>;
           } else {
             return <HomeMessage key={message.id} message={message} />;
           }

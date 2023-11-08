@@ -82,10 +82,25 @@ async function checkContact(user, type, value) {
   }
 }
 
+// Get contact by label
+async function getContactByLabel(user, label) {
+  try {
+    await client.connect();
+    const database = client.db("App");
+    const result = await database
+      .collection("contacts/" + user)
+      .findOne({ label: label });
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   addContact,
   deleteContact,
   updateContact,
   getContacts,
   checkContact,
+  getContactByLabel,
 };

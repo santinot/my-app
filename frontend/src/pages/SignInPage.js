@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import * as React from "react";
 import {
   Avatar,
   Grid,
@@ -37,6 +37,7 @@ export default function SignInPage(props) {
   const [userFlag, setUserFlag] = React.useState(false);
   const [whatsappFlag, setWhatsappFlag] = React.useState(false);
   const [gmailFlag, setGmailFlag] = React.useState(false);
+  const [loadingFlag, setLoadingFlag] = React.useState(false);
 
   const [qrCode, setQrCode] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -44,6 +45,7 @@ export default function SignInPage(props) {
 
   socket.on("clientReady", () => {
     setOpen(false);
+    setLoadingFlag(false);
     setWhatsappFlag(true);
   });
 
@@ -97,6 +99,7 @@ export default function SignInPage(props) {
       alert("Inserisci prima le credenziali di accesso.");
       return;
     } else {
+      setLoadingFlag(true);
       fetch("http://localhost:3001/api/whatsapp/login", {
         method: "GET",
         headers: {
@@ -154,7 +157,7 @@ export default function SignInPage(props) {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (userFlag && whatsappFlag && gmailFlag) {
       if (Cookies.set("userId", userId)) window.location.href = "/home";
       else alert("Errore nel login, riprova.");
@@ -331,7 +334,7 @@ export default function SignInPage(props) {
           control={
             <Avatar
               aria-label="gmail"
-              src={"img/" + (whatsappFlag ? "check-mark" : "cancel") + ".png"}
+              src={`img/${whatsappFlag ? 'check-mark' : (loadingFlag ? 'loading' : 'cancel')}.png`}
               variant="square"
               sx={{ width: 40, height: 40, marginRight: "10px" }}
             />

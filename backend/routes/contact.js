@@ -4,6 +4,7 @@ const {
   deleteContact,
   updateContact,
   getContacts,
+  getContactByLabel,
 } = require("../functions/contactFunctions");
 
 // Add contact
@@ -51,6 +52,20 @@ contact.put("/updateContact", async (req, res) => {
     const email = req.body["email"];
     const whatsapp = req.body["whatsapp"];
     const contactData = await updateContact(user, contactid, email, whatsapp);
+    res.json(contactData);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Get specific contact information
+contact.get("/getContactByLabel/:user/:label", async (req, res) => {
+  try {
+    const contactData = await getContactByLabel(
+      req.params.user,
+      req.params.label
+    );
     res.json(contactData);
   } catch (error) {
     console.error("An error occurred:", error);

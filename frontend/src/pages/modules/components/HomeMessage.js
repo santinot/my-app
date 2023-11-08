@@ -17,7 +17,7 @@ export default function HomeMessage(props) {
     e.stopPropagation();
   };
 
-  const { message, splitBtn } = props;
+  const { message, contact} = props;
   if (!message) {
     return null;
   }
@@ -46,13 +46,13 @@ export default function HomeMessage(props) {
         subheader={subheader}
         action={
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {splitBtn ? (
-              <HomeSplitButton info={{ id, title, subject, body, type }}/>
+            {contact ? (
+              <HomeSplitButton info={{ id, title, subject, body, type, contact}}/>
             ) : null}
-            {splitBtn === undefined && type === "gmail" ? (
+            {contact === undefined && type === "gmail" ? (
               <GmailBtn info={{ id, title, subject, body, type }} />
             ) : null}
-            {splitBtn === undefined && type === "whatsapp" ? (
+            {contact === undefined && type === "whatsapp" ? (
               <WhatsappBtn info={{ id, title, subject, body, type }} />
             ) : null}
           </div>

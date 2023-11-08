@@ -9,7 +9,7 @@ import HomeMessage from "./HomeMessage";
 import HomeContactCard from "./HomeContactCard";
 
 export default function HomeContactThread(props) {
-  const { threads } = props;
+  const { threads, contact } = props;
   const first = threads.values[0];
   return (
     <Accordion sx={{ bgcolor: "#FAF7FF" }}>
@@ -27,14 +27,14 @@ export default function HomeContactThread(props) {
               <HomeMessage
                 key={innerMessage.id}
                 message={innerMessage}
-                splitBtn="true"
+                contact={contact}
               />
             </AccordionDetails>
           ));
         }
         return (
           <AccordionDetails key={message.id} sx={{ pt: 0, pb: 0 }}>
-            <HomeMessage key={message.id} message={message} splitBtn="true"/>
+            <HomeMessage key={message.id} message={message} contact={contact}/>
           </AccordionDetails>
         );
       })}

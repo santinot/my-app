@@ -26,10 +26,10 @@ const style = {
 };
 
 export default function GmailSend(props) {
-  const { info, closeModal } = props;
+  const { info, closeModal, gmailContact } = props;
   const id = info.id;
-
-  const [to, setTo] = React.useState(info.title.match(/<([^>]+)>/)?.[1]);
+  console.log(info)
+  const [to, setTo] = React.useState(info.title.match(/<([^>]+)>/)?.[1] ? info.title.match(/<([^>]+)>/)?.[1] : gmailContact );
   const [subject, setSubject] = React.useState("Re:" + info.subject);
   const [body, setBody] = React.useState("");
 
