@@ -56,7 +56,7 @@ export default function HomeSplitButton(props) {
           setWhatsappContact("39" + data.whatsapp + "@c.us");
       });
     })
-  }, [info.contact]);
+  }, [info.contact, user]);
 
   const handleClick = () => {
     if (options[selectedIndex] === "Gmail") {
