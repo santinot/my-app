@@ -51,7 +51,6 @@ export default function HomeSplitButton(props) {
         "Content-Type": "application/json",
       },
     }).then((response) => {
-      console.log(response);
       response.json().then((data) => {
           setGmailContact(data.email);
           setWhatsappContact("39" + data.whatsapp + "@c.us");

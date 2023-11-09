@@ -67,7 +67,7 @@ export default function WhatsappSend(props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          chatId: (chatId.endsWith("@c.us") ? chatId : whatsappContact),
+          chatId: (chatId.endsWith(".us") ? chatId : whatsappContact),
           content: body,
         }),
       })
@@ -124,13 +124,9 @@ export default function WhatsappSend(props) {
                     if (message.attachment !== null) {
                       return (
                         <WhatsappAttachements
-                          attachments={message.attachment}
                           key={message.id}
-                          sx={{
-                            alignSelf: `${
-                              message.fromMe ? "flex-end" : "flex-start"
-                            }`,
-                          }}
+                          attachments={message.attachment}
+                          fromMe={message.fromMe}
                         />
                       );
                     } else {

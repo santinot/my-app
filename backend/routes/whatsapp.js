@@ -3,7 +3,7 @@ const {
   createSession,
   getChats,
   logoutSession,
-  getAttachment,
+  downloadMedia,
   sendTextMessage,
   singleChat,
 } = require("../functions/whatsappFunctions");
@@ -42,10 +42,10 @@ whatsapp.get("/logout", async (req, res) => {
 });
 
 // Download attachment
-whatsapp.post("/download", async (req, res) => {
+whatsapp.post("/downloadMedia", async (req, res) => {
   try {
-    const response = await getAttachment(req.body.name, req.body.data);
-    res.send(response);
+    const response = await downloadMedia(req.body.attachment);
+    res.sendStatus(response);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");

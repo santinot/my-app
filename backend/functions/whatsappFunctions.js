@@ -2,7 +2,6 @@ const os = require("os");
 const fs = require("fs");
 const path = require("path");
 const rimraf = require("rimraf");
-const qrcode = require("qrcode-terminal");
 let { Client, RemoteAuth } = require("whatsapp-web.js");
 let { MongoStore } = require("wwebjs-mongo");
 let mongoose = require("mongoose");
@@ -31,7 +30,6 @@ async function createSession(socket) {
   // Generate QR code
   client.on("qr", (qr) => {
     socket.emit("qrCode", qr);
-    //qrcode.generate(qr, { small: true });
   });
 
   // Communicate when the client is ready
@@ -139,11 +137,20 @@ async function logoutSession() {
 }
 
 // Download attachment from WhatsApp ???
-async function getAttachment(name, data) {
-  const filename = name || "untitled-attachment";
-  fs2.writeFileSync(`${downloadPath}/${filename}`, Buffer.from(data, "base64"));
-  console.log(`Downloaded ${filename}`);
-  return 0;
+async function downloadMedia(attachment) {
+  try {
+    const filename = attachment.name || "untitled-attachment";
+    // const filePath = `${downloadPath}/${filename}`;
+    //await fs.writeFile(filePath, Buffer.from(attachment.data, "base64"), 'base64');
+    fs.writeFileSync(
+      `${downloadPath}/${filename}`,
+      Buffer.from(attachment.data, "base64")
+    );
+    return 200;
+  } catch (error) {
+    console.error("Error downloading media:", error);
+    return 500;
+  }
 }
 
 // Send text message to a chat
@@ -195,7 +202,7 @@ module.exports = {
   createSession,
   getChats,
   logoutSession,
-  getAttachment,
+  downloadMedia,
   sendTextMessage,
   singleChat,
 };
