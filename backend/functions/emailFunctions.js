@@ -93,6 +93,7 @@ async function pageTokenList(param_userId, param_labelIds) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   let pageToken = "";
+  let count = 0;
   do {
     const response = await gmail.users.messages
       .list({
@@ -108,7 +109,8 @@ async function pageTokenList(param_userId, param_labelIds) {
     const nextPageToken = response.data.nextPageToken;
     nextPageTokens.push(nextPageToken);
     pageToken = nextPageToken;
-  } while (pageToken); 
+    count++;
+  } while (pageToken && count < 10); 
   return nextPageTokens;
 }
 
