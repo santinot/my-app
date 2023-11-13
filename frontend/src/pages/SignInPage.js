@@ -172,7 +172,8 @@ export default function SignInPage(props) {
         flexDirection: "column",
         alignItems: "center",
         padding: "16px",
-        background: "#081627",
+        //background: "#081627",
+        background: "#e3e7f2",
         height: "100vh",
       }}
     >
@@ -240,7 +241,7 @@ export default function SignInPage(props) {
           Accedi come Utente
         </Typography>
       </Button>
-      <Typography align="center" style={{ color: "white", fontSize: "20px" }}>
+      <Typography align="center" style={{ color: "black", fontSize: "20px" }}>
         oppure
       </Typography>
       <Button
@@ -293,7 +294,7 @@ export default function SignInPage(props) {
         </Box>
       </Modal>
 
-      <Typography align="center" style={{ color: "white", fontSize: "30px" }}>
+      <Typography align="center" style={{ color: "black", fontSize: "30px" }}>
         e
       </Typography>
       <Button
@@ -317,12 +318,12 @@ export default function SignInPage(props) {
           Accedi con Gmail
         </Typography>
       </Button>
-      <FormGroup sx={{ color: "white", mt: "12px" }}>
+      <FormGroup sx={{ color: "black", mt: "12px" }}>
         <FormControlLabel
           control={
             <Avatar
               aria-label="gmail"
-              src={"img/" + (userFlag ? "check-mark" : "cancel") + ".png"}
+              src={"img/" + (userFlag ? "check-mark" : "available") + ".png"}
               variant="square"
               sx={{ width: 40, height: 40, marginRight: "10px" }}
             />
@@ -334,7 +335,7 @@ export default function SignInPage(props) {
           control={
             <Avatar
               aria-label="gmail"
-              src={`img/${whatsappFlag ? 'check-mark' : (loadingFlag ? 'loading' : 'cancel')}.png`}
+              src={`img/${whatsappFlag ? 'check-mark' : (loadingFlag ? 'loading' : 'available')}.png`}
               variant="square"
               sx={{ width: 40, height: 40, marginRight: "10px" }}
             />
@@ -346,7 +347,7 @@ export default function SignInPage(props) {
           control={
             <Avatar
               aria-label="gmail"
-              src={"img/" + (gmailFlag ? "check-mark" : "cancel") + ".png"}
+              src={"img/" + (gmailFlag ? "check-mark" : "available") + ".png"}
               variant="square"
               sx={{ width: 40, height: 40, marginRight: "10px" }}
             />
