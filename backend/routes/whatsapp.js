@@ -6,6 +6,7 @@ const {
   downloadMedia,
   sendTextMessage,
   singleChat,
+  sentimentAnalysis,
 } = require("../functions/whatsappFunctions");
 
 // Login 
@@ -68,6 +69,16 @@ whatsapp.get("/singleChat/:chatId/:limit", async (req, res) => {
   try {
     const response = await singleChat(req.params.chatId, req.params.limit);
     res.send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong!");
+  }
+});
+
+whatsapp.post("/sentimentAnalysis", async (req, res) => {
+  try{
+    const response = await sentimentAnalysis(req.body.message);
+    res.send(response); 
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");

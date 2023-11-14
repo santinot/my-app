@@ -69,10 +69,27 @@ async function createSession(socket) {
   return "Connection...";
 }
 
+async function sentimentAnalysis(message) {
+  try {
+    const response = await fetch("http://localhost:5000/api/post", {
+      method: "POST",
+      body: JSON.stringify({ message: message }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await response.json();  
+    console.log(data); 
+    return data.value; 
+  } catch (error) {
+    console.error("Error: ", error);
+    return null;
+  }
+}
+
 // Get all chats
 async function getChats() {
   if (!client) return "Client not created!";
-  const response = client.getChats().then((chat) => {
+  const response = client.getChats().then(async (chat) => {
     // Return an array of Chat objects
     const array = [];
     for (let i = 0; i < chat.length; i++) {
@@ -84,10 +101,16 @@ async function getChats() {
         from: chat[i].name,
         subject: chat[i].lastMessage.type,
         snippet: chat[i].lastMessage.fromMe
-          ? "Tu: " + chat[i].lastMessage.body
-          : chat[i].lastMessage.body,
+        ? "Tu: " + chat[i].lastMessage.body
+        : chat[i].lastMessage.body,
         date: dateFormat.toLocaleString("it-IT"),
       });
+      try{
+        const sentiment = await sentimentAnalysis(chat[i].lastMessage.body);
+        console.log(sentiment);
+      } catch (error) {
+        console.error("Error: ", error);
+      }
     }
     return array;
   });
@@ -205,4 +228,5 @@ module.exports = {
   downloadMedia,
   sendTextMessage,
   singleChat,
+  sentimentAnalysis,
 };
