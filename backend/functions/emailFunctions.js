@@ -114,6 +114,23 @@ async function pageTokenList(param_userId, param_labelIds) {
   return nextPageTokens;
 }
 
+// Get sentiment analysis
+async function sentimentAnalysis(message) {
+  try {
+    const response = await fetch("http://127.0.0.1:5000/api/post", {
+      method: "POST",
+      body: JSON.stringify({ message: message }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error: ", error);
+    return null;
+  }
+}
+
 // Get emails
 async function getEmails(param_userId, param_labelIds, param_pageToken) {
   const auth = await authorize();
@@ -147,6 +164,10 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
         }
       }
     }
+    let sentiment = null;
+    if (res.data.snippet) {
+      sentiment = await sentimentAnalysis(res.data.snippet);
+    }
     return {
       id: res.data.id,
       type: media.length != 0 ? ["gmail", media] : "gmail",
@@ -157,6 +178,7 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
         (header) => header.name === "Subject"
       )[0].value,
       snippet: res.data.snippet,
+      sentiment: sentiment ? sentiment.value : null,
       date: moment(
         res.data.payload.headers.filter((header) => header.name === "Date")[0]
           .value,

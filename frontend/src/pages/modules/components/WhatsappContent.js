@@ -21,7 +21,7 @@ export default function WhatsappContent() {
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false);
-    }, 5000);
+    }, 7000);
 
     return () => {
       clearTimeout(timer);

@@ -8,6 +8,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+from flask_cors import CORS
+
 
 # GLOBAL VAR.
 SOURCE_LANGUAGE = "it"
@@ -79,6 +81,7 @@ def sentimentAnalysis(msg):
     return score
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/get/<data>', methods=['GET'])
 def get(data):

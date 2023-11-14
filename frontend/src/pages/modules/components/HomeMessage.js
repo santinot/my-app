@@ -5,6 +5,7 @@ import {
   CardHeader,
   Avatar,
   Typography,
+  Grid,
 } from "@mui/material";
 import GmailAttachments from "./GmailAttachments";
 import HomeSplitButton from "./HomeSplitButton";
@@ -17,7 +18,7 @@ export default function HomeMessage(props) {
     e.stopPropagation();
   };
 
-  const { message, contact} = props;
+  const { message, contact } = props;
   if (!message) {
     return null;
   }
@@ -45,19 +46,38 @@ export default function HomeMessage(props) {
         title={title}
         subheader={subheader}
         action={
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {contact ? (
-              <HomeSplitButton info={{ id, title, subject, body, type, contact}}/>
-            ) : null}
-            {contact === undefined && type === "gmail" ? (
-              <GmailBtn info={{ id, title, subject, body, type }} />
-            ) : null}
-            {contact === undefined && type === "whatsapp" ? (
-              <WhatsappBtn info={{ id, title, subject, body, type }} />
-            ) : null}
-          </div>
+          <>
+            <Grid container spacing={2}>
+              <Grid item xs={2}>
+                {message.sentiment ? (
+                  <Avatar
+                    aria-label="sentiment"
+                    src={"img/" + message.sentiment + ".png"}
+                    variant="square"
+                    sx={{ display: "flex", justifyContent: "center" }}
+                  />
+                ) : null}
+              </Grid>
+              <Grid item xs={message.sentiment ? 10 : 0}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {contact ? (
+                    <HomeSplitButton
+                      info={{ id, title, subject, body, type, contact }}
+                    />
+                  ) : null}
+                  {contact === undefined && type === "gmail" ? (
+                    <GmailBtn info={{ id, title, subject, body, type }} />
+                  ) : null}
+                  {contact === undefined && type === "whatsapp" ? (
+                    <WhatsappBtn info={{ id, title, subject, body, type }} />
+                  ) : null}
+                </div>
+              </Grid>
+            </Grid>
+          </>
         }
       />
+
       <GmailAttachments attachments={attachments} messageId={id} />
       {body === "" ? null : (
         <CardContent>

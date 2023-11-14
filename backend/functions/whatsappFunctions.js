@@ -69,17 +69,17 @@ async function createSession(socket) {
   return "Connection...";
 }
 
+// Get sentiment analysis
 async function sentimentAnalysis(message) {
   try {
-    const response = await fetch("http://localhost:5000/api/post", {
+    const response = await fetch("http://127.0.0.1:5000/api/post", {
       method: "POST",
       body: JSON.stringify({ message: message }),
       headers: { "Content-Type": "application/json" },
     });
 
-    const data = await response.json();  
-    console.log(data); 
-    return data.value; 
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Error: ", error);
     return null;
@@ -93,6 +93,10 @@ async function getChats() {
     // Return an array of Chat objects
     const array = [];
     for (let i = 0; i < chat.length; i++) {
+      let sentiment = null;
+      if (chat[i].lastMessage.body) {
+        sentiment = await sentimentAnalysis(chat[i].lastMessage.body);
+      }
       const dateFormat = new Date(chat[i].timestamp * 1000);
       array.push({
         id: chat[i].id.user,
@@ -101,16 +105,11 @@ async function getChats() {
         from: chat[i].name,
         subject: chat[i].lastMessage.type,
         snippet: chat[i].lastMessage.fromMe
-        ? "Tu: " + chat[i].lastMessage.body
-        : chat[i].lastMessage.body,
+          ? "Tu: " + chat[i].lastMessage.body
+          : chat[i].lastMessage.body,
         date: dateFormat.toLocaleString("it-IT"),
+        sentiment: sentiment ? sentiment.value : null,
       });
-      try{
-        const sentiment = await sentimentAnalysis(chat[i].lastMessage.body);
-        console.log(sentiment);
-      } catch (error) {
-        console.error("Error: ", error);
-      }
     }
     return array;
   });
