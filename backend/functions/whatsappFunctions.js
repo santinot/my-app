@@ -72,7 +72,7 @@ async function createSession(socket) {
 // Get sentiment analysis
 async function sentimentAnalysis(message) {
   try {
-    const response = await fetch("http://127.0.0.1:5000/api/post", {
+    const response = await fetch("http://localhost:5000/api/post", {
       method: "POST",
       body: JSON.stringify({ message: message }),
       headers: { "Content-Type": "application/json" },
@@ -81,7 +81,6 @@ async function sentimentAnalysis(message) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error: ", error);
     return null;
   }
 }
