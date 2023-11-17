@@ -237,7 +237,7 @@ export default function SignInPage(props) {
         }}
         onClick={handleUserLogin}
       >
-        <Typography align="center" style={{ color: "black", fontSize: "20px" }}>
+        <Typography align="center" style={{textTransform: "none", color: "black", fontSize: "20px" }}>
           Accedi come Utente
         </Typography>
       </Button>
@@ -255,15 +255,15 @@ export default function SignInPage(props) {
         }}
         onClick={handleUserSignUp}
       >
-        <Typography align="center" style={{ color: "black", fontSize: "20px" }}>
+        <Typography align="center" style={{textTransform: "none", color: "black", fontSize: "20px" }}>
           Registrati
         </Typography>
       </Button>
       <Button
         variant="contained"
-        size="large"
+        size="medium"
         style={{
-          minWidth: "500px",
+          minWidth: "400px",
           borderRadius: "20px",
           backgroundColor: "#007830",
         }}
@@ -275,7 +275,7 @@ export default function SignInPage(props) {
           variant="square"
           sx={{ width: 40, height: 40, marginRight: "10px" }}
         />
-        <Typography align="center" style={{ color: "black", fontSize: "30px" }}>
+        <Typography align="center" style={{ textTransform: "none", color: "white", fontSize: "25px" }}>
           Accedi con WhatsApp
         </Typography>
       </Button>
@@ -294,15 +294,15 @@ export default function SignInPage(props) {
         </Box>
       </Modal>
 
-      <Typography align="center" style={{ color: "black", fontSize: "30px" }}>
+      <Typography align="center" style={{ color: "black", fontSize: "20px" }}>
         e
       </Typography>
       <Button
         variant="contained"
-        size="large"
+        size="medium"
         style={{
           marginBottom: "16px",
-          minWidth: "500px",
+          minWidth: "400px",
           borderRadius: "20px",
           backgroundColor: "#B43A35",
         }}
@@ -314,8 +314,8 @@ export default function SignInPage(props) {
           variant="square"
           sx={{ width: 40, height: 40, marginRight: "10px" }}
         />
-        <Typography align="center" style={{ color: "black", fontSize: "30px" }}>
-          Accedi con Gmail
+        <Typography align="center" style={{textTransform: "none", color: "white", fontSize: "25px" }}>
+          Accedi con Google
         </Typography>
       </Button>
       <FormGroup sx={{ color: "black", mt: "12px" }}>
