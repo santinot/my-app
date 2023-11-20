@@ -99,7 +99,7 @@ async function pageTokenList(param_userId, param_labelIds) {
       .list({
         userId: param_userId,
         labelIds: [param_labelIds.toUpperCase()],
-        maxResults: 30,   // Number of email in a page
+        maxResults: 30, // Number of email in a page
         pageToken,
       })
       .catch((error) => {
@@ -110,20 +110,21 @@ async function pageTokenList(param_userId, param_labelIds) {
     nextPageTokens.push(nextPageToken);
     pageToken = nextPageToken;
     count++;
-  } while (pageToken && count < 10); 
+  } while (pageToken && count < 10);
   return nextPageTokens;
 }
 
 // Get sentiment analysis
-async function sentimentAnalysis(message) {
+async function sentimentAnalysis(id, message) {
   try {
-    const response = await fetch("http://localhost:5000/api/post", {
+    const response = await fetch("http://localhost:3001/api/message/analysis", {
       method: "POST",
-      body: JSON.stringify({ message: message }),
+      body: JSON.stringify({ id: id, message: message }),
       headers: { "Content-Type": "application/json" },
     });
 
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     return null;
@@ -135,11 +136,12 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   const response = await gmail.users.messages
-    .list({   // Get the list of messages
+    .list({
+      // Get the list of messages
       userId: param_userId,
-      labelIds: [param_labelIds.toUpperCase()],   // "INBOX" is the default value, but you can use other labels, like "TRASH"
+      labelIds: [param_labelIds.toUpperCase()], // "INBOX" is the default value, but you can use other labels, like "TRASH"
       maxResults: 30,
-      pageToken: param_pageToken === undefined ? "" : param_pageToken,  // if empty, get the first page of results
+      pageToken: param_pageToken === undefined ? "" : param_pageToken, // if empty, get the first page of results
     })
     .catch((res) => {
       return checkToken(res.response.data.error_description);
@@ -165,7 +167,7 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
     }
     let sentiment = null;
     if (res.data.snippet) {
-      sentiment = await sentimentAnalysis(res.data.snippet);
+      sentiment = await sentimentAnalysis(res.data.id ,res.data.snippet);
     }
     return {
       id: res.data.id,
@@ -177,7 +179,7 @@ async function getEmails(param_userId, param_labelIds, param_pageToken) {
         (header) => header.name === "Subject"
       )[0].value,
       snippet: res.data.snippet,
-      sentiment: sentiment ? sentiment.value : null,
+      sentiment: sentiment ? sentiment : null,
       date: moment(
         res.data.payload.headers.filter((header) => header.name === "Date")[0]
           .value,
@@ -209,7 +211,7 @@ async function sendEmail(param_userId, param_to, param_subject, param_message) {
   const auth = await authorize();
   const gmail = google.gmail({ version: "v1", auth });
   // Create the message in base64 format
-  const raw = Buffer.from(  
+  const raw = Buffer.from(
     `From: "me" <${param_userId}>\n` +
       `To: ${param_to}\n` +
       `Subject: ${param_subject}\n\n` +
@@ -308,7 +310,7 @@ async function singleEmail(param_userId, param_messageId) {
   return decodedText;
 }
 
-// Logout deleting token.json file 
+// Logout deleting token.json file
 function logoutProfile() {
   try {
     if (fs2.existsSync(TOKEN_PATH)) {

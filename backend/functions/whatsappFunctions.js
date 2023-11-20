@@ -70,11 +70,11 @@ async function createSession(socket) {
 }
 
 // Get sentiment analysis
-async function sentimentAnalysis(message) {
+async function sentimentAnalysis(id, message) {
   try {
-    const response = await fetch("http://localhost:5000/api/post", {
+    const response = await fetch("http://localhost:3001/api/message/analysis", {
       method: "POST",
-      body: JSON.stringify({ message: message }),
+      body: JSON.stringify({ id: id, message: message }),
       headers: { "Content-Type": "application/json" },
     });
 
@@ -94,7 +94,7 @@ async function getChats() {
     for (let i = 0; i < chat.length; i++) {
       let sentiment = null;
       if (chat[i].lastMessage.body) {
-        sentiment = await sentimentAnalysis(chat[i].lastMessage.body);
+        sentiment = await sentimentAnalysis(chat[i].id._serialized ,chat[i].lastMessage.body);
       }
       const dateFormat = new Date(chat[i].timestamp * 1000);
       array.push({
@@ -107,7 +107,7 @@ async function getChats() {
           ? "Tu: " + chat[i].lastMessage.body
           : chat[i].lastMessage.body,
         date: dateFormat.toLocaleString("it-IT"),
-        sentiment: sentiment ? sentiment.value : null,
+        sentiment: sentiment ? sentiment : null,
       });
     }
     return array;

@@ -49,7 +49,7 @@ function MapReduce(list) {
 
 // Create threads of messages
 async function createThread(listOfMessages, user) {
-  // Input: ordered list of messages grouped by sender  
+  // Input: ordered list of messages grouped by sender
   var threads = [];
 
   // Process each message checking if it is a contact
@@ -70,7 +70,7 @@ async function createThread(listOfMessages, user) {
           : message.id,
       ];
     }
-    const res = await checkContact(user, type, from);   // Function from contactFunctions.js
+    const res = await checkContact(user, type, from); // Function from contactFunctions.js
 
     // If the sender is a contact, add the message to the threadm, if exists, otherwise create a new thread
     if (res != null) {
@@ -90,7 +90,7 @@ async function createThread(listOfMessages, user) {
     }
   }
 
-  // Process message in parallel (async) 
+  // Process message in parallel (async)
   return Promise.all(listOfMessages.map(processMessage)).then(() => {
     return threads;
   });
@@ -158,6 +158,74 @@ async function getMessages(user) {
   }
 }
 
+// Get sentiment analysis
+async function sentimentAnalysis(id, message) {
+  try {
+    let score = null;
+    // Fetch messages from the API
+    const dbMessagesResponse = await fetch(
+      "http://127.0.0.1:5000/api/messages/get",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!dbMessagesResponse.ok) {
+      throw new Error(
+        `Failed to fetch messages. Status: ${dbMessagesResponse.status}`
+      );
+    }
+
+    const messagesData = await dbMessagesResponse.json();
+
+    // Check if the message with the given id and content exists
+    const foundMessage = messagesData.find(
+      (msg) => msg.id === id && msg.message === message
+    );
+
+    if (!foundMessage) {
+      // Fetch sentiment analysis score
+      const scoreResponse = await fetch("http://127.0.0.1:5000/api/analysis", {
+        method: "POST",
+        body: JSON.stringify({ message: message }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!scoreResponse.ok) {
+        throw new Error(
+          `Failed to fetch sentiment analysis score. Status: ${scoreResponse.status}`
+        );
+      }
+
+      // Parse the score from the response
+      const scoreData = await scoreResponse.json();
+      score = scoreData.value;
+
+      // Insert the message into the database with the obtained score
+      await fetch("http://127.0.0.1:5000/api/messages/insert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, message, score }),
+      });
+    } else {
+      // Use the score from the found message
+      score = foundMessage.score;
+    }
+
+    return score;
+  } catch (error) {
+    console.error("Error in sentimentAnalysis:", error.message);
+    // Handle the error or rethrow it as needed
+    throw error;
+  }
+}
+
 module.exports = {
   getMessages,
+  sentimentAnalysis,
 };

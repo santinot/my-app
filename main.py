@@ -24,16 +24,11 @@ def getMessages():
     return(json_result)
 
 
-@app.route('/api/post', methods=['POST'])
+@app.route('/api/analysis', methods=['POST'])
 def post():
     data = request.get_json()
     response = sentiment_analyzer.sentimentAnalysis(data["message"])
     return jsonify({"value" : str(response)})
-
-
-@app.route('/api/get/<data>', methods=['GET'])
-def get(data):
-    return jsonify(data)
 
 
 if __name__=="__main__":

@@ -165,8 +165,8 @@ export default function SignInPage(props) {
   }, [userFlag, whatsappFlag, gmailFlag, userId]);
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
@@ -174,7 +174,8 @@ export default function SignInPage(props) {
         padding: "16px",
         //background: "#081627",
         background: "#e3e7f2",
-        height: "100vh",
+        minheight: "100vh",
+        overflow: "hidden",
       }}
     >
       <Paper
@@ -237,7 +238,10 @@ export default function SignInPage(props) {
         }}
         onClick={handleUserLogin}
       >
-        <Typography align="center" style={{textTransform: "none", color: "black", fontSize: "20px" }}>
+        <Typography
+          align="center"
+          style={{ textTransform: "none", color: "black", fontSize: "20px" }}
+        >
           Accedi come Utente
         </Typography>
       </Button>
@@ -255,7 +259,10 @@ export default function SignInPage(props) {
         }}
         onClick={handleUserSignUp}
       >
-        <Typography align="center" style={{textTransform: "none", color: "black", fontSize: "20px" }}>
+        <Typography
+          align="center"
+          style={{ textTransform: "none", color: "black", fontSize: "20px" }}
+        >
           Registrati
         </Typography>
       </Button>
@@ -275,7 +282,10 @@ export default function SignInPage(props) {
           variant="square"
           sx={{ width: 40, height: 40, marginRight: "10px" }}
         />
-        <Typography align="center" style={{ textTransform: "none", color: "white", fontSize: "25px" }}>
+        <Typography
+          align="center"
+          style={{ textTransform: "none", color: "white", fontSize: "25px" }}
+        >
           Accedi con WhatsApp
         </Typography>
       </Button>
@@ -314,7 +324,10 @@ export default function SignInPage(props) {
           variant="square"
           sx={{ width: 40, height: 40, marginRight: "10px" }}
         />
-        <Typography align="center" style={{textTransform: "none", color: "white", fontSize: "25px" }}>
+        <Typography
+          align="center"
+          style={{ textTransform: "none", color: "white", fontSize: "25px" }}
+        >
           Accedi con Google
         </Typography>
       </Button>
@@ -335,7 +348,13 @@ export default function SignInPage(props) {
           control={
             <Avatar
               aria-label="gmail"
-              src={`img/${whatsappFlag ? 'check-mark' : (loadingFlag ? 'loading' : 'available')}.png`}
+              src={`img/${
+                whatsappFlag
+                  ? "check-mark"
+                  : loadingFlag
+                  ? "loading"
+                  : "available"
+              }.png`}
               variant="square"
               sx={{ width: 40, height: 40, marginRight: "10px" }}
             />
@@ -356,6 +375,6 @@ export default function SignInPage(props) {
           sx={{ mb: "12px" }}
         />
       </FormGroup>
-    </div>
+    </Box>
   );
 }

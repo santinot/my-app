@@ -5,4 +5,5 @@ frontend/node_modules
 backend/.wwebjs*
 backend/token.json
 backend/credentials.json
+__pycache__/
 ```
